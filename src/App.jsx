@@ -27,6 +27,7 @@ import MarketDashboard from './pages/market/MarketDashboard';
 import StoreSettings from './pages/market/StoreSettings';
 import MyStore from './pages/market/MyStore';
 import FAQ from './pages/FAQ';
+import About from './pages/About';
 import AdminReview from './pages/AdminReview';
 import Roadmap from './pages/Roadmap';
 import Checkout from './pages/Checkout';
@@ -70,6 +71,7 @@ const RoutedApp = () => {
         <Route path="/shop/:username" element={<ShopProfile />} />
         <Route path="/publish" element={<PublishArtifact />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/about" element={<About />} />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="*" element={<PageNotFound />} />
