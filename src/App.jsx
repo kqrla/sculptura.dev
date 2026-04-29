@@ -1,10 +1,19 @@
-import { Toaster } from "@/components/ui/toaster"
-import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClientInstance } from '@/lib/query-client'
+// app entry. wraps everything in providers and declares the route map.
+//
+// route layout decisions:
+//   - "/auth" stands alone with no header chrome (sign-in surface)
+//   - "/admin" and the "/store/*" pages also stand alone because they
+//     are dedicated workspaces with their own sidebars
+//   - everything else lives under AppLayout which renders the sticky
+//     header + cart drawer
+
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClientInstance } from '@/lib/query-client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AppLayout from './components/layout/AppLayout';
 import Home from './pages/Home';
 import Explore from './pages/Explore';
@@ -21,29 +30,24 @@ import FAQ from './pages/FAQ';
 import AdminReview from './pages/AdminReview';
 import Roadmap from './pages/Roadmap';
 import Checkout from './pages/Checkout';
+import Auth from './pages/Auth';
 
-const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+const RoutedApp = () => {
+  const { isLoadingAuth } = useAuth();
 
-  if (isLoadingPublicSettings || isLoadingAuth) {
+  if (isLoadingAuth) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <div className="w-8 h-8 border-4 border-border border-t-foreground rounded-full animate-spin" />
       </div>
     );
   }
 
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      navigateToLogin();
-      return null;
-    }
-  }
-
   return (
     <Routes>
+      {/* sign-in surface */}
+      <Route path="/auth" element={<Auth />} />
+
       {/* standalone pages (no header) */}
       <Route path="/admin" element={<AdminReview />} />
       <Route path="/onboarding" element={<Onboarding />} />
@@ -53,12 +57,12 @@ const AuthenticatedApp = () => {
       <Route path="/store/settings" element={<StoreSettings />} />
       <Route path="/store/mystore" element={<MyStore />} />
 
-      {/* legacy redirects — keep old paths working */}
+      {/* legacy redirects keep older bookmarks working */}
       <Route path="/market/create" element={<CreateAccount />} />
       <Route path="/market/access" element={<AccessAccount />} />
       <Route path="/market/dashboard" element={<MarketDashboard />} />
 
-      {/* main app with header */}
+      {/* main app shell */}
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
@@ -79,12 +83,13 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
-          <AuthenticatedApp />
+          <RoutedApp />
         </Router>
         <Toaster />
+        <Sonner />
       </QueryClientProvider>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
