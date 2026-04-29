@@ -1,3 +1,4 @@
+import { db } from '@/lib/db';
 
 import { useQuery } from "@tanstack/react-query";
 import ArtifactGrid from "../artifacts/ArtifactGrid";

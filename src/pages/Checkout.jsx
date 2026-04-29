@@ -1,3 +1,4 @@
+import { db } from '@/lib/db';
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, Package, MapPin, CreditCard } from "lucide-react";

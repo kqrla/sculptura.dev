@@ -1,3 +1,4 @@
+import { db } from '@/lib/db';
 import InsightCard from "../components/dashboard/InsightCard";
 import WalletSection from "../components/dashboard/WalletSection";
 import MyArtifacts from "../components/dashboard/MyArtifacts";

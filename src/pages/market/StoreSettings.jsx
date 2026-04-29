@@ -1,3 +1,4 @@
+import { db } from '@/lib/db';
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 

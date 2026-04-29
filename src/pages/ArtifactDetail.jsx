@@ -1,3 +1,4 @@
+import { db } from '@/lib/db';
 import { useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
