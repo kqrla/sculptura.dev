@@ -1,3 +1,557 @@
-// auto-generated placeholder - replaced by supabase after migrations
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
-export type Database = any
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
+  public: {
+    Tables: {
+      artifacts: {
+        Row: {
+          admin_reviewed: boolean
+          category: string | null
+          created_at: string
+          creator_earnings: Json | null
+          creator_handle: string
+          creator_name: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          is_featured: boolean
+          made_to_order: boolean
+          manufacturing_costs: Json | null
+          materials: string[] | null
+          model_url: string | null
+          name: string
+          prices: Json | null
+          region: string | null
+          review_notes: string | null
+          specs: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_reviewed?: boolean
+          category?: string | null
+          created_at?: string
+          creator_earnings?: Json | null
+          creator_handle: string
+          creator_name?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean
+          made_to_order?: boolean
+          manufacturing_costs?: Json | null
+          materials?: string[] | null
+          model_url?: string | null
+          name: string
+          prices?: Json | null
+          region?: string | null
+          review_notes?: string | null
+          specs?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_reviewed?: boolean
+          category?: string | null
+          created_at?: string
+          creator_earnings?: Json | null
+          creator_handle?: string
+          creator_name?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean
+          made_to_order?: boolean
+          manufacturing_costs?: Json | null
+          materials?: string[] | null
+          model_url?: string | null
+          name?: string
+          prices?: Json | null
+          region?: string | null
+          review_notes?: string | null
+          specs?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      creator_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          commission_open: boolean
+          created_at: string
+          display_name: string | null
+          hourly_rate: number | null
+          id: string
+          materials: string[] | null
+          rush_available: boolean
+          tools: string[] | null
+          turnaround_time: string | null
+          updated_at: string
+          user_email: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          commission_open?: boolean
+          created_at?: string
+          display_name?: string | null
+          hourly_rate?: number | null
+          id?: string
+          materials?: string[] | null
+          rush_available?: boolean
+          tools?: string[] | null
+          turnaround_time?: string | null
+          updated_at?: string
+          user_email: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          commission_open?: boolean
+          created_at?: string
+          display_name?: string | null
+          hourly_rate?: number | null
+          id?: string
+          materials?: string[] | null
+          rush_available?: boolean
+          tools?: string[] | null
+          turnaround_time?: string | null
+          updated_at?: string
+          user_email?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      market_accounts: {
+        Row: {
+          accent_color: string | null
+          accent_color_secondary: string | null
+          access_key_hash: string
+          avatar_url: string | null
+          banner_url: string | null
+          bio: string | null
+          commission_open: boolean
+          coupons: Json | null
+          created_at: string
+          display_name: string | null
+          email: string
+          faq_items: Json | null
+          handle: string
+          hourly_rate: number | null
+          id: string
+          insights_time_spent: number
+          insights_tool_costs: number
+          logo_url: string | null
+          materials: string[] | null
+          order_message: string | null
+          payout_details: string | null
+          payout_method: string | null
+          pricing_currency: string | null
+          pricing_margin_pct: number | null
+          review_notes: string | null
+          rush_available: boolean
+          social_discord: string | null
+          social_instagram: string | null
+          social_patreon: string | null
+          social_tiktok: string | null
+          social_twitter: string | null
+          social_website: string | null
+          social_youtube: string | null
+          status: string
+          store_heading: string | null
+          store_icon: string | null
+          store_subheading: string | null
+          tip_jar_enabled: boolean
+          tip_jar_label: string | null
+          tip_jar_url: string | null
+          tools: string[] | null
+          total_orders: number
+          total_revenue: number
+          turnaround_time: string | null
+          updated_at: string
+          waitlist_enabled: boolean
+          waitlist_message: string | null
+        }
+        Insert: {
+          accent_color?: string | null
+          accent_color_secondary?: string | null
+          access_key_hash: string
+          avatar_url?: string | null
+          banner_url?: string | null
+          bio?: string | null
+          commission_open?: boolean
+          coupons?: Json | null
+          created_at?: string
+          display_name?: string | null
+          email: string
+          faq_items?: Json | null
+          handle: string
+          hourly_rate?: number | null
+          id?: string
+          insights_time_spent?: number
+          insights_tool_costs?: number
+          logo_url?: string | null
+          materials?: string[] | null
+          order_message?: string | null
+          payout_details?: string | null
+          payout_method?: string | null
+          pricing_currency?: string | null
+          pricing_margin_pct?: number | null
+          review_notes?: string | null
+          rush_available?: boolean
+          social_discord?: string | null
+          social_instagram?: string | null
+          social_patreon?: string | null
+          social_tiktok?: string | null
+          social_twitter?: string | null
+          social_website?: string | null
+          social_youtube?: string | null
+          status?: string
+          store_heading?: string | null
+          store_icon?: string | null
+          store_subheading?: string | null
+          tip_jar_enabled?: boolean
+          tip_jar_label?: string | null
+          tip_jar_url?: string | null
+          tools?: string[] | null
+          total_orders?: number
+          total_revenue?: number
+          turnaround_time?: string | null
+          updated_at?: string
+          waitlist_enabled?: boolean
+          waitlist_message?: string | null
+        }
+        Update: {
+          accent_color?: string | null
+          accent_color_secondary?: string | null
+          access_key_hash?: string
+          avatar_url?: string | null
+          banner_url?: string | null
+          bio?: string | null
+          commission_open?: boolean
+          coupons?: Json | null
+          created_at?: string
+          display_name?: string | null
+          email?: string
+          faq_items?: Json | null
+          handle?: string
+          hourly_rate?: number | null
+          id?: string
+          insights_time_spent?: number
+          insights_tool_costs?: number
+          logo_url?: string | null
+          materials?: string[] | null
+          order_message?: string | null
+          payout_details?: string | null
+          payout_method?: string | null
+          pricing_currency?: string | null
+          pricing_margin_pct?: number | null
+          review_notes?: string | null
+          rush_available?: boolean
+          social_discord?: string | null
+          social_instagram?: string | null
+          social_patreon?: string | null
+          social_tiktok?: string | null
+          social_twitter?: string | null
+          social_website?: string | null
+          social_youtube?: string | null
+          status?: string
+          store_heading?: string | null
+          store_icon?: string | null
+          store_subheading?: string | null
+          tip_jar_enabled?: boolean
+          tip_jar_label?: string | null
+          tip_jar_url?: string | null
+          tools?: string[] | null
+          total_orders?: number
+          total_revenue?: number
+          turnaround_time?: string | null
+          updated_at?: string
+          waitlist_enabled?: boolean
+          waitlist_message?: string | null
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          artifact_id: string | null
+          artifact_image_url: string | null
+          artifact_name: string | null
+          created_at: string
+          creator_earnings: number
+          creator_handle: string | null
+          customer_email: string
+          customer_name: string | null
+          id: string
+          manufacturing_cost: number
+          material: string | null
+          notes: string | null
+          price: number
+          shipping_address: string | null
+          status: string
+          tracking_number: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          artifact_id?: string | null
+          artifact_image_url?: string | null
+          artifact_name?: string | null
+          created_at?: string
+          creator_earnings?: number
+          creator_handle?: string | null
+          customer_email: string
+          customer_name?: string | null
+          id?: string
+          manufacturing_cost?: number
+          material?: string | null
+          notes?: string | null
+          price?: number
+          shipping_address?: string | null
+          status?: string
+          tracking_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          artifact_id?: string | null
+          artifact_image_url?: string | null
+          artifact_name?: string | null
+          created_at?: string
+          creator_earnings?: number
+          creator_handle?: string | null
+          customer_email?: string
+          customer_name?: string | null
+          id?: string
+          manufacturing_cost?: number
+          material?: string | null
+          notes?: string | null
+          price?: number
+          shipping_address?: string | null
+          status?: string
+          tracking_number?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_artifact_id_fkey"
+            columns: ["artifact_id"]
+            isOneToOne: false
+            referencedRelation: "artifacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          is_demo: boolean
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          is_demo?: boolean
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          is_demo?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+    }
+    Enums: {
+      app_role: "admin" | "member"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      app_role: ["admin", "member"],
+    },
+  },
+} as const
