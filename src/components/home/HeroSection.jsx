@@ -30,7 +30,7 @@ export default function HeroSection() {
           <div className="relative z-10 p-10 md:p-14 flex flex-col justify-center" style={{ minHeight: 460 }}>
             <div className="max-w-lg">
               {/* Pill label */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-foreground/15 bg-white/30 backdrop-blur-sm mb-8">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-foreground/15 bg-background/40 backdrop-blur-sm mb-8">
                 <span className="w-1.5 h-1.5 rounded-full bg-foreground/40 flex-shrink-0" />
                 <span className="text-[10px] tracking-[0.18em] text-foreground/55 uppercase font-mono">
                   cad to metal, a new way to create
@@ -58,7 +58,7 @@ export default function HeroSection() {
                   </Button>
                 </Link>
                 <Link to="/explore">
-                  <Button variant="outline" className="rounded-full px-6 py-5 text-sm tracking-wide border-foreground/20 bg-white/20 text-foreground/60 hover:text-foreground hover:bg-white/40 backdrop-blur-sm">
+                  <Button variant="outline" className="rounded-full px-6 py-5 text-sm tracking-wide border-foreground/20 bg-background/20 text-foreground/60 hover:text-foreground hover:bg-background/40 backdrop-blur-sm">
                     explore artifacts
                   </Button>
                 </Link>
