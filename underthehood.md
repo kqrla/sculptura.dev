@@ -1,58 +1,54 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
-
 # under the hood
 
-how sculptura is structured internally, and why.
+## architecture
 
----
-
-## architecture overview
-
-sculptura is a single-page react application backed by base44's platform-as-a-service. the frontend is built with vite and deployed as a static bundle. all backend logic (database, auth, file storage) runs on base44's hosted infrastructure.
-
-the codebase is organized by feature domain, not by file type. components that belong to a specific part of the product live together, not in a global flat folder.
+a single-page react app talking to a postgres + auth + storage backend through a thin facade. the facade is the only place that knows what the backend is. swap it and the rest of the codebase keeps working.
 
 ```
-pages/          top-level route components
-components/
-  artifacts/    cards, grids, tags for artifacts
-  creator/      creator profile sidebar
-  dashboard/    workspace-specific components
-  home/         landing page sections
-  layout/       app shell (header, layout wrapper)
-  market/       market account dashboard components
-  viewer/       three.js 3d model viewer
-lib/            shared utilities, auth context, pricing logic
-entities/       json schemas that define database shape
+src/
+  pages/                     route components
+  pages/market/              store-side dashboard pages
+  components/
+    artifacts/               cards, grids, material tags, order modal
+    cart/                    cart drawer
+    creator/                 creator sidebar
+    dashboard/               buyer-side dashboard widgets
+    explore/                 store grid for the explore page
+    home/                    hero + landing sections
+    layout/                  header, app shell, grain overlay
+    market/                  store dashboard widgets and sections
+    viewer/                  three.js model viewer
+    ui/                      shadcn primitives
+  lib/
+    db.js                    backend facade (the only file that imports supabase entities)
+    AuthContext.jsx          react context wrapping supabase auth
+    cartStore.js             localStorage-backed cart
+    crypto.js                sha256 + access key generator (web crypto api)
+    pricing.js               price calculation helpers
+    demoData.js              fallback content shown when db is empty
+    query-client.js          react-query config
+  integrations/supabase/     auto-generated client + types
+supabase/functions/
+  place-order/               canonical order creation
+  store-update/              market account writes after key verification
 ```
-
----
 
 ## data flow
 
-1. the user loads the app. `AuthContext` checks whether a token exists and whether the user is registered.
-2. on authenticated routes, components query entity data using react-query and the base44 sdk.
-3. mutations (create, update, delete) go through react-query's `useMutation`, which invalidates relevant query keys on success.
-4. file uploads are sent directly to base44's storage via `Core.UploadFile`, which returns a public url stored as a string on the entity.
-
----
+1. the user lands on the app. AuthContext sets up a supabase auth listener and fetches the current session before rendering routes.
+2. pages query data via react query. the queryFn calls into db.entities.X which forwards to supabase. response shapes match what the original code expected (arrays for filter/list, single object for get).
+3. mutations also go through db.entities.X. for market accounts the facade routes to the store-update edge function so the access key gets verified server-side. for everything else it talks to postgres directly under rls.
+4. orders never insert from the client directly. the cart is sent to the place-order edge function, which looks up each artifact under the service role, snapshots prices, and inserts orders attributed to the signed-in user.
+5. file uploads call db.integrations.Core.UploadFile which puts the file in the artifacts bucket and returns a public url.
 
 ## key abstractions
 
-**entities** are json schemas that define the shape of persisted data. they are defined in `entities/*.json` and accessed via `db.entities.EntityName.*`.
+- db facade: keeps the original entity api so pages did not need rewriting. translates "-created_date" sort tokens to "created_at" since that is the actual column.
+- access-key auth for stores: stores never touch supabase auth. the creator copies a one-time random key, the system stores only the sha256 hash. dashboard requests pass the key in url params, the dashboard verifies it against the hash on first load and stashes it in sessionStorage so subsequent edge calls can re-verify.
+- role checks: a separate user_roles table holds admin assignments. a security-definer has_role function lets rls policies check roles without recursive table reads. this avoids the classic "store roles on the user record and let users escalate themselves" trap.
 
-**pricing logic** is centralized in `lib/pricing.js`. manufacturing costs, regional multipliers, and final price calculations all live there. components consume this — they do not recalculate prices themselves.
+## why these decisions
 
-**market account auth** uses a sha256 key instead of a login system. when a market account is created, a random key is generated, shown once, and its hash is stored. to edit their account, the owner provides the key. the frontend hashes it client-side and compares it against the stored hash.
-
-**review flow** is a manual process. when a creator hits "publish account", their account status moves from `draft` to `pending_review`. an admin reviews it and moves it to `active` or `rejected`. this prevents spam and ensures quality.
-
----
-
-## why things are organized this way
-
-the dashboard uses a fixed left sidebar layout because market account creators need persistent navigation context. they move between artifacts, analytics, and finance frequently.
-
-the sha256 key system avoids requiring a full auth system for market accounts, which lowers friction for creators who just want to ship. the tradeoff is that if they lose their key, they lose access.
-
-pricing is not user-configurable per region by default. regional costs are defined in `lib/pricing.js` because the manufacturing partner sets those rates. creators only control their own earnings markup.
+- the access-key flow exists because creators are not always the kind of person who wants yet another email + password account. it also keeps store ownership decoupled from a specific person, which matters for shared studios.
+- order prices are snapshotted server-side because a custom cart payload is the most obvious place for someone to try paying $1 for a $1000 sculpture.
+- the facade exists because base44 is going away and we want to be able to leave any backend later without touching ui code.

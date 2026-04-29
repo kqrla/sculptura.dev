@@ -1,16 +1,14 @@
 # running sculptura locally
 
-this guide covers how to run sculptura on your local machine.
-
 ## prerequisites
 
 - node.js 18 or higher
-- npm or pnpm
-- a base44 project (for the hosted backend) or a supabase project (see portsb.md)
+- pnpm, npm, or bun
+- a supabase project (you can use lovable cloud, which provisions one for you, or a standalone supabase project)
 
 ## installation
 
-```bash
+```
 git clone <your-repo-url>
 cd sculptura
 npm install
@@ -18,47 +16,39 @@ npm install
 
 ## environment setup
 
-create a `.env` file in the root of the project:
+create a `.env` file in the project root:
 
 ```
-VITE_APP_ID=your_base44_app_id
-VITE_APP_TOKEN=your_base44_token
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
+VITE_SUPABASE_PROJECT_ID=your-project-id
 ```
 
-these values come from the base44 dashboard under project settings.
-
-if you are migrating to supabase, see portsb.md for alternative environment variables.
+these come from your supabase project settings (api section). when running on lovable cloud the file is created and refreshed automatically, do not edit it by hand.
 
 ## starting the development server
 
-```bash
+```
 npm run dev
 ```
 
-the app will be available at `http://localhost:5173`
+the app will be available at http://localhost:8080
 
 ## building for production
 
-```bash
+```
 npm run build
 ```
 
-the output goes to `dist/`. this is a standard vite build and can be deployed to any static hosting provider (vercel, netlify, cloudflare pages, etc.).
+the output goes to `dist/`. it is a standard vite build and can be served by any static host (vercel, netlify, cloudflare pages, fly, s3 + cloudfront).
 
 ## deploying
 
-the built `dist/` folder can be served by any cdn or static host.
+frontend examples:
 
-for vercel:
-
-```bash
-npx vercel deploy --prod
 ```
-
-for netlify:
-
-```bash
+npx vercel deploy --prod
 npx netlify deploy --prod --dir=dist
 ```
 
-note: the backend (auth, database, storage) is hosted separately. deploying the frontend does not deploy the backend. see portsb.md for how to host the backend on supabase.
+the backend (database, auth, storage, edge functions) is hosted separately. see portsb.md for how to set up a standalone supabase project from scratch.

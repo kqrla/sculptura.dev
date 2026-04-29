@@ -1,35 +1,22 @@
 # roadmap
 
-what comes next for sculptura, in rough priority order.
-
----
-
 ## short term
 
-- complete the market account dashboard (analytics and finance sections are currently placeholders)
-- add artifact editing so creators can update pricing, description, and files after publishing
-- order request flow: allow buyers to submit a request through the artifact page, which creates a record the creator can respond to
-- email notifications when an account passes or fails review
-- key recovery flow via email verification for market accounts
-
----
+- payments integration so orders can be charged after the manual confirmation step instead of arranging payment off-platform
+- email notifications for new orders, status changes, and store review outcomes
+- search that actually queries the database instead of being a header-only ui element
+- proper image optimisation and resizing for store banners and avatars
 
 ## mid term
 
-- real order tracking with status updates from the manufacturing partner
-- multiple material options per artifact (currently limited to one material per publish)
-- commission request flow: a structured form buyers fill out to request custom work
-- analytics dashboard with real view and engagement data
-- payout processing integration (stripe connect or similar)
-- admin panel for reviewing pending accounts and managing the platform
-
----
+- creator analytics with per-artifact views, conversion, and revenue breakdowns over time
+- order messaging so customers and creators can talk about made-to-order details without leaving the app
+- discount codes that actually apply at checkout (the coupons field exists on market_accounts but checkout does not redeem yet)
+- multi-currency support beyond the pricing_currency label
 
 ## long term
 
-- manufacturing partner api integration for live cost and lead time data
-- bulk artifact import for creators migrating from other platforms
-- collection or series groupings for artifacts
-- buyer accounts with order history and saved items
-- mobile-optimized storefront view
-- subdomain routing (username.sculptura.shop) when dns infrastructure is in place
+- creator-defined production partners with quoting and lead-time integration
+- subscriptions / patron tier per store
+- a public api so creators can pull their orders and inventory into other systems
+- mobile app reusing the existing rest endpoints

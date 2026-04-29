@@ -1,67 +1,38 @@
 # features
 
-a list of everything sculptura currently does.
+## browsing
 
----
+- home page with featured artifacts and editorial sections
+- explore page lists every published artifact and active store, with demo data shown when the database is empty
+- artifact detail page renders a 3d model viewer (three.js) and material picker
+- store profile page shows a creator's published catalog and store branding
 
-## artifact publishing
+## cart and checkout
 
-creators upload a 3d design file (.glb or .stl) and a render image, set a name, description, category, and specs. they choose a material (silver, brass, gold) and a primary customer region. they set their own earnings per piece, and the platform calculates the final customer price automatically.
+- in-memory cart persisted to localstorage so reloads don't drop selections
+- checkout collects customer info, shipping address, and notes
+- orders are placed by calling the place-order edge function which snapshots prices server-side from the artifact record (the cart payload's price is never trusted)
+- saved address option for repeat buyers
 
-artifacts can be in draft, published, or archived states.
+## creator stores
 
----
+- store creation flow generates a one-time access key (sha256 hash stored, raw key shown once)
+- access page verifies the key client-side against the stored hash
+- store dashboard with overview, artifacts, orders, analytics, finance, insights sections
+- mystore section for editing branding, content, socials, coupons, tip jar, waitlist
+- store settings cover profile, materials, tools, commissions, pricing, payout method
+- store status lifecycle: draft -> pending_review -> active or rejected
 
-## 3d model viewer
+## publishing artifacts
 
-artifact detail pages render interactive three.js viewers for .glb files. the model auto-rotates, responds to drag-to-rotate input, and falls back to a static image if no model file is present.
+- creators upload images and 3d model files (.glb / .stl) to a public storage bucket
+- artifacts are submitted with status pending_review
+- admin review page lists pending artifacts and lets an admin publish or reject with notes
+- admin can also update order statuses and add tracking numbers
 
----
+## authentication
 
-## explore page
-
-a browsable catalog of published artifacts, filterable by category and material, with a free-text search across artifact names and creator handles.
-
----
-
-## creator profiles
-
-each creator has a profile page at `/creator/:handle` showing their bio, commission status, hourly rate, turnaround time, materials, and software. their published artifacts are listed below.
-
----
-
-## shop storefronts
-
-each creator also has a storefront at `/shop/:username`, populated from their `CreatorProfile` record. this is the public-facing store linked from artifact pages.
-
----
-
-## market accounts
-
-an alternative account system that does not require login. a creator fills in their handle, email, and profile details. a unique key is generated and shown once. they save it. from then on, they use the key to access their account dashboard.
-
-accounts start in draft state. when the creator is ready, they submit for review. the account goes into `pending_review` and is manually reviewed before going live.
-
----
-
-## account dashboard
-
-a sidebar-based workspace for market account holders with sections for:
-
-- overview: quick stats on artifacts, orders, and earnings
-- artifacts: manage published and draft artifacts
-- analytics: views and engagement data (coming soon)
-- finance: earnings breakdown, pending and available balance
-- settings: edit profile details using the access key for authentication
-
----
-
-## onboarding flow
-
-a multi-step form for new creators covering store identity, materials and software, commission settings, and a review screen before the profile is saved.
-
----
-
-## pricing engine
-
-all prices are calculated from a base manufacturing cost (defined per material and region in `lib/pricing.js`) plus the creator's chosen earnings. the customer always sees the full final price. there are no hidden fees on the buyer side.
+- supabase auth with email + password
+- google sign-in
+- demo mode: spins up a throwaway account so you can poke around without committing to a real signup
+- separate access-key auth for store dashboards (creators don't need a supabase account to run their store)
