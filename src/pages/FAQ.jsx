@@ -99,6 +99,102 @@ const faqSections = [
         q: "can a creator change their earnings after publishing?",
         a: "yes. creators can update their earnings on existing artifacts at any time. changes take effect on new orders only.",
       },
+      {
+        q: "why are prices different for similar items?",
+        a: "pricing is set by creators and reflects design complexity, material choice, production cost, and their own margin.",
+      },
+      {
+        q: "when am i charged?",
+        a: "you are charged at checkout. your order is then produced and shipped.",
+      },
+      {
+        q: "where does my payment go?",
+        a: "payments are processed securely, and funds are released to creators after orders are completed.",
+      },
+    ],
+  },
+  {
+    id: "packaging",
+    label: "packaging & shipping",
+    items: [
+      {
+        q: "will my order come in sculptura packaging?",
+        a: "not always. orders are fulfilled through trusted manufacturing partners, so packaging may vary depending on how your item is produced and shipped.",
+      },
+      {
+        q: "will the packaging have another company's branding?",
+        a: "in some cases, yes. we are working toward more neutral packaging over time, but during early stages, items may arrive in packaging from our production partners.",
+      },
+      {
+        q: "where does my order ship from?",
+        a: "your order is produced and shipped by one of our manufacturing partners, which may be located in a different region than you.",
+      },
+      {
+        q: "why does packaging vary?",
+        a: "each artifact is made on demand using different materials and processes. because of this, fulfillment can involve different partners with slightly different packaging systems.",
+      },
+      {
+        q: "will this change in the future?",
+        a: "yes. as sculptura grows, we plan to standardize packaging, offer more neutral branding, and explore creator-branded packaging options.",
+      },
+    ],
+  },
+  {
+    id: "production",
+    label: "how products are made",
+    items: [
+      {
+        q: "are these mass-produced?",
+        a: "no. each item is made on demand from a digital design, using processes like metal casting or 3d-based fabrication.",
+      },
+      {
+        q: "who makes the products?",
+        a: "sculptura works with specialized manufacturing partners to produce each item. creators design the artifacts, and we handle the production process.",
+      },
+      {
+        q: "can i trust the quality?",
+        a: "all designs go through a review process before being published to ensure they are manufacturable and meet basic quality standards.",
+      },
+      {
+        q: "how long does it take?",
+        a: "production times vary depending on the design and material, but most orders take 1 to 3 weeks including production and shipping.",
+      },
+      {
+        q: "can i get faster shipping?",
+        a: "expedited options may be available depending on the item and creator, but not all artifacts support rush production.",
+      },
+    ],
+  },
+  {
+    id: "creators",
+    label: "creators & stores",
+    items: [
+      {
+        q: "who am i buying from?",
+        a: "each item is designed by an independent creator. sculptura provides the infrastructure for production, payments, and delivery.",
+      },
+      {
+        q: "can i contact a creator?",
+        a: "yes. you can message creators directly from their profile to ask questions or request custom work. feature availability may vary.",
+      },
+      {
+        q: "can creators make custom pieces?",
+        a: "many creators accept custom requests. check their profile for availability, pricing style, and turnaround time.",
+      },
+    ],
+  },
+  {
+    id: "returns",
+    label: "returns & issues",
+    items: [
+      {
+        q: "can i return my item?",
+        a: "because items are made on demand, returns are limited. however, if something arrives damaged or incorrect, we will make it right.",
+      },
+      {
+        q: "what if something goes wrong?",
+        a: "reach out through the platform and we will help resolve the issue.",
+      },
     ],
   },
 ];
