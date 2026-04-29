@@ -19,6 +19,7 @@ export type Database = {
           admin_reviewed: boolean
           category: string | null
           created_at: string
+          created_by: string | null
           creator_earnings: Json | null
           creator_handle: string
           creator_name: string | null
@@ -42,6 +43,7 @@ export type Database = {
           admin_reviewed?: boolean
           category?: string | null
           created_at?: string
+          created_by?: string | null
           creator_earnings?: Json | null
           creator_handle: string
           creator_name?: string | null
@@ -65,6 +67,7 @@ export type Database = {
           admin_reviewed?: boolean
           category?: string | null
           created_at?: string
+          created_by?: string | null
           creator_earnings?: Json | null
           creator_handle?: string
           creator_name?: string | null
@@ -101,6 +104,7 @@ export type Database = {
           turnaround_time: string | null
           updated_at: string
           user_email: string
+          user_id: string | null
           username: string
         }
         Insert: {
@@ -117,6 +121,7 @@ export type Database = {
           turnaround_time?: string | null
           updated_at?: string
           user_email: string
+          user_id?: string | null
           username: string
         }
         Update: {
@@ -133,6 +138,7 @@ export type Database = {
           turnaround_time?: string | null
           updated_at?: string
           user_email?: string
+          user_id?: string | null
           username?: string
         }
         Relationships: []
