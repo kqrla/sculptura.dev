@@ -304,12 +304,17 @@ export type Database = {
           customer_email: string
           customer_name: string | null
           id: string
+          manufacturer: string | null
           manufacturing_cost: number
           material: string | null
           notes: string | null
+          paid_at: string | null
+          payment_status: string
           price: number
           shipping_address: string | null
           status: string
+          stripe_payment_intent: string | null
+          stripe_session_id: string | null
           tracking_number: string | null
           updated_at: string
           user_id: string | null
@@ -324,12 +329,17 @@ export type Database = {
           customer_email: string
           customer_name?: string | null
           id?: string
+          manufacturer?: string | null
           manufacturing_cost?: number
           material?: string | null
           notes?: string | null
+          paid_at?: string | null
+          payment_status?: string
           price?: number
           shipping_address?: string | null
           status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
           tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
@@ -344,12 +354,17 @@ export type Database = {
           customer_email?: string
           customer_name?: string | null
           id?: string
+          manufacturer?: string | null
           manufacturing_cost?: number
           material?: string | null
           notes?: string | null
+          paid_at?: string | null
+          payment_status?: string
           price?: number
           shipping_address?: string | null
           status?: string
+          stripe_payment_intent?: string | null
+          stripe_session_id?: string | null
           tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
