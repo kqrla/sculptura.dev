@@ -17,11 +17,8 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative rounded-[28px] border border-border/50 overflow-hidden"
-          style={{
-            background: "radial-gradient(ellipse 90% 100% at 75% -10%, hsl(195 45% 88%) 0%, hsl(210 30% 93%) 30%, hsl(38 20% 97%) 65%, hsl(38 28% 96%) 100%)",
-            minHeight: 460,
-          }}
+          className="relative rounded-[28px] border border-border/50 overflow-hidden bg-[radial-gradient(ellipse_90%_100%_at_75%_-10%,hsl(195_45%_88%)_0%,hsl(210_30%_93%)_30%,hsl(38_20%_97%)_65%,hsl(38_28%_96%)_100%)] dark:bg-[radial-gradient(ellipse_90%_100%_at_75%_-10%,hsl(195_30%_22%)_0%,hsl(210_22%_16%)_35%,hsl(224_16%_12%)_70%,hsl(224_16%_10%)_100%)]"
+          style={{ minHeight: 460 }}
         >
           {/* Corner marks */}
           <div className="absolute top-5 left-5 w-5 h-5 border-l border-t border-foreground/12 rounded-tl-sm pointer-events-none" />
