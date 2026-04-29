@@ -27,6 +27,7 @@ const stepVariants = {
 
 export default function Checkout() {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const [step, setStep] = useState(0);
   const [cart, setCart] = useState([]);
   const [placed, setPlaced] = useState(false);
@@ -34,12 +35,24 @@ export default function Checkout() {
 
   const savedAddr = getSavedAddress();
 
-  const [details, setDetails] = useState({ name: "", email: "" });
+  // prefill from the signed-in user when we have one. customers can
+  // still edit these before placing the order.
+  const [details, setDetails] = useState({
+    name: user?.display_name || "",
+    email: user?.email || "",
+  });
   const [address, setAddress] = useState(
     savedAddr || { line1: "", line2: "", city: "", country: "", postal: "" }
   );
   const [saveAddr, setSaveAddr] = useState(!!savedAddr);
   const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    if (user && !details.email) {
+      setDetails({ name: user.display_name || "", email: user.email || "" });
+    }
+  }, [user]);
+
 
   useEffect(() => {
     const c = getCart();

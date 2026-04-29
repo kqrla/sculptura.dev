@@ -35,19 +35,25 @@ export default function MarketDashboard() {
     enabled: !!handle,
   });
 
-  // verify the key against the stored hash once account data loads
+  // verify the key against the stored hash once account data loads.
+  // we also persist handle+key in sessionStorage so the db facade can
+  // pick them up when forwarding update calls to the store-update edge
+  // function. sessionStorage clears on tab close, matching the
+  // intent of "key lives only in memory for this visit".
   useEffect(() => {
     if (!account || !rawKey) return;
 
     hashKey(rawKey).then((keyHash) => {
       if (keyHash === account.access_key_hash) {
+        sessionStorage.setItem('market_handle', handle);
+        sessionStorage.setItem('market_key', rawKey);
         setIsVerified(true);
       } else {
         toast.error("invalid access key");
         navigate("/store/access");
       }
     });
-  }, [account, rawKey, navigate]);
+  }, [account, rawKey, handle, navigate]);
 
   const handleSignOut = () => {
     navigate("/store/access");
