@@ -17,11 +17,8 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative rounded-[28px] border border-border/50 overflow-hidden"
-          style={{
-            background: "radial-gradient(ellipse 90% 100% at 75% -10%, hsl(195 45% 88%) 0%, hsl(210 30% 93%) 30%, hsl(38 20% 97%) 65%, hsl(38 28% 96%) 100%)",
-            minHeight: 460,
-          }}
+          className="relative rounded-[28px] border border-border/50 overflow-hidden bg-[radial-gradient(ellipse_90%_100%_at_75%_-10%,hsl(195_45%_88%)_0%,hsl(210_30%_93%)_30%,hsl(38_20%_97%)_65%,hsl(38_28%_96%)_100%)] dark:bg-[radial-gradient(ellipse_90%_100%_at_75%_-10%,hsl(195_30%_22%)_0%,hsl(210_22%_16%)_35%,hsl(224_16%_12%)_70%,hsl(224_16%_10%)_100%)]"
+          style={{ minHeight: 460 }}
         >
           {/* Corner marks */}
           <div className="absolute top-5 left-5 w-5 h-5 border-l border-t border-foreground/12 rounded-tl-sm pointer-events-none" />
@@ -33,7 +30,7 @@ export default function HeroSection() {
           <div className="relative z-10 p-10 md:p-14 flex flex-col justify-center" style={{ minHeight: 460 }}>
             <div className="max-w-lg">
               {/* Pill label */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-foreground/15 bg-white/30 backdrop-blur-sm mb-8">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-foreground/15 bg-background/40 backdrop-blur-sm mb-8">
                 <span className="w-1.5 h-1.5 rounded-full bg-foreground/40 flex-shrink-0" />
                 <span className="text-[10px] tracking-[0.18em] text-foreground/55 uppercase font-mono">
                   cad to metal, a new way to create
@@ -61,7 +58,7 @@ export default function HeroSection() {
                   </Button>
                 </Link>
                 <Link to="/explore">
-                  <Button variant="outline" className="rounded-full px-6 py-5 text-sm tracking-wide border-foreground/20 bg-white/20 text-foreground/60 hover:text-foreground hover:bg-white/40 backdrop-blur-sm">
+                  <Button variant="outline" className="rounded-full px-6 py-5 text-sm tracking-wide border-foreground/20 bg-background/20 text-foreground/60 hover:text-foreground hover:bg-background/40 backdrop-blur-sm">
                     explore artifacts
                   </Button>
                 </Link>
