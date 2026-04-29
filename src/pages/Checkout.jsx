@@ -1,4 +1,5 @@
-import { db } from '@/lib/db';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/lib/AuthContext';
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, Package, MapPin, CreditCard } from "lucide-react";
@@ -65,31 +66,43 @@ export default function Checkout() {
     setStep((s) => Math.min(s + 1, 2));
   };
 
+  // delegating order creation to a server-side function so prices and
+  // earnings are snapshotted from the canonical artifact record rather
+  // than trusted from the cart payload. the user must be signed in -
+  // the rls policy on orders requires user_id = auth.uid().
   const placeOrder = async () => {
+    if (!isAuthenticated) {
+      toast.error('please sign in to place your order');
+      navigate('/auth');
+      return;
+    }
     setIsPlacing(true);
     const shippingAddress = `${address.line1}${address.line2 ? ", " + address.line2 : ""}, ${address.city}, ${address.postal}, ${address.country}`;
-
-    for (const item of cart) {
-      await db.entities.Order.create({
-        artifact_id: item.artifactId,
-        artifact_name: item.artifactName,
-        artifact_image_url: item.artifactImage || "",
-        creator_handle: item.creatorHandle || "",
-        customer_email: details.email,
-        customer_name: details.name,
-        material: item.material,
-        price: item.price * (item.quantity || 1),
-        manufacturing_cost: 0,
-        creator_earnings: 0,
-        shipping_address: shippingAddress,
-        notes: notes || "",
-        status: "placed",
+    try {
+      const { data, error } = await supabase.functions.invoke('place-order', {
+        body: {
+          items: cart.map((item) => ({
+            artifact_id: item.artifactId,
+            material: item.material,
+            quantity: item.quantity || 1,
+          })),
+          customer: {
+            name: details.name,
+            email: details.email,
+          },
+          shipping_address: shippingAddress,
+          notes: notes || '',
+        },
       });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      clearCart();
+      setPlaced(true);
+    } catch (err) {
+      toast.error(err.message || 'could not place order');
+    } finally {
+      setIsPlacing(false);
     }
-
-    clearCart();
-    setPlaced(true);
-    setIsPlacing(false);
   };
 
   if (placed) {
