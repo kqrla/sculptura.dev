@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -233,8 +233,37 @@ function FAQItem({ item }) {
 }
 
 export default function FAQ() {
-  const [activeSection, setActiveSection] = useState("general");
-  const section = faqSections.find((s) => s.id === activeSection);
+  // all sections render in a single flow. the chip row at the top is purely
+  // a quick-jump filter: clicking a chip scrolls to that section and marks
+  // it active. active state is also driven by scroll position so the chip
+  // row stays in sync as the user reads.
+  const [activeSection, setActiveSection] = useState(faqSections[0].id);
+  const sectionRefs = useRef({});
+
+  const jumpToSection = (id) => {
+    setActiveSection(id);
+    const el = sectionRefs.current[id];
+    if (!el) return;
+    // offset accounts for the sticky header height
+    const top = el.getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const onScroll = () => {
+      // pick the section whose top is closest to (but not past) the viewport offset
+      const offset = 140;
+      let current = faqSections[0].id;
+      for (const s of faqSections) {
+        const el = sectionRefs.current[s.id];
+        if (!el) continue;
+        if (el.getBoundingClientRect().top - offset <= 0) current = s.id;
+      }
+      setActiveSection(current);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div>
@@ -248,7 +277,7 @@ export default function FAQ() {
             back
           </Link>
 
-          <div className="mb-10">
+          <div className="mb-8">
             <h1 className="font-serif text-2xl md:text-4xl font-light tracking-tight lowercase text-foreground mb-2">
               frequently asked questions
             </h1>
@@ -257,27 +286,44 @@ export default function FAQ() {
             </p>
           </div>
 
-          {/* Section tabs */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {faqSections.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setActiveSection(s.id)}
-                className={`px-4 py-1.5 rounded-full text-xs tracking-wider lowercase border transition-all duration-200 ${
-                  activeSection === s.id
-                    ? "bg-foreground text-background border-foreground"
-                    : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
-                }`}
-              >
-                {s.label}
-              </button>
-            ))}
+          {/* sticky quick-jump chip row */}
+          <div className="sticky top-[68px] z-30 -mx-6 px-6 py-3 mb-6 bg-background/85 backdrop-blur-md border-b border-border/40">
+            <div className="flex flex-wrap gap-2">
+              {faqSections.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => jumpToSection(s.id)}
+                  className={`px-4 py-1.5 rounded-full text-xs tracking-wider lowercase border transition-all duration-200 ${
+                    activeSection === s.id
+                      ? "bg-foreground text-background border-foreground"
+                      : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Questions */}
-          <div className="bg-card rounded-[20px] border border-border/50 shadow-paper px-7 py-2">
-            {section?.items.map((item) => (
-              <FAQItem key={item.q} item={item} />
+          {/* all sections rendered in flow */}
+          <div className="space-y-10">
+            {faqSections.map((s) => (
+              <section
+                key={s.id}
+                id={s.id}
+                ref={(el) => { sectionRefs.current[s.id] = el; }}
+                // scroll-margin keeps anchored sections clear of the sticky chip row
+                style={{ scrollMarginTop: "120px" }}
+              >
+                <h2 className="font-serif text-lg md:text-xl font-light tracking-tight lowercase text-foreground mb-3 px-1">
+                  {s.label}
+                </h2>
+                <div className="bg-card rounded-[20px] border border-border/50 shadow-paper px-7 py-2">
+                  {s.items.map((item) => (
+                    <FAQItem key={item.q} item={item} />
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
         </div>
