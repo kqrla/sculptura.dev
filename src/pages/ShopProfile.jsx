@@ -100,6 +100,12 @@ export default function ShopProfile() {
 
   return (
     <div className="px-6 py-10">
+      <SeoTags
+        title={`${profile.display_name || profile.username} on sculptura`}
+        description={profile.bio || `${profile.username}'s store on sculptura`}
+        image={profile.avatar_url}
+        canonical={`/shop/${profile.username}`}
+      />
       <div className="max-w-7xl mx-auto">
         <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
           <ArrowLeft className="w-4 h-4" />
@@ -107,14 +113,20 @@ export default function ShopProfile() {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
-          <div className="lg:sticky lg:top-24 lg:self-start">
+          <div className="lg:sticky lg:top-24 lg:self-start space-y-4">
             <CreatorSidebar creator={sidebarCreator} />
+            {marketAccount && <ShopPromoCodes coupons={marketAccount.coupons} />}
+            {marketAccount && (
+              <ShopNewsletter account={marketAccount} label={marketAccount.newsletter_label} />
+            )}
           </div>
 
           <div className="space-y-8">
             <h2 className="font-serif text-xl font-light tracking-tight text-foreground lowercase">
               {profile.display_name || profile.username}'s artifacts
             </h2>
+
+            {!demoStore && <ShopCollections username={profile.username} collections={collections} />}
 
             {featured && (
               <div>
