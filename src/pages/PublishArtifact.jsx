@@ -269,6 +269,100 @@ export default function PublishArtifact() {
                 <Input placeholder="e.g. kai" value={form.creator_handle} onChange={(e) => update("creator_handle", e.target.value)} className="rounded-xl bg-card border-border/60 text-sm tracking-wide" />
               </div>
 
+              {/* slug + seo + tags + collection */}
+              {form.creator_handle && (
+                <div className="space-y-5 pt-3 border-t border-border/40">
+                  <p className="text-[11px] tracking-widest text-muted-foreground/40 uppercase">discoverability</p>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">url slug</Label>
+                    <Input
+                      placeholder="auto from name"
+                      value={form.slug}
+                      onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value, slug_touched: true }))}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide font-mono"
+                    />
+                    <p className="text-[11px] text-muted-foreground/40 tracking-wide">
+                      /shop/{form.creator_handle}/<span className="text-foreground/60">{slugify(form.slug || form.name) || 'your-slug'}</span>
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">seo title (optional)</Label>
+                    <Input
+                      placeholder="defaults to artifact name"
+                      value={form.seo_title}
+                      onChange={(e) => update('seo_title', e.target.value)}
+                      maxLength={60}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">seo description (optional)</Label>
+                    <Textarea
+                      placeholder="up to 160 characters, shown in search engines"
+                      value={form.seo_description}
+                      onChange={(e) => update('seo_description', e.target.value)}
+                      maxLength={160}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide min-h-[60px]"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">keywords</Label>
+                    <Input
+                      placeholder="comma separated, e.g. silver, ring, minimal"
+                      value={form.keywords}
+                      onChange={(e) => update('keywords', e.target.value)}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">tags (visible pills)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="add tag and press enter"
+                        value={form.tag_draft}
+                        onChange={(e) => update('tag_draft', e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
+                        className="rounded-xl bg-card border-border/60 text-sm tracking-wide flex-1"
+                      />
+                      <Button type="button" variant="outline" onClick={addTag} className="rounded-full text-xs tracking-wider border-border/60">add</Button>
+                    </div>
+                    {form.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-2">
+                        {form.tags.map((t) => (
+                          <button key={t} type="button" onClick={() => removeTag(t)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-[11px] tracking-wider lowercase text-muted-foreground hover:text-foreground transition-colors">
+                            <TagIcon className="w-2.5 h-2.5" />
+                            {t}
+                            <X className="w-2.5 h-2.5" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {collections && collections.length > 0 && (
+                    <div className="space-y-2">
+                      <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">collection (optional)</Label>
+                      <select
+                        value={form.collection_id}
+                        onChange={(e) => update('collection_id', e.target.value)}
+                        className="w-full rounded-xl bg-card border border-border/60 px-3 py-2 text-sm tracking-wide text-foreground focus:outline-none"
+                      >
+                        <option value="">none</option>
+                        {collections.map((c) => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <Button onClick={next} className="w-full rounded-full py-6 text-sm tracking-wider bg-foreground text-background hover:bg-foreground/90 gap-2">
                 continue <ArrowRight className="w-4 h-4" />
               </Button>
