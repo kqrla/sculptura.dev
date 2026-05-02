@@ -81,6 +81,25 @@ export default function SettingsPricing({ account }) {
         </div>
       </div>
 
+      {/* default markup applied to brand-new artifacts. each listing can still
+          override this on its own publish form, this just saves the creator
+          from re-entering their preferred margin every time. */}
+      <div className="bg-card rounded-[18px] border border-border/50 p-6 space-y-3">
+        <p className="text-[11px] tracking-widest text-muted-foreground/40 uppercase">default margin for new artifacts</p>
+        <p className="text-[11px] text-muted-foreground/40 tracking-wide">
+          pre-fills the markup on every new listing. you can still override per artifact.
+        </p>
+        <div className="flex items-center gap-4">
+          <Input
+            type="number" min={0} max={500}
+            value={defaultMargin}
+            onChange={(e) => setDefaultMargin(e.target.value)}
+            className="rounded-xl bg-background border-border/60 text-sm tracking-wide w-28"
+          />
+          <span className="text-xs text-muted-foreground/60 tracking-wide">% above manufacturing cost</span>
+        </div>
+      </div>
+
       <div className="bg-card rounded-[18px] border border-border/50 p-6 space-y-4">
         <p className="text-[11px] tracking-widest text-muted-foreground/40 uppercase">display currency</p>
         <div className="flex flex-wrap gap-2">
