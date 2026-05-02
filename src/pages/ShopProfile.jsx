@@ -7,6 +7,10 @@ import ArtifactCard from "../components/artifacts/ArtifactCard";
 import { ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_STORES, DEMO_ARTIFACTS } from "@/lib/demoData";
+import ShopPromoCodes from "@/components/shop/ShopPromoCodes";
+import ShopNewsletter from "@/components/shop/ShopNewsletter";
+import ShopCollections from "@/components/shop/ShopCollections";
+import SeoTags from "@/components/seo/SeoTags";
 
 export default function ShopProfile() {
   const { username } = useParams();
