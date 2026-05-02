@@ -14,8 +14,10 @@ import { addToCart } from "@/lib/cartStore";
 import { toast } from "sonner";
 import CartDrawer from "@/components/cart/CartDrawer";
 import SeoTags from "@/components/seo/SeoTags";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 export default function ArtifactDetail() {
+  const { format } = useCurrency();
   const id = window.location.pathname.split("/artifact/")[1];
   const navigate = useNavigate();
 
@@ -179,7 +181,7 @@ export default function ArtifactDetail() {
               <div className="bg-card rounded-[18px] border border-border/50 shadow-paper p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm tracking-wide text-foreground">price</span>
-                  <span className="text-2xl font-light tracking-wide text-foreground">${currentPrice}</span>
+                  <span className="text-2xl font-light tracking-wide text-foreground">{format(currentPrice)}</span>
                 </div>
                 <p className="text-[11px] text-muted-foreground/50 tracking-wide">
                   delivery fees calculated at checkout
