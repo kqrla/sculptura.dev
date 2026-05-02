@@ -13,6 +13,7 @@ import { DEMO_ARTIFACTS } from "@/lib/demoData";
 import { addToCart } from "@/lib/cartStore";
 import { toast } from "sonner";
 import CartDrawer from "@/components/cart/CartDrawer";
+import SeoTags from "@/components/seo/SeoTags";
 
 export default function ArtifactDetail() {
   const id = window.location.pathname.split("/artifact/")[1];
@@ -72,6 +73,13 @@ export default function ArtifactDetail() {
 
   return (
     <div className="px-6 py-10">
+      <SeoTags
+        title={artifact.seo_title || `${artifact.name}${artifact.creator_handle ? ` by ${artifact.creator_handle}` : ''} — sculptura`}
+        description={artifact.seo_description || artifact.description}
+        image={artifact.image_url}
+        canonical={artifact.creator_handle && artifact.slug ? `/shop/${artifact.creator_handle}/${artifact.slug}` : `/artifact/${artifact.id}`}
+        keywords={(artifact.keywords || []).join(', ')}
+      />
       <div className="max-w-6xl mx-auto">
         <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
           <ArrowLeft className="w-4 h-4" />
@@ -131,6 +139,17 @@ export default function ArtifactDetail() {
               <p className="text-sm text-muted-foreground font-light leading-relaxed tracking-wide">
                 {artifact.description}
               </p>
+            )}
+
+            {/* tag pills (creator-curated, distinct from materials) */}
+            {Array.isArray(artifact.tags) && artifact.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {artifact.tags.map((t) => (
+                  <span key={t} className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-[11px] tracking-wider lowercase text-muted-foreground">
+                    {t}
+                  </span>
+                ))}
+              </div>
             )}
 
             {/* Material selector */}

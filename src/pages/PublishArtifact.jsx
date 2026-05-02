@@ -1,17 +1,18 @@
 import { db } from '@/lib/db';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, ArrowRight, Upload, X, Box, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Upload, X, Box, Check, Tag as TagIcon } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { MATERIALS, REGIONS, getMfgCost, getFinalPrice, DELIVERY_ESTIMATES } from "@/lib/pricing";
+import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
 const STEPS = ["upload design", "material", "audience", "your earnings", "submit"];
@@ -39,9 +40,54 @@ export default function PublishArtifact() {
     region: "europe",
     creator_earnings: 30,
     made_to_order: true,
+    // seo + grouping
+    slug: "",
+    slug_touched: false, // once edited manually we stop auto-syncing from name
+    seo_title: "",
+    seo_description: "",
+    keywords: "", // comma-separated in the input, split on submit
+    tags: [], // pill list
+    tag_draft: "",
+    collection_id: "",
   });
 
   const update = (field, val) => setForm((p) => ({ ...p, [field]: val }));
+
+  // pull the creator's collections + default margin once a handle is typed.
+  // we look up the market_account for that handle to pre-fill the default margin.
+  const handle = form.creator_handle?.trim().toLowerCase();
+
+  const { data: marketAccount } = useQuery({
+    queryKey: ['publish-market-account', handle],
+    queryFn: () => db.entities.MarketAccount.filter({ handle }).then((r) => r?.[0] ?? null),
+    enabled: !!handle,
+  });
+
+  const { data: collections } = useQuery({
+    queryKey: ['publish-collections', handle],
+    queryFn: () => db.entities.Collection.filter({ creator_handle: handle }, 'sort_order', 100),
+    initialData: [],
+    enabled: !!handle,
+  });
+
+  // when a market account is found and the creator hasn't manually edited
+  // earnings yet, pre-fill earnings using the default margin against the
+  // current material's manufacturing cost.
+  useEffect(() => {
+    if (!marketAccount?.default_margin_pct) return;
+    const mfg = getMfgCost(form.material, form.region);
+    const suggested = Math.round(mfg * (Number(marketAccount.default_margin_pct) / 100));
+    setForm((p) => ({ ...p, creator_earnings: suggested }));
+    // intentionally only re-run when the market account or material changes,
+    // not when earnings change, otherwise we'd overwrite manual edits.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [marketAccount?.default_margin_pct, form.material, form.region]);
+
+  // auto-suggest slug from name until the creator manually edits it.
+  useEffect(() => {
+    if (form.slug_touched) return;
+    setForm((p) => ({ ...p, slug: slugify(p.name) }));
+  }, [form.name, form.slug_touched]);
 
   const mfgCost = getMfgCost(form.material, form.region);
   const finalPrice = getFinalPrice(form.material, form.region, form.creator_earnings);
@@ -60,8 +106,24 @@ export default function PublishArtifact() {
     update("model_url", file_url);
   };
 
+  const addTag = () => {
+    const t = form.tag_draft.trim().toLowerCase();
+    if (!t) return;
+    if (form.tags.includes(t)) {
+      setForm((p) => ({ ...p, tag_draft: '' }));
+      return;
+    }
+    setForm((p) => ({ ...p, tags: [...p.tags, t].slice(0, 12), tag_draft: '' }));
+  };
+
+  const removeTag = (t) => setForm((p) => ({ ...p, tags: p.tags.filter((x) => x !== t) }));
+
   const publishMutation = useMutation({
     mutationFn: (data) => {
+      const keywords = data.keywords
+        .split(',')
+        .map((k) => k.trim().toLowerCase())
+        .filter(Boolean);
       const payload = {
         name: data.name,
         description: data.description,
@@ -77,6 +139,12 @@ export default function PublishArtifact() {
         creator_earnings: { [data.material]: data.creator_earnings },
         prices: { [data.material]: finalPrice },
         status: "pending_review",
+        slug: data.slug ? slugify(data.slug) : slugify(data.name),
+        seo_title: data.seo_title || null,
+        seo_description: data.seo_description || null,
+        keywords,
+        tags: data.tags,
+        collection_id: data.collection_id || null,
       };
       return db.entities.Artifact.create(payload);
     },
@@ -85,6 +153,7 @@ export default function PublishArtifact() {
       toast.success("design submitted for review");
       navigate("/dashboard");
     },
+    onError: (err) => toast.error(err?.message || 'could not submit'),
   });
 
   const next = () => {
@@ -199,6 +268,100 @@ export default function PublishArtifact() {
                 <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">your handle</Label>
                 <Input placeholder="e.g. kai" value={form.creator_handle} onChange={(e) => update("creator_handle", e.target.value)} className="rounded-xl bg-card border-border/60 text-sm tracking-wide" />
               </div>
+
+              {/* slug + seo + tags + collection */}
+              {form.creator_handle && (
+                <div className="space-y-5 pt-3 border-t border-border/40">
+                  <p className="text-[11px] tracking-widest text-muted-foreground/40 uppercase">discoverability</p>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">url slug</Label>
+                    <Input
+                      placeholder="auto from name"
+                      value={form.slug}
+                      onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value, slug_touched: true }))}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide font-mono"
+                    />
+                    <p className="text-[11px] text-muted-foreground/40 tracking-wide">
+                      /shop/{form.creator_handle}/<span className="text-foreground/60">{slugify(form.slug || form.name) || 'your-slug'}</span>
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">seo title (optional)</Label>
+                    <Input
+                      placeholder="defaults to artifact name"
+                      value={form.seo_title}
+                      onChange={(e) => update('seo_title', e.target.value)}
+                      maxLength={60}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">seo description (optional)</Label>
+                    <Textarea
+                      placeholder="up to 160 characters, shown in search engines"
+                      value={form.seo_description}
+                      onChange={(e) => update('seo_description', e.target.value)}
+                      maxLength={160}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide min-h-[60px]"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">keywords</Label>
+                    <Input
+                      placeholder="comma separated, e.g. silver, ring, minimal"
+                      value={form.keywords}
+                      onChange={(e) => update('keywords', e.target.value)}
+                      className="rounded-xl bg-card border-border/60 text-sm tracking-wide"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">tags (visible pills)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="add tag and press enter"
+                        value={form.tag_draft}
+                        onChange={(e) => update('tag_draft', e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
+                        className="rounded-xl bg-card border-border/60 text-sm tracking-wide flex-1"
+                      />
+                      <Button type="button" variant="outline" onClick={addTag} className="rounded-full text-xs tracking-wider border-border/60">add</Button>
+                    </div>
+                    {form.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-2">
+                        {form.tags.map((t) => (
+                          <button key={t} type="button" onClick={() => removeTag(t)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary text-[11px] tracking-wider lowercase text-muted-foreground hover:text-foreground transition-colors">
+                            <TagIcon className="w-2.5 h-2.5" />
+                            {t}
+                            <X className="w-2.5 h-2.5" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {collections && collections.length > 0 && (
+                    <div className="space-y-2">
+                      <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">collection (optional)</Label>
+                      <select
+                        value={form.collection_id}
+                        onChange={(e) => update('collection_id', e.target.value)}
+                        className="w-full rounded-xl bg-card border border-border/60 px-3 py-2 text-sm tracking-wide text-foreground focus:outline-none"
+                      >
+                        <option value="">none</option>
+                        {collections.map((c) => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              )}
 
               <Button onClick={next} className="w-full rounded-full py-6 text-sm tracking-wider bg-foreground text-background hover:bg-foreground/90 gap-2">
                 continue <ArrowRight className="w-4 h-4" />

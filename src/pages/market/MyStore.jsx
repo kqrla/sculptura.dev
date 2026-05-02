@@ -12,6 +12,7 @@ import StoreTipJar from "@/components/market/mystore/StoreTipJar";
 import StoreWaitlist from "@/components/market/mystore/StoreWaitlist";
 import StoreCoupons from "@/components/market/mystore/StoreCoupons";
 import StoreContent from "@/components/market/mystore/StoreContent";
+import StoreNewsletter from "@/components/market/mystore/StoreNewsletter";
 import StorePreviewCard from "@/components/market/mystore/StorePreviewCard";
 
 const TABS = [
@@ -19,7 +20,8 @@ const TABS = [
   { id: "content", label: "content & faq" },
   { id: "socials", label: "socials" },
   { id: "commerce", label: "tip jar & waitlist" },
-  { id: "coupons", label: "coupons" },
+  { id: "newsletter", label: "newsletter" },
+  { id: "coupons", label: "promo codes" },
 ];
 
 export default function MyStore() {
@@ -117,6 +119,7 @@ export default function MyStore() {
                 <StoreWaitlist account={account} onSaved={refetch} />
               </div>
             )}
+            {activeTab === "newsletter" && <StoreNewsletter account={account} onSaved={refetch} />}
             {activeTab === "coupons" && <StoreCoupons account={account} onSaved={refetch} />}
           </div>
 

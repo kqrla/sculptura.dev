@@ -23,6 +23,7 @@ const ENTITY_TO_TABLE = {
   CreatorProfile: 'creator_profiles',
   MarketAccount: 'market_accounts',
   Order: 'orders',
+  Collection: 'collections',
 };
 
 // translate base44 sort tokens into supabase order args.

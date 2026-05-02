@@ -26,7 +26,8 @@ const ALLOWED = new Set([
   "coupons","order_message","faq_items",
   "materials","tools",
   "commission_open","hourly_rate","turnaround_time","rush_available",
-  "pricing_margin_pct","pricing_currency",
+  "pricing_margin_pct","pricing_currency","default_margin_pct",
+  "newsletter_enabled","newsletter_label","newsletter_signups",
   "payout_method","payout_details",
   "insights_time_spent","insights_tool_costs",
   // status: only allowed transition is draft -> pending_review

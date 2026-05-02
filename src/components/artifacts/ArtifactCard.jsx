@@ -7,8 +7,14 @@ export default function ArtifactCard({ artifact }) {
     ? Object.values(artifact.prices)[0]
     : null;
 
+  // prefer the slug-based url when both pieces are available, fall back to id
+  // so legacy artifacts (no slug yet) keep working.
+  const href = artifact.creator_handle && artifact.slug
+    ? `/shop/${artifact.creator_handle}/${artifact.slug}`
+    : `/artifact/${artifact.id}`;
+
   return (
-    <Link to={`/artifact/${artifact.id}`}>
+    <Link to={href}>
       <motion.div
         whileHover={{ y: -4 }}
         transition={{ duration: 0.25, ease: "easeOut" }}

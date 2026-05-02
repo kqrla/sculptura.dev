@@ -19,6 +19,8 @@ import Home from './pages/Home';
 import Explore from './pages/Explore';
 import ArtifactDetail from './pages/ArtifactDetail';
 import ShopProfile from './pages/ShopProfile';
+import ShopArtifactBySlug from './pages/ShopArtifactBySlug';
+import CollectionPage from './pages/CollectionPage';
 import PublishArtifact from './pages/PublishArtifact';
 import Onboarding from './pages/Onboarding';
 import CreateAccount from './pages/market/CreateAccount';
@@ -69,6 +71,9 @@ const RoutedApp = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/artifact/:id" element={<ArtifactDetail />} />
         <Route path="/shop/:username" element={<ShopProfile />} />
+        {/* slug-aware routes — collection-prefixed first so 'c' isn't matched as a slug */}
+        <Route path="/shop/:username/c/:collectionSlug" element={<CollectionPage />} />
+        <Route path="/shop/:username/:slug" element={<ShopArtifactBySlug />} />
         <Route path="/publish" element={<PublishArtifact />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/about" element={<About />} />

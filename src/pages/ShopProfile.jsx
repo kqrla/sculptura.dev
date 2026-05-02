@@ -7,6 +7,10 @@ import ArtifactCard from "../components/artifacts/ArtifactCard";
 import { ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_STORES, DEMO_ARTIFACTS } from "@/lib/demoData";
+import ShopPromoCodes from "@/components/shop/ShopPromoCodes";
+import ShopNewsletter from "@/components/shop/ShopNewsletter";
+import ShopCollections from "@/components/shop/ShopCollections";
+import SeoTags from "@/components/seo/SeoTags";
 
 export default function ShopProfile() {
   const { username } = useParams();
@@ -25,6 +29,22 @@ export default function ShopProfile() {
   const { data: liveArtifacts, isLoading: artifactsLoading } = useQuery({
     queryKey: ["shop-artifacts", username],
     queryFn: () => db.entities.Artifact.filter({ creator_handle: username, status: "published" }, "-created_date", 20),
+    initialData: [],
+    enabled: !!username && !demoStore,
+  });
+
+  // market account is optional — only stores that went through the
+  // /store/create flow will have one, but it carries promo codes,
+  // newsletter settings, and customization data we want to surface.
+  const { data: marketAccount } = useQuery({
+    queryKey: ["shop-market-account", username],
+    queryFn: () => db.entities.MarketAccount.filter({ handle: username }).then((r) => r?.[0] ?? null),
+    enabled: !!username && !demoStore,
+  });
+
+  const { data: collections } = useQuery({
+    queryKey: ["shop-collections", username],
+    queryFn: () => db.entities.Collection.filter({ creator_handle: username }, "sort_order", 50),
     initialData: [],
     enabled: !!username && !demoStore,
   });
@@ -80,6 +100,12 @@ export default function ShopProfile() {
 
   return (
     <div className="px-6 py-10">
+      <SeoTags
+        title={`${profile.display_name || profile.username} on sculptura`}
+        description={profile.bio || `${profile.username}'s store on sculptura`}
+        image={profile.avatar_url}
+        canonical={`/shop/${profile.username}`}
+      />
       <div className="max-w-7xl mx-auto">
         <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
           <ArrowLeft className="w-4 h-4" />
@@ -87,14 +113,20 @@ export default function ShopProfile() {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
-          <div className="lg:sticky lg:top-24 lg:self-start">
+          <div className="lg:sticky lg:top-24 lg:self-start space-y-4">
             <CreatorSidebar creator={sidebarCreator} />
+            {marketAccount && <ShopPromoCodes coupons={marketAccount.coupons} />}
+            {marketAccount && (
+              <ShopNewsletter account={marketAccount} label={marketAccount.newsletter_label} />
+            )}
           </div>
 
           <div className="space-y-8">
             <h2 className="font-serif text-xl font-light tracking-tight text-foreground lowercase">
               {profile.display_name || profile.username}'s artifacts
             </h2>
+
+            {!demoStore && <ShopCollections username={profile.username} collections={collections} />}
 
             {featured && (
               <div>

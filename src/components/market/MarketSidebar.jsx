@@ -9,6 +9,7 @@ import {
   Store,
   ShoppingBag,
   TrendingUp,
+  FolderOpen,
 } from "lucide-react";
 
 export default function MarketSidebar({ account, activeSection, onSectionChange, onSignOut, handle, rawKey }) {
@@ -17,6 +18,7 @@ export default function MarketSidebar({ account, activeSection, onSectionChange,
   const navItems = [
     { label: "overview", path: "overview", icon: LayoutDashboard, internal: true },
     { label: "artifacts", path: "artifacts", icon: Package, internal: true },
+    { label: "collections", path: "collections", icon: FolderOpen, internal: true },
     { label: "orders", path: "orders", icon: ShoppingBag, internal: true },
     { label: "insights", path: "insights", icon: TrendingUp, internal: true },
     { label: "my store", path: "mystore", icon: Store, internal: false, href: `/store/mystore${credParams}` },

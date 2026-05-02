@@ -13,11 +13,13 @@ const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "JPY", "CHF", "SEK", "NOK
 export default function SettingsPricing({ account }) {
   const queryClient = useQueryClient();
   const [margin, setMargin] = useState(account?.pricing_margin_pct ?? 30);
+  const [defaultMargin, setDefaultMargin] = useState(account?.default_margin_pct ?? 30);
   const [currency, setCurrency] = useState(account?.pricing_currency ?? "USD");
 
   const saveMutation = useMutation({
     mutationFn: () => db.entities.MarketAccount.update(account.id, {
       pricing_margin_pct: parseFloat(margin),
+      default_margin_pct: parseFloat(defaultMargin),
       pricing_currency: currency,
     }),
     onSuccess: () => {
@@ -76,6 +78,25 @@ export default function SettingsPricing({ account }) {
           <div className="h-px bg-border/30 my-2" />
           <Row label="you earn" value={`$${earnedExample.toFixed(2)}`} bold />
           <Row label="collector pays" value={`$${(exampleMfg + markup).toFixed(2)}`} />
+        </div>
+      </div>
+
+      {/* default markup applied to brand-new artifacts. each listing can still
+          override this on its own publish form, this just saves the creator
+          from re-entering their preferred margin every time. */}
+      <div className="bg-card rounded-[18px] border border-border/50 p-6 space-y-3">
+        <p className="text-[11px] tracking-widest text-muted-foreground/40 uppercase">default margin for new artifacts</p>
+        <p className="text-[11px] text-muted-foreground/40 tracking-wide">
+          pre-fills the markup on every new listing. you can still override per artifact.
+        </p>
+        <div className="flex items-center gap-4">
+          <Input
+            type="number" min={0} max={500}
+            value={defaultMargin}
+            onChange={(e) => setDefaultMargin(e.target.value)}
+            className="rounded-xl bg-background border-border/60 text-sm tracking-wide w-28"
+          />
+          <span className="text-xs text-muted-foreground/60 tracking-wide">% above manufacturing cost</span>
         </div>
       </div>
 
