@@ -68,6 +68,9 @@ const RoutedApp = () => {
       <Route path="/market/access" element={<AccessAccount />} />
       <Route path="/market/dashboard" element={<MarketDashboard />} />
 
+      {/* no-login creator demo sandbox (localStorage-backed) */}
+      <Route path="/demo/app" element={<DemoApp />} />
+
       {/* main app shell */}
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
