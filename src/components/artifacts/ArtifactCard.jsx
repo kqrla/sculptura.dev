@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import MaterialTag from "./MaterialTag";
 import { motion } from "framer-motion";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 export default function ArtifactCard({ artifact }) {
+  const { format } = useCurrency();
   const defaultPrice = artifact.prices
     ? Object.values(artifact.prices)[0]
     : null;
@@ -64,7 +66,7 @@ export default function ArtifactCard({ artifact }) {
             </div>
             {defaultPrice && (
               <span className="text-xs text-muted-foreground font-medium tracking-wide flex-shrink-0">
-                ${defaultPrice}
+                {format(defaultPrice)}
               </span>
             )}
           </div>
