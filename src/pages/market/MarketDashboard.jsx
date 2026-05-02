@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import MarketSidebar from "@/components/market/MarketSidebar";
 import OverviewSection from "@/components/market/sections/OverviewSection";
 import ArtifactsSection from "@/components/market/sections/ArtifactsSection";
+import CollectionsSection from "@/components/market/sections/CollectionsSection";
 import AnalyticsSection from "@/components/market/sections/AnalyticsSection";
 import FinanceSection from "@/components/market/sections/FinanceSection";
 import OrdersSection from "@/components/market/sections/OrdersSection";
@@ -88,6 +89,7 @@ export default function MarketDashboard() {
   const sectionComponents = {
     overview: <OverviewSection account={account} handle={handle} />,
     artifacts: <ArtifactsSection handle={handle} />,
+    collections: <CollectionsSection handle={handle} />,
     orders: <OrdersSection handle={handle} />,
     analytics: <AnalyticsSection />,
     finance: <FinanceSection account={account} />,
