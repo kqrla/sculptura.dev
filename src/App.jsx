@@ -14,6 +14,7 @@ import { queryClientInstance } from '@/lib/query-client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import { CurrencyProvider } from '@/lib/CurrencyContext';
 import AppLayout from './components/layout/AppLayout';
 import Home from './pages/Home';
 import Explore from './pages/Explore';
@@ -34,6 +35,8 @@ import AdminReview from './pages/AdminReview';
 import Roadmap from './pages/Roadmap';
 import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
+import CommissionPage from './pages/CommissionPage';
+import DemoApp from './pages/DemoApp';
 
 const RoutedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -65,13 +68,17 @@ const RoutedApp = () => {
       <Route path="/market/access" element={<AccessAccount />} />
       <Route path="/market/dashboard" element={<MarketDashboard />} />
 
+      {/* no-login creator demo sandbox (localStorage-backed) */}
+      <Route path="/demo/app" element={<DemoApp />} />
+
       {/* main app shell */}
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/artifact/:id" element={<ArtifactDetail />} />
         <Route path="/shop/:username" element={<ShopProfile />} />
-        {/* slug-aware routes — collection-prefixed first so 'c' isn't matched as a slug */}
+        {/* slug-aware routes — fixed prefixes first so 'c' / 'commission' don't get matched as slugs */}
+        <Route path="/shop/:username/commission" element={<CommissionPage />} />
         <Route path="/shop/:username/c/:collectionSlug" element={<CollectionPage />} />
         <Route path="/shop/:username/:slug" element={<ShopArtifactBySlug />} />
         <Route path="/publish" element={<PublishArtifact />} />
@@ -88,13 +95,15 @@ const RoutedApp = () => {
 function App() {
   return (
     <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <RoutedApp />
-        </Router>
-        <Toaster />
-        <Sonner />
-      </QueryClientProvider>
+      <CurrencyProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <Router>
+            <RoutedApp />
+          </Router>
+          <Toaster />
+          <Sonner />
+        </QueryClientProvider>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }

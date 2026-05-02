@@ -151,6 +151,54 @@ export type Database = {
         }
         Relationships: []
       }
+      commission_requests: {
+        Row: {
+          answers: Json
+          budget: number | null
+          created_at: string
+          creator_handle: string
+          customer_email: string
+          customer_name: string
+          description: string
+          id: string
+          intended_use: string | null
+          reference_urls: string[] | null
+          status: string
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json
+          budget?: number | null
+          created_at?: string
+          creator_handle: string
+          customer_email: string
+          customer_name: string
+          description: string
+          id?: string
+          intended_use?: string | null
+          reference_urls?: string[] | null
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          budget?: number | null
+          created_at?: string
+          creator_handle?: string
+          customer_email?: string
+          customer_name?: string
+          description?: string
+          id?: string
+          intended_use?: string | null
+          reference_urls?: string[] | null
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       creator_profiles: {
         Row: {
           avatar_url: string | null
@@ -213,7 +261,14 @@ export type Database = {
           avatar_url: string | null
           banner_url: string | null
           bio: string | null
+          commission_allow_commercial: boolean
+          commission_allow_modifications: boolean
+          commission_allow_resell: boolean
+          commission_intake_questions: Json
+          commission_intro: string | null
+          commission_min_budget: number | null
           commission_open: boolean
+          commission_terms: string | null
           coupons: Json | null
           created_at: string
           default_margin_pct: number | null
@@ -266,7 +321,14 @@ export type Database = {
           avatar_url?: string | null
           banner_url?: string | null
           bio?: string | null
+          commission_allow_commercial?: boolean
+          commission_allow_modifications?: boolean
+          commission_allow_resell?: boolean
+          commission_intake_questions?: Json
+          commission_intro?: string | null
+          commission_min_budget?: number | null
           commission_open?: boolean
+          commission_terms?: string | null
           coupons?: Json | null
           created_at?: string
           default_margin_pct?: number | null
@@ -319,7 +381,14 @@ export type Database = {
           avatar_url?: string | null
           banner_url?: string | null
           bio?: string | null
+          commission_allow_commercial?: boolean
+          commission_allow_modifications?: boolean
+          commission_allow_resell?: boolean
+          commission_intake_questions?: Json
+          commission_intro?: string | null
+          commission_min_budget?: number | null
           commission_open?: boolean
+          commission_terms?: string | null
           coupons?: Json | null
           created_at?: string
           default_margin_pct?: number | null

@@ -13,6 +13,7 @@ import AnalyticsSection from "@/components/market/sections/AnalyticsSection";
 import FinanceSection from "@/components/market/sections/FinanceSection";
 import OrdersSection from "@/components/market/sections/OrdersSection";
 import InsightsSection from "@/components/market/sections/InsightsSection";
+import CommissionRequestsSection from "@/components/market/sections/CommissionRequestsSection";
 
 /**
  * market account dashboard.
@@ -91,6 +92,7 @@ export default function MarketDashboard() {
     artifacts: <ArtifactsSection handle={handle} />,
     collections: <CollectionsSection handle={handle} />,
     orders: <OrdersSection handle={handle} />,
+    commissions: <CommissionRequestsSection handle={handle} />,
     analytics: <AnalyticsSection />,
     finance: <FinanceSection account={account} />,
     insights: <InsightsSection account={account} handle={handle} />,

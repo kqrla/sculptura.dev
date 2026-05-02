@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Pencil, Clock, Zap, Wrench, Monitor, Users } from "lucide-react";
@@ -32,14 +33,16 @@ export default function CreatorSidebar({ creator }) {
         )}
 
         <div className="flex gap-2">
-          <Button variant="outline" className="rounded-full text-xs tracking-wider flex-1 border-border/60 gap-1.5">
+          <Button variant="outline" disabled className="rounded-full text-xs tracking-wider flex-1 border-border/60 gap-1.5">
             <MessageCircle className="w-3.5 h-3.5" />
             message
           </Button>
-          <Button variant="outline" className="rounded-full text-xs tracking-wider flex-1 border-border/60 gap-1.5">
-            <Pencil className="w-3.5 h-3.5" />
-            request custom
-          </Button>
+          <Link to={`/shop/${creator.handle}/commission`} className="flex-1">
+            <Button variant="outline" className="w-full rounded-full text-xs tracking-wider border-border/60 gap-1.5">
+              <Pencil className="w-3.5 h-3.5" />
+              request custom
+            </Button>
+          </Link>
         </div>
       </div>
 

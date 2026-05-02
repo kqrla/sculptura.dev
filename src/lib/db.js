@@ -24,6 +24,7 @@ const ENTITY_TO_TABLE = {
   MarketAccount: 'market_accounts',
   Order: 'orders',
   Collection: 'collections',
+  CommissionRequest: 'commission_requests',
 };
 
 // translate base44 sort tokens into supabase order args.
