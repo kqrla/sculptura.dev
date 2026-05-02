@@ -33,6 +33,22 @@ export default function ShopProfile() {
     enabled: !!username && !demoStore,
   });
 
+  // market account is optional — only stores that went through the
+  // /store/create flow will have one, but it carries promo codes,
+  // newsletter settings, and customization data we want to surface.
+  const { data: marketAccount } = useQuery({
+    queryKey: ["shop-market-account", username],
+    queryFn: () => db.entities.MarketAccount.filter({ handle: username }).then((r) => r?.[0] ?? null),
+    enabled: !!username && !demoStore,
+  });
+
+  const { data: collections } = useQuery({
+    queryKey: ["shop-collections", username],
+    queryFn: () => db.entities.Collection.filter({ creator_handle: username }, "sort_order", 50),
+    initialData: [],
+    enabled: !!username && !demoStore,
+  });
+
   // Use demo data if available, otherwise live data
   const profile = demoStore
     ? { username: demoStore.handle, display_name: demoStore.display_name, bio: demoStore.bio, avatar_url: demoStore.avatar_url, commission_open: demoStore.commission_open, hourly_rate: demoStore.hourly_rate, turnaround_time: demoStore.turnaround_time, rush_available: demoStore.rush_available, materials: demoStore.materials, tools: demoStore.tools }
