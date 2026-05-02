@@ -118,3 +118,9 @@ export function saveDemoCommissionRequest(handle, payload) {
 export function getDemoRequestsForHandle(handle) {
   return getSandbox().requests.filter((r) => r.creator_handle === handle);
 }
+
+export function deleteDemoRequest(id) {
+  const root = readRoot();
+  root.requests = (root.requests || []).filter((r) => r.id !== id);
+  writeRoot(root);
+}

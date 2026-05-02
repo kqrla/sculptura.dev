@@ -10,11 +10,12 @@ import { db } from "@/lib/db";
 import { Mail, Clock, ChevronRight, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getDemoRequestsForHandle, getSandbox, patchSandbox } from "@/lib/demoSandbox";
+import { getDemoRequestsForHandle, deleteDemoRequest } from "@/lib/demoSandbox";
 
 export default function CommissionRequestsSection({ handle, isDemo = false }) {
   const queryClient = useQueryClient();
   const [demoTick, setDemoTick] = useState(0);
+  void demoTick; // re-render trigger only
 
   // re-read demo storage when other tabs / forms update it
   useEffect(() => {
@@ -37,15 +38,7 @@ export default function CommissionRequestsSection({ handle, isDemo = false }) {
   const requests = isDemo ? getDemoRequestsForHandle(handle) : liveRequests;
 
   const removeDemo = (id) => {
-    const root = getSandbox();
-    const next = root.requests.filter((r) => r.id !== id);
-    patchSandbox("__root_requests__", {});
-    // patchSandbox writes a slice; do a direct replace instead
-    localStorage.setItem(
-      "sculptura_demo_sandbox",
-      JSON.stringify({ ...JSON.parse(localStorage.getItem("sculptura_demo_sandbox") || "{}"), requests: next }),
-    );
-    window.dispatchEvent(new Event("demo-sandbox-updated"));
+    deleteDemoRequest(id);
   };
 
   return (
