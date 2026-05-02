@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           admin_reviewed: boolean
           category: string | null
+          collection_id: string | null
           created_at: string
           created_by: string | null
           creator_earnings: Json | null
@@ -27,6 +28,7 @@ export type Database = {
           id: string
           image_url: string | null
           is_featured: boolean
+          keywords: string[] | null
           made_to_order: boolean
           manufacturing_costs: Json | null
           materials: string[] | null
@@ -35,13 +37,18 @@ export type Database = {
           prices: Json | null
           region: string | null
           review_notes: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string | null
           specs: string | null
           status: string
+          tags: string[] | null
           updated_at: string
         }
         Insert: {
           admin_reviewed?: boolean
           category?: string | null
+          collection_id?: string | null
           created_at?: string
           created_by?: string | null
           creator_earnings?: Json | null
@@ -51,6 +58,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_featured?: boolean
+          keywords?: string[] | null
           made_to_order?: boolean
           manufacturing_costs?: Json | null
           materials?: string[] | null
@@ -59,13 +67,18 @@ export type Database = {
           prices?: Json | null
           region?: string | null
           review_notes?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string | null
           specs?: string | null
           status?: string
+          tags?: string[] | null
           updated_at?: string
         }
         Update: {
           admin_reviewed?: boolean
           category?: string | null
+          collection_id?: string | null
           created_at?: string
           created_by?: string | null
           creator_earnings?: Json | null
@@ -75,6 +88,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_featured?: boolean
+          keywords?: string[] | null
           made_to_order?: boolean
           manufacturing_costs?: Json | null
           materials?: string[] | null
@@ -83,8 +97,56 @@ export type Database = {
           prices?: Json | null
           region?: string | null
           review_notes?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string | null
           specs?: string | null
           status?: string
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artifacts_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collections: {
+        Row: {
+          cover_image_url: string | null
+          created_at: string
+          creator_handle: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          cover_image_url?: string | null
+          created_at?: string
+          creator_handle: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          cover_image_url?: string | null
+          created_at?: string
+          creator_handle?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
           updated_at?: string
         }
         Relationships: []
@@ -154,6 +216,7 @@ export type Database = {
           commission_open: boolean
           coupons: Json | null
           created_at: string
+          default_margin_pct: number | null
           display_name: string | null
           email: string
           faq_items: Json | null
@@ -164,6 +227,9 @@ export type Database = {
           insights_tool_costs: number
           logo_url: string | null
           materials: string[] | null
+          newsletter_enabled: boolean
+          newsletter_label: string | null
+          newsletter_signups: Json
           order_message: string | null
           payout_details: string | null
           payout_method: string | null
@@ -203,6 +269,7 @@ export type Database = {
           commission_open?: boolean
           coupons?: Json | null
           created_at?: string
+          default_margin_pct?: number | null
           display_name?: string | null
           email: string
           faq_items?: Json | null
@@ -213,6 +280,9 @@ export type Database = {
           insights_tool_costs?: number
           logo_url?: string | null
           materials?: string[] | null
+          newsletter_enabled?: boolean
+          newsletter_label?: string | null
+          newsletter_signups?: Json
           order_message?: string | null
           payout_details?: string | null
           payout_method?: string | null
@@ -252,6 +322,7 @@ export type Database = {
           commission_open?: boolean
           coupons?: Json | null
           created_at?: string
+          default_margin_pct?: number | null
           display_name?: string | null
           email?: string
           faq_items?: Json | null
@@ -262,6 +333,9 @@ export type Database = {
           insights_tool_costs?: number
           logo_url?: string | null
           materials?: string[] | null
+          newsletter_enabled?: boolean
+          newsletter_label?: string | null
+          newsletter_signups?: Json
           order_message?: string | null
           payout_details?: string | null
           payout_method?: string | null
