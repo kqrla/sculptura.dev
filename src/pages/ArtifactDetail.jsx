@@ -141,6 +141,17 @@ export default function ArtifactDetail() {
               </p>
             )}
 
+            {/* tag pills (creator-curated, distinct from materials) */}
+            {Array.isArray(artifact.tags) && artifact.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {artifact.tags.map((t) => (
+                  <span key={t} className="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-[11px] tracking-wider lowercase text-muted-foreground">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+
             {/* Material selector */}
             {artifact.materials?.length > 0 && (
               <div className="space-y-3">
