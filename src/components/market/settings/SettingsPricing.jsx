@@ -13,11 +13,13 @@ const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "JPY", "CHF", "SEK", "NOK
 export default function SettingsPricing({ account }) {
   const queryClient = useQueryClient();
   const [margin, setMargin] = useState(account?.pricing_margin_pct ?? 30);
+  const [defaultMargin, setDefaultMargin] = useState(account?.default_margin_pct ?? 30);
   const [currency, setCurrency] = useState(account?.pricing_currency ?? "USD");
 
   const saveMutation = useMutation({
     mutationFn: () => db.entities.MarketAccount.update(account.id, {
       pricing_margin_pct: parseFloat(margin),
+      default_margin_pct: parseFloat(defaultMargin),
       pricing_currency: currency,
     }),
     onSuccess: () => {
