@@ -35,6 +35,8 @@ import AdminReview from './pages/AdminReview';
 import Roadmap from './pages/Roadmap';
 import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
+import CommissionPage from './pages/CommissionPage';
+import DemoApp from './pages/DemoApp';
 
 const RoutedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -72,7 +74,8 @@ const RoutedApp = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/artifact/:id" element={<ArtifactDetail />} />
         <Route path="/shop/:username" element={<ShopProfile />} />
-        {/* slug-aware routes — collection-prefixed first so 'c' isn't matched as a slug */}
+        {/* slug-aware routes — fixed prefixes first so 'c' / 'commission' don't get matched as slugs */}
+        <Route path="/shop/:username/commission" element={<CommissionPage />} />
         <Route path="/shop/:username/c/:collectionSlug" element={<CollectionPage />} />
         <Route path="/shop/:username/:slug" element={<ShopArtifactBySlug />} />
         <Route path="/publish" element={<PublishArtifact />} />
