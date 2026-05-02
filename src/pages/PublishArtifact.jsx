@@ -1,17 +1,18 @@
 import { db } from '@/lib/db';
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, ArrowRight, Upload, X, Box, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Upload, X, Box, Check, Tag as TagIcon } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { MATERIALS, REGIONS, getMfgCost, getFinalPrice, DELIVERY_ESTIMATES } from "@/lib/pricing";
+import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
 const STEPS = ["upload design", "material", "audience", "your earnings", "submit"];
@@ -39,9 +40,54 @@ export default function PublishArtifact() {
     region: "europe",
     creator_earnings: 30,
     made_to_order: true,
+    // seo + grouping
+    slug: "",
+    slug_touched: false, // once edited manually we stop auto-syncing from name
+    seo_title: "",
+    seo_description: "",
+    keywords: "", // comma-separated in the input, split on submit
+    tags: [], // pill list
+    tag_draft: "",
+    collection_id: "",
   });
 
   const update = (field, val) => setForm((p) => ({ ...p, [field]: val }));
+
+  // pull the creator's collections + default margin once a handle is typed.
+  // we look up the market_account for that handle to pre-fill the default margin.
+  const handle = form.creator_handle?.trim().toLowerCase();
+
+  const { data: marketAccount } = useQuery({
+    queryKey: ['publish-market-account', handle],
+    queryFn: () => db.entities.MarketAccount.filter({ handle }).then((r) => r?.[0] ?? null),
+    enabled: !!handle,
+  });
+
+  const { data: collections } = useQuery({
+    queryKey: ['publish-collections', handle],
+    queryFn: () => db.entities.Collection.filter({ creator_handle: handle }, 'sort_order', 100),
+    initialData: [],
+    enabled: !!handle,
+  });
+
+  // when a market account is found and the creator hasn't manually edited
+  // earnings yet, pre-fill earnings using the default margin against the
+  // current material's manufacturing cost.
+  useEffect(() => {
+    if (!marketAccount?.default_margin_pct) return;
+    const mfg = getMfgCost(form.material, form.region);
+    const suggested = Math.round(mfg * (Number(marketAccount.default_margin_pct) / 100));
+    setForm((p) => ({ ...p, creator_earnings: suggested }));
+    // intentionally only re-run when the market account or material changes,
+    // not when earnings change, otherwise we'd overwrite manual edits.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [marketAccount?.default_margin_pct, form.material, form.region]);
+
+  // auto-suggest slug from name until the creator manually edits it.
+  useEffect(() => {
+    if (form.slug_touched) return;
+    setForm((p) => ({ ...p, slug: slugify(p.name) }));
+  }, [form.name, form.slug_touched]);
 
   const mfgCost = getMfgCost(form.material, form.region);
   const finalPrice = getFinalPrice(form.material, form.region, form.creator_earnings);
@@ -60,8 +106,24 @@ export default function PublishArtifact() {
     update("model_url", file_url);
   };
 
+  const addTag = () => {
+    const t = form.tag_draft.trim().toLowerCase();
+    if (!t) return;
+    if (form.tags.includes(t)) {
+      setForm((p) => ({ ...p, tag_draft: '' }));
+      return;
+    }
+    setForm((p) => ({ ...p, tags: [...p.tags, t].slice(0, 12), tag_draft: '' }));
+  };
+
+  const removeTag = (t) => setForm((p) => ({ ...p, tags: p.tags.filter((x) => x !== t) }));
+
   const publishMutation = useMutation({
     mutationFn: (data) => {
+      const keywords = data.keywords
+        .split(',')
+        .map((k) => k.trim().toLowerCase())
+        .filter(Boolean);
       const payload = {
         name: data.name,
         description: data.description,
@@ -77,6 +139,12 @@ export default function PublishArtifact() {
         creator_earnings: { [data.material]: data.creator_earnings },
         prices: { [data.material]: finalPrice },
         status: "pending_review",
+        slug: data.slug ? slugify(data.slug) : slugify(data.name),
+        seo_title: data.seo_title || null,
+        seo_description: data.seo_description || null,
+        keywords,
+        tags: data.tags,
+        collection_id: data.collection_id || null,
       };
       return db.entities.Artifact.create(payload);
     },
@@ -85,6 +153,7 @@ export default function PublishArtifact() {
       toast.success("design submitted for review");
       navigate("/dashboard");
     },
+    onError: (err) => toast.error(err?.message || 'could not submit'),
   });
 
   const next = () => {
