@@ -10,6 +10,7 @@ import {
   ShoppingBag,
   TrendingUp,
   FolderOpen,
+  Mail,
 } from "lucide-react";
 
 export default function MarketSidebar({ account, activeSection, onSectionChange, onSignOut, handle, rawKey }) {
@@ -20,6 +21,7 @@ export default function MarketSidebar({ account, activeSection, onSectionChange,
     { label: "artifacts", path: "artifacts", icon: Package, internal: true },
     { label: "collections", path: "collections", icon: FolderOpen, internal: true },
     { label: "orders", path: "orders", icon: ShoppingBag, internal: true },
+    { label: "commissions", path: "commissions", icon: Mail, internal: true },
     { label: "insights", path: "insights", icon: TrendingUp, internal: true },
     { label: "my store", path: "mystore", icon: Store, internal: false, href: `/store/mystore${credParams}` },
     { label: "analytics", path: "analytics", icon: BarChart2, internal: true },
