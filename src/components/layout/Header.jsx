@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import CartDrawer from "@/components/cart/CartDrawer";
+import CurrencySwitcher from "@/components/layout/CurrencySwitcher";
 import { getCart } from "@/lib/cartStore";
 
 export default function Header() {
@@ -74,6 +75,9 @@ export default function Header() {
               open a store
             </Button>
           </Link>
+
+          {/* display currency */}
+          <CurrencySwitcher />
 
           {/* Dark mode toggle */}
           <button

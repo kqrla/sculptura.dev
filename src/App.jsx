@@ -14,6 +14,7 @@ import { queryClientInstance } from '@/lib/query-client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import { CurrencyProvider } from '@/lib/CurrencyContext';
 import AppLayout from './components/layout/AppLayout';
 import Home from './pages/Home';
 import Explore from './pages/Explore';
@@ -88,13 +89,15 @@ const RoutedApp = () => {
 function App() {
   return (
     <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <RoutedApp />
-        </Router>
-        <Toaster />
-        <Sonner />
-      </QueryClientProvider>
+      <CurrencyProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <Router>
+            <RoutedApp />
+          </Router>
+          <Toaster />
+          <Sonner />
+        </QueryClientProvider>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }
