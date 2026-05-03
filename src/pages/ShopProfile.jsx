@@ -114,6 +114,18 @@ export default function ShopProfile() {
     waitlist_count: 0,
   };
 
+  // owner preview mode: when /shop/<handle>?key=<rawkey> is opened we
+  // verify the key against the market account's stored hash and surface
+  // an "edit your store" banner. this lets approved AND pending owners
+  // preview their public storefront, even before sculptura admins
+  // approve them, without exposing edit controls to public visitors.
+  useEffect(() => {
+    if (!ownerKey || !marketAccount?.access_key_hash) { setIsOwner(false); return; }
+    let cancelled = false;
+    hashKey(ownerKey).then((h) => { if (!cancelled) setIsOwner(h === marketAccount.access_key_hash); });
+    return () => { cancelled = true; };
+  }, [ownerKey, marketAccount?.access_key_hash]);
+
   const featured = artifacts.find((a) => a.is_featured);
   const rest = artifacts.filter((a) => a.id !== featured?.id);
 
