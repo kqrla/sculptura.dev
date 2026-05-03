@@ -39,6 +39,14 @@ export default function ArtifactDetail() {
   const currentMaterial = selectedMaterial || artifact?.materials?.[0];
   const currentPrice = artifact?.prices?.[currentMaterial];
 
+  // gallery: combine optional image_urls[] with the legacy image_url cover
+  const gallery = (() => {
+    const urls = Array.isArray(artifact?.image_urls) ? artifact.image_urls.filter(Boolean) : [];
+    const merged = artifact?.image_url ? [artifact.image_url, ...urls.filter((u) => u !== artifact.image_url)] : urls;
+    return merged;
+  })();
+  const [activeImage, setActiveImage] = useState(0);
+
   const handleAddToCart = () => {
     if (!artifact || !currentMaterial) return;
     addToCart(artifact, currentMaterial);
