@@ -100,6 +100,20 @@ export default function PublishArtifact() {
     update("image_url", file_url);
   };
 
+  const handleExtraImagesUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    const uploaded = [];
+    for (const file of files) {
+      const { file_url } = await db.integrations.Core.UploadFile({ file });
+      if (file_url) uploaded.push(file_url);
+    }
+    setForm((p) => ({ ...p, image_urls: [...(p.image_urls || []), ...uploaded].slice(0, 8) }));
+    e.target.value = "";
+  };
+
+  const removeExtraImage = (url) => setForm((p) => ({ ...p, image_urls: (p.image_urls || []).filter((u) => u !== url) }));
+
   const handleModelUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
