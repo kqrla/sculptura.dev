@@ -28,11 +28,23 @@ export default function SettingsPricing({ account }) {
     },
   });
 
-  // example breakdown for a $20 manufacturing cost
+  // example breakdown for a $20 manufacturing cost.
+  //
+  // pricing model:
+  //   collector pays   = manufacturing cost + creator markup
+  //   manufacturer gets = manufacturing cost (paid through directly)
+  //   platform fee     = 8% of the markup only (sculptura never takes
+  //                      a cut of the manufacturer's revenue)
+  //   creator earns    = markup − platform fee
+  //
+  // taxes and any direct shipping surcharges from the manufacturer are
+  // calculated on top at checkout and are NOT part of the creator's
+  // payable amount or the platform's margin.
   const exampleMfg = 20;
   const markup = exampleMfg * (margin / 100);
-  const platformFee = (exampleMfg + markup) * 0.08;
-  const earnedExample = exampleMfg + markup - platformFee;
+  const platformFee = markup * 0.08;
+  const earnedExample = markup - platformFee;
+  const collectorPays = exampleMfg + markup;
 
   return (
     <div className="space-y-6">
