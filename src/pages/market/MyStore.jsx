@@ -73,12 +73,12 @@ export default function MyStore() {
         <span className="text-xs tracking-wide text-foreground">my store</span>
         <div className="ml-auto flex items-center gap-3">
           <a
-            href={`/shop/${handle}`}
+            href={`/shop/${handle}?key=${rawKey}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs tracking-wide text-muted-foreground hover:text-foreground border border-border/60 px-3 py-1.5 rounded-full transition-colors"
           >
-            view live
+            view live (preview)
           </a>
           <span className="font-wordmark text-lg text-foreground">sculptura</span>
         </div>
