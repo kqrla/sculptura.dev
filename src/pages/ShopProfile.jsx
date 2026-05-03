@@ -15,6 +15,9 @@ import { hashKey } from "@/lib/crypto";
 
 export default function ShopProfile() {
   const { username } = useParams();
+  const [searchParams] = useSearchParams();
+  const ownerKey = searchParams.get("key");
+  const [isOwner, setIsOwner] = useState(false);
 
   // Check if this is a demo store handle
   const demoStore = DEMO_STORES.find((s) => s.handle === username);
