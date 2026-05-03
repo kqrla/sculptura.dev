@@ -287,6 +287,7 @@ export type Database = {
           newsletter_signups: Json
           order_message: string | null
           payout_details: string | null
+          payout_legal_name: string | null
           payout_method: string | null
           pricing_currency: string | null
           pricing_margin_pct: number | null
@@ -347,6 +348,7 @@ export type Database = {
           newsletter_signups?: Json
           order_message?: string | null
           payout_details?: string | null
+          payout_legal_name?: string | null
           payout_method?: string | null
           pricing_currency?: string | null
           pricing_margin_pct?: number | null
@@ -407,6 +409,7 @@ export type Database = {
           newsletter_signups?: Json
           order_message?: string | null
           payout_details?: string | null
+          payout_legal_name?: string | null
           payout_method?: string | null
           pricing_currency?: string | null
           pricing_margin_pct?: number | null
