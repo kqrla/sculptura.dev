@@ -261,6 +261,28 @@ export default function PublishArtifact() {
                 )}
               </div>
 
+              {/* Additional images (slideshow) */}
+              <div className="space-y-2">
+                <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">additional images (optional)</Label>
+                <div className="flex flex-wrap gap-2">
+                  {(form.image_urls || []).map((url) => (
+                    <div key={url} className="relative w-20 h-20 rounded-xl overflow-hidden border border-border/50">
+                      <img src={url} alt="extra" className="w-full h-full object-cover" />
+                      <button onClick={() => removeExtraImage(url)} className="absolute top-1 right-1 w-5 h-5 rounded-full bg-background/80 flex items-center justify-center">
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                  {(form.image_urls || []).length < 8 && (
+                    <label className="w-20 h-20 rounded-xl border border-dashed border-border/60 bg-card flex items-center justify-center cursor-pointer hover:bg-secondary/30">
+                      <Upload className="w-4 h-4 text-muted-foreground/40" />
+                      <input type="file" accept="image/*" multiple className="hidden" onChange={handleExtraImagesUpload} />
+                    </label>
+                  )}
+                </div>
+                <p className="text-[10px] text-muted-foreground/40 tracking-wide">collectors will see these as a slideshow on the artifact page</p>
+              </div>
+
               {/* Category & specs */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
