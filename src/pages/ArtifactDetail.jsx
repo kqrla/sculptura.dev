@@ -106,9 +106,22 @@ export default function ArtifactDetail() {
           >
             <ModelViewer
               modelUrl={artifact.model_url}
-              imageUrl={artifact.image_url}
+              imageUrl={gallery[activeImage] || artifact.image_url}
               className="aspect-square"
             />
+            {gallery.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {gallery.map((src, i) => (
+                  <button
+                    key={src + i}
+                    onClick={() => setActiveImage(i)}
+                    className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border transition-all ${i === activeImage ? "border-foreground" : "border-border/40 opacity-70 hover:opacity-100"}`}
+                  >
+                    <img src={src} alt={`view ${i + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
             {hasModel && (
               <div className="flex items-center gap-2 text-[11px] text-muted-foreground/50 tracking-wide">
                 <Box className="w-3 h-3" />
