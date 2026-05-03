@@ -84,12 +84,17 @@ export default function SettingsPricing({ account }) {
             <Info className="w-3 h-3 text-muted-foreground/30" />
             <span className="text-[10px] tracking-widest text-muted-foreground/40 uppercase">example breakdown (mfg cost = $20)</span>
           </div>
-          <Row label="manufacturing cost" value={`$${exampleMfg.toFixed(2)}`} />
+          <Row label="manufacturing cost (paid to maker)" value={`$${exampleMfg.toFixed(2)}`} dim />
           <Row label={`your markup (${margin}%)`} value={`+ $${markup.toFixed(2)}`} accent />
-          <Row label="platform fee (8%)" value={`− $${platformFee.toFixed(2)}`} dim />
+          <Row label="platform fee (8% of markup)" value={`− $${platformFee.toFixed(2)}`} dim />
           <div className="h-px bg-border/30 my-2" />
           <Row label="you earn" value={`$${earnedExample.toFixed(2)}`} bold />
-          <Row label="collector pays" value={`$${(exampleMfg + markup).toFixed(2)}`} />
+          <Row label="collector pays" value={`$${collectorPays.toFixed(2)}`} />
+          <p className="text-[10px] text-muted-foreground/40 tracking-wide leading-relaxed pt-2">
+            collector pays excludes taxes and any shipping surcharges the manufacturer
+            may add at fulfillment. those flow directly to the maker / carrier and the
+            platform never takes margin on them.
+          </p>
         </div>
       </div>
 
