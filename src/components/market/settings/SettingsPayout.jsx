@@ -58,6 +58,22 @@ export default function SettingsPayout({ account }) {
         </div>
 
         <div className="space-y-2">
+          <Label className="text-[11px] tracking-widest text-muted-foreground/50 uppercase">legal name (required for first payout)</Label>
+          <Input
+            placeholder="full legal name as it appears on your id"
+            value={legalName}
+            onChange={(e) => setLegalName(e.target.value)}
+            className="rounded-xl bg-background border-border/60 text-sm tracking-wide"
+          />
+          <p className="text-[10px] text-muted-foreground/40 tracking-wide leading-relaxed">
+            payouts under $20 stay in your sculptura balance. once you cross the
+            $20 threshold and request a withdrawal, we need your legal name on
+            file. final payment is processed through stripe, which may run its
+            own kyc / identity verification at higher volumes.
+          </p>
+        </div>
+
+        <div className="space-y-2">
           <Label className="text-[11px] tracking-widest text-muted-foreground/50 uppercase">{current?.hint}</Label>
           <Input
             placeholder={current?.hint}
