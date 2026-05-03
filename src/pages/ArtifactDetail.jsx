@@ -83,10 +83,10 @@ export default function ArtifactDetail() {
         keywords={(artifact.keywords || []).join(', ')}
       />
       <div className="max-w-6xl mx-auto">
-        <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
+        <button onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/explore"))} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
           <ArrowLeft className="w-4 h-4" />
-          back to explore
-        </Link>
+          back
+        </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* 3D Viewer or image */}
