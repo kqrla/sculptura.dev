@@ -1,19 +1,23 @@
 import { db } from '@/lib/db';
-
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import CreatorSidebar from "../components/creator/CreatorSidebar";
 import ArtifactCard from "../components/artifacts/ArtifactCard";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Pencil, Eye } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_STORES, DEMO_ARTIFACTS } from "@/lib/demoData";
 import ShopPromoCodes from "@/components/shop/ShopPromoCodes";
 import ShopNewsletter from "@/components/shop/ShopNewsletter";
 import ShopCollections from "@/components/shop/ShopCollections";
 import SeoTags from "@/components/seo/SeoTags";
+import { hashKey } from "@/lib/crypto";
 
 export default function ShopProfile() {
   const { username } = useParams();
+  const [searchParams] = useSearchParams();
+  const ownerKey = searchParams.get("key");
+  const [isOwner, setIsOwner] = useState(false);
 
   // Check if this is a demo store handle
   const demoStore = DEMO_STORES.find((s) => s.handle === username);
@@ -36,6 +40,10 @@ export default function ShopProfile() {
   // market account is optional — only stores that went through the
   // /store/create flow will have one, but it carries promo codes,
   // newsletter settings, and customization data we want to surface.
+  // we also fall back to it as the profile source if there is no
+  // creator_profiles row yet, so a store owner who hasn't filled in a
+  // separate creator profile (or who is still in pending review) can
+  // still preview their public storefront from /store/mystore.
   const { data: marketAccount } = useQuery({
     queryKey: ["shop-market-account", username],
     queryFn: () => db.entities.MarketAccount.filter({ handle: username }).then((r) => r?.[0] ?? null),
@@ -49,10 +57,21 @@ export default function ShopProfile() {
     enabled: !!username && !demoStore,
   });
 
-  // Use demo data if available, otherwise live data
+  // Use demo data if available, otherwise live data, otherwise market account fallback
   const profile = demoStore
     ? { username: demoStore.handle, display_name: demoStore.display_name, bio: demoStore.bio, avatar_url: demoStore.avatar_url, commission_open: demoStore.commission_open, hourly_rate: demoStore.hourly_rate, turnaround_time: demoStore.turnaround_time, rush_available: demoStore.rush_available, materials: demoStore.materials, tools: demoStore.tools }
-    : liveProfile;
+    : liveProfile || (marketAccount ? {
+        username: marketAccount.handle,
+        display_name: marketAccount.display_name,
+        bio: marketAccount.bio,
+        avatar_url: marketAccount.avatar_url,
+        commission_open: marketAccount.commission_open,
+        hourly_rate: marketAccount.hourly_rate,
+        turnaround_time: marketAccount.turnaround_time,
+        rush_available: marketAccount.rush_available,
+        materials: marketAccount.materials,
+        tools: marketAccount.tools,
+      } : null);
   const artifacts = demoStore ? demoArtifacts : liveArtifacts;
 
   if (profileLoading && !demoStore) {
@@ -95,6 +114,18 @@ export default function ShopProfile() {
     waitlist_count: 0,
   };
 
+  // owner preview mode: when /shop/<handle>?key=<rawkey> is opened we
+  // verify the key against the market account's stored hash and surface
+  // an "edit your store" banner. this lets approved AND pending owners
+  // preview their public storefront, even before sculptura admins
+  // approve them, without exposing edit controls to public visitors.
+  useEffect(() => {
+    if (!ownerKey || !marketAccount?.access_key_hash) { setIsOwner(false); return; }
+    let cancelled = false;
+    hashKey(ownerKey).then((h) => { if (!cancelled) setIsOwner(h === marketAccount.access_key_hash); });
+    return () => { cancelled = true; };
+  }, [ownerKey, marketAccount?.access_key_hash]);
+
   const featured = artifacts.find((a) => a.is_featured);
   const rest = artifacts.filter((a) => a.id !== featured?.id);
 
@@ -107,6 +138,21 @@ export default function ShopProfile() {
         canonical={`/shop/${profile.username}`}
       />
       <div className="max-w-7xl mx-auto">
+        {isOwner && (
+          <div className="mb-6 rounded-[14px] border border-foreground/20 bg-card px-4 py-3 flex items-center gap-3 flex-wrap">
+            <Eye className="w-3.5 h-3.5 text-muted-foreground/60 shrink-0" />
+            <p className="text-[12px] text-muted-foreground/80 tracking-wide">
+              you're previewing your own store{marketAccount?.status !== "active" && " (pending review — public visitors can't see this yet)"}.
+            </p>
+            <Link
+              to={`/store/mystore?handle=${username}&key=${ownerKey}`}
+              className="ml-auto inline-flex items-center gap-1.5 text-[12px] tracking-wide text-foreground bg-secondary hover:bg-secondary/70 px-3 py-1.5 rounded-full transition-all"
+            >
+              <Pencil className="w-3 h-3" />
+              edit profile, banner & photo
+            </Link>
+          </div>
+        )}
         <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
           <ArrowLeft className="w-4 h-4" />
           back to explore
