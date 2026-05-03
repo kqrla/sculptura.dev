@@ -27,6 +27,7 @@ export type Database = {
           description: string | null
           id: string
           image_url: string | null
+          image_urls: string[] | null
           is_featured: boolean
           keywords: string[] | null
           made_to_order: boolean
@@ -57,6 +58,7 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          image_urls?: string[] | null
           is_featured?: boolean
           keywords?: string[] | null
           made_to_order?: boolean
@@ -87,6 +89,7 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          image_urls?: string[] | null
           is_featured?: boolean
           keywords?: string[] | null
           made_to_order?: boolean
