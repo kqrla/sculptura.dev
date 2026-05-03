@@ -146,6 +146,7 @@ export default function PublishArtifact() {
         specs: data.specs,
         creator_handle: data.creator_handle,
         image_url: data.image_url,
+        image_urls: data.image_urls || [],
         model_url: data.model_url,
         made_to_order: data.made_to_order,
         region: data.region,
