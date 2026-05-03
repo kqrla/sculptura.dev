@@ -138,6 +138,21 @@ export default function ShopProfile() {
         canonical={`/shop/${profile.username}`}
       />
       <div className="max-w-7xl mx-auto">
+        {isOwner && (
+          <div className="mb-6 rounded-[14px] border border-foreground/20 bg-card px-4 py-3 flex items-center gap-3 flex-wrap">
+            <Eye className="w-3.5 h-3.5 text-muted-foreground/60 shrink-0" />
+            <p className="text-[12px] text-muted-foreground/80 tracking-wide">
+              you're previewing your own store{marketAccount?.status !== "active" && " (pending review — public visitors can't see this yet)"}.
+            </p>
+            <Link
+              to={`/store/mystore?handle=${username}&key=${ownerKey}`}
+              className="ml-auto inline-flex items-center gap-1.5 text-[12px] tracking-wide text-foreground bg-secondary hover:bg-secondary/70 px-3 py-1.5 rounded-full transition-all"
+            >
+              <Pencil className="w-3 h-3" />
+              edit profile, banner & photo
+            </Link>
+          </div>
+        )}
         <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
           <ArrowLeft className="w-4 h-4" />
           back to explore
