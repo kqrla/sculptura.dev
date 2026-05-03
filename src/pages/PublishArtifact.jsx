@@ -35,6 +35,7 @@ export default function PublishArtifact() {
     specs: "",
     creator_handle: "",
     image_url: "",
+    image_urls: [],
     model_url: "",
     material: "silver",
     region: "europe",
