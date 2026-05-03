@@ -1,16 +1,17 @@
 import { db } from '@/lib/db';
-
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import CreatorSidebar from "../components/creator/CreatorSidebar";
 import ArtifactCard from "../components/artifacts/ArtifactCard";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Pencil, Eye } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_STORES, DEMO_ARTIFACTS } from "@/lib/demoData";
 import ShopPromoCodes from "@/components/shop/ShopPromoCodes";
 import ShopNewsletter from "@/components/shop/ShopNewsletter";
 import ShopCollections from "@/components/shop/ShopCollections";
 import SeoTags from "@/components/seo/SeoTags";
+import { hashKey } from "@/lib/crypto";
 
 export default function ShopProfile() {
   const { username } = useParams();
