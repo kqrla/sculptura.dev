@@ -39,6 +39,14 @@ export default function ArtifactDetail() {
   const currentMaterial = selectedMaterial || artifact?.materials?.[0];
   const currentPrice = artifact?.prices?.[currentMaterial];
 
+  // gallery: combine optional image_urls[] with the legacy image_url cover
+  const gallery = (() => {
+    const urls = Array.isArray(artifact?.image_urls) ? artifact.image_urls.filter(Boolean) : [];
+    const merged = artifact?.image_url ? [artifact.image_url, ...urls.filter((u) => u !== artifact.image_url)] : urls;
+    return merged;
+  })();
+  const [activeImage, setActiveImage] = useState(0);
+
   const handleAddToCart = () => {
     if (!artifact || !currentMaterial) return;
     addToCart(artifact, currentMaterial);
@@ -83,10 +91,10 @@ export default function ArtifactDetail() {
         keywords={(artifact.keywords || []).join(', ')}
       />
       <div className="max-w-6xl mx-auto">
-        <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
+        <button onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/explore"))} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 tracking-wide transition-colors">
           <ArrowLeft className="w-4 h-4" />
-          back to explore
-        </Link>
+          back
+        </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* 3D Viewer or image */}
@@ -98,9 +106,22 @@ export default function ArtifactDetail() {
           >
             <ModelViewer
               modelUrl={artifact.model_url}
-              imageUrl={artifact.image_url}
+              imageUrl={gallery[activeImage] || artifact.image_url}
               className="aspect-square"
             />
+            {gallery.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {gallery.map((src, i) => (
+                  <button
+                    key={src + i}
+                    onClick={() => setActiveImage(i)}
+                    className={`shrink-0 w-16 h-16 rounded-xl overflow-hidden border transition-all ${i === activeImage ? "border-foreground" : "border-border/40 opacity-70 hover:opacity-100"}`}
+                  >
+                    <img src={src} alt={`view ${i + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
             {hasModel && (
               <div className="flex items-center gap-2 text-[11px] text-muted-foreground/50 tracking-wide">
                 <Box className="w-3 h-3" />
