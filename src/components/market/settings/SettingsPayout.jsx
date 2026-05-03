@@ -19,6 +19,7 @@ export default function SettingsPayout({ account }) {
   const queryClient = useQueryClient();
   const [method, setMethod] = useState(account?.payout_method ?? "bank_transfer");
   const [details, setDetails] = useState(account?.payout_details ?? "");
+  const [legalName, setLegalName] = useState(account?.payout_legal_name ?? "");
 
   const current = METHODS.find((m) => m.id === method);
 
@@ -26,6 +27,7 @@ export default function SettingsPayout({ account }) {
     mutationFn: () => db.entities.MarketAccount.update(account.id, {
       payout_method: method,
       payout_details: details,
+      payout_legal_name: legalName,
     }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["market-account", account.handle] });
