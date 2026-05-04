@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,8 @@ import { Save } from "lucide-react";
 // `slug` never changes — internal references and admin links stay stable
 // regardless of how often the creator renames themselves.
 //
-// rules: lowercase letters and numbers only, 4+ chars, must be unique.
+// rules: lowercase letters and numbers only, 4+ chars, unique. uniqueness
+// and format are also enforced in the store-update edge function.
 export default function StoreUsername({ account, onSaved }) {
   const queryClient = useQueryClient();
   const [handle, setHandle] = useState(account?.handle ?? "");
@@ -24,25 +25,11 @@ export default function StoreUsername({ account, onSaved }) {
   const saveMutation = useMutation({
     mutationFn: async () => {
       if (!valid) throw new Error("username must be at least 4 letters or numbers");
-      // check uniqueness ourselves so we can show a friendly toast before
-      // the unique index throws a generic 23505.
-      const { data: clash } = await supabase
-        .from("market_accounts")
-        .select("id")
-        .ilike("handle", cleaned)
-        .neq("id", account.id)
-        .maybeSingle();
-      if (clash) throw new Error("that username is already taken");
-
-      const { error } = await supabase
-        .from("market_accounts")
-        .update({ handle: cleaned })
-        .eq("id", account.id);
-      if (error) throw error;
+      return db.entities.MarketAccount.update(account.id, { handle: cleaned });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["market-account", account.handle] });
-      toast.success("username updated");
+      toast.success("username updated, redirecting…");
       onSaved?.(cleaned);
     },
     onError: (err) => toast.error(err.message || "could not update username"),
@@ -64,7 +51,7 @@ export default function StoreUsername({ account, onSaved }) {
             />
           </div>
           <p className="text-[11px] text-muted-foreground/40 tracking-wide">
-            lowercase letters and numbers only, minimum 4 characters. must be unique.
+            lowercase letters and numbers only, minimum 4 characters. must be unique across sculptura.
           </p>
           {handle && handle !== cleaned && (
             <p className="text-[11px] text-amber-600 tracking-wide">
@@ -75,7 +62,7 @@ export default function StoreUsername({ account, onSaved }) {
 
         <div className="bg-secondary/40 rounded-xl border border-border/30 p-4 space-y-1">
           <p className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">permanent slug</p>
-          <p className="text-xs font-mono text-muted-foreground/80">{account?.slug}</p>
+          <p className="text-xs font-mono text-muted-foreground/80">{account?.slug || "—"}</p>
           <p className="text-[11px] text-muted-foreground/40 tracking-wide leading-relaxed">
             this internal id never changes, even if you rename your store. links shared with admins or in
             integrations stay valid.
