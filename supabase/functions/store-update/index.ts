@@ -28,8 +28,13 @@ const ALLOWED = new Set([
   "commission_open","hourly_rate","turnaround_time","rush_available",
   "pricing_margin_pct","pricing_currency","default_margin_pct",
   "newsletter_enabled","newsletter_label","newsletter_signups",
-  "payout_method","payout_details",
+  "payout_method","payout_details","payout_legal_name",
+  "commission_terms","commission_allow_commercial","commission_allow_resell",
+  "commission_allow_modifications","commission_min_budget",
+  "commission_intake_questions","commission_intro",
   "insights_time_spent","insights_tool_costs",
+  // public username — uniqueness + format validated below
+  "handle",
   // status: only allowed transition is draft -> pending_review
   "status",
 ]);
@@ -62,8 +67,24 @@ Deno.serve(async (req) => {
     for (const [k, v] of Object.entries(patch)) {
       if (!ALLOWED.has(k)) continue;
       if (k === "status") {
-        // only allow the submit-for-review transition from draft
         if (v === "pending_review" && account.status === "draft") safe.status = "pending_review";
+        continue;
+      }
+      if (k === "handle") {
+        const next = String(v || "").toLowerCase().trim();
+        if (!/^[a-z0-9]{4,}$/.test(next)) {
+          return json({ error: "username must be 4+ lowercase letters or numbers" }, 400);
+        }
+        if (next !== account.handle) {
+          const { data: clash } = await serviceClient
+            .from("market_accounts")
+            .select("id")
+            .ilike("handle", next)
+            .neq("id", account.id)
+            .maybeSingle();
+          if (clash) return json({ error: "username already taken" }, 409);
+        }
+        safe.handle = next;
         continue;
       }
       safe[k] = v;
