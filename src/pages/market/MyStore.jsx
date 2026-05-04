@@ -113,6 +113,12 @@ export default function MyStore() {
           {/* editor panel */}
           <div>
             {activeTab === "appearance" && <StoreAppearance account={account} onSaved={refetch} />}
+            {activeTab === "username" && (
+              <StoreUsername
+                account={account}
+                onSaved={(next) => { window.location.href = `/store/mystore?handle=${next}&key=${rawKey}`; }}
+              />
+            )}
             {activeTab === "content" && <StoreContent account={account} onSaved={refetch} />}
             {activeTab === "socials" && <StoreSocials account={account} onSaved={refetch} />}
             {activeTab === "commerce" && (
