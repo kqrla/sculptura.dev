@@ -303,9 +303,24 @@ export default function Checkout() {
                     <span className="text-sm font-light text-foreground">${(item.price * (item.quantity || 1)).toFixed(0)}</span>
                   </div>
                 ))}
-                <div className="px-5 py-4 flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground tracking-wide">total</span>
-                  <span className="text-xl font-light tracking-wide text-foreground">${total.toFixed(0)}</span>
+                <div className="px-5 py-4 space-y-2">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
+                    <span>subtotal</span>
+                    <span>${total.toFixed(2)}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
+                    <span>estimated tax (10%)</span>
+                    <span>${(total * 0.1).toFixed(2)}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
+                    <span>shipping</span>
+                    <span>calculated by maker</span>
+                  </div>
+                  <div className="h-px bg-border/40 my-1" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-foreground tracking-wide">total due now</span>
+                    <span className="text-xl font-light tracking-wide text-foreground">${(total * 1.1).toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
 
@@ -319,7 +334,7 @@ export default function Checkout() {
 
               <div className="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3">
                 <p className="text-xs text-amber-700/80 tracking-wide leading-relaxed">
-                  payment is not collected now. the sculptura team will contact you within 24 hours to confirm your order and arrange payment before production begins.
+                  stripe demo mode: no real card is charged. live payments will plug into this same screen once the maker enables stripe. shipping fees set directly by the maker are not included above.
                 </p>
               </div>
 
