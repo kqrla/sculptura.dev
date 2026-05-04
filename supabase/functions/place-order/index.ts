@@ -40,11 +40,13 @@ Deno.serve(async (req) => {
     // pricing isn't snapshotted from a draft / unpublished record.
     const serviceClient = createClient(supabaseUrl, serviceKey);
 
-    const { data: userData, error: userErr } = await userClient.auth.getUser(jwt);
-    if (userErr || !userData?.user) {
-      return json({ error: "not authenticated" }, 401);
+    // optional auth: guests may also place orders. when a jwt is present
+    // we attach user_id so the order shows up in their buyer dashboard.
+    let userId: string | null = null;
+    if (jwt) {
+      const { data: userData } = await userClient.auth.getUser(jwt);
+      if (userData?.user) userId = userData.user.id;
     }
-    const user = userData.user;
 
     const body = await req.json();
     const items = Array.isArray(body?.items) ? body.items : [];
@@ -56,6 +58,7 @@ Deno.serve(async (req) => {
     if (!customer.email || !customer.name) return json({ error: "missing customer info" }, 400);
     if (!shippingAddress) return json({ error: "missing shipping address" }, 400);
 
+    const couponCode = String(body?.coupon_code || "").trim().toUpperCase();
     const ids = [...new Set(items.map((i: any) => String(i.artifact_id)))];
     const { data: artifacts, error: aerr } = await serviceClient
       .from("artifacts")
@@ -65,6 +68,25 @@ Deno.serve(async (req) => {
 
     const byId = new Map<string, any>((artifacts || []).map((a) => [a.id, a]));
 
+    // resolve coupon discount per creator handle (coupons live on the
+    // creator's market_account row).
+    const handles = [...new Set((artifacts || []).map((a: any) => a.creator_handle).filter(Boolean))];
+    const discountByHandle = new Map<string, number>();
+    if (couponCode && handles.length) {
+      const { data: accounts } = await serviceClient
+        .from("market_accounts")
+        .select("handle, coupons")
+        .in("handle", handles);
+      for (const acc of accounts || []) {
+        const match = (acc.coupons || []).find((c: any) =>
+          String(c.code || "").toUpperCase() === couponCode &&
+          c.active &&
+          (!c.expires || new Date(c.expires) >= new Date())
+        );
+        if (match) discountByHandle.set(acc.handle, Number(match.discount_pct) || 0);
+      }
+    }
+
     const rows: any[] = [];
     for (const item of items) {
       const a = byId.get(String(item.artifact_id));
@@ -72,12 +94,14 @@ Deno.serve(async (req) => {
       if (a.status !== "published") return json({ error: `artifact ${a.name} is not available` }, 400);
       const material = String(item.material || "");
       const qty = Math.max(1, Math.min(10, Number(item.quantity || 1)));
-      const unitPrice = Number((a.prices || {})[material] || 0);
+      const baseUnitPrice = Number((a.prices || {})[material] || 0);
+      const discountPct = discountByHandle.get(a.creator_handle) || 0;
+      const unitPrice = baseUnitPrice * (1 - discountPct / 100);
       const unitMfg = Number((a.manufacturing_costs || {})[material] || 0);
       const unitEarn = Number((a.creator_earnings || {})[material] || 0);
 
       rows.push({
-        user_id: user.id,
+        user_id: userId,
         artifact_id: a.id,
         artifact_name: a.name,
         artifact_image_url: a.image_url || "",
