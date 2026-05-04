@@ -97,6 +97,20 @@ export default function Header() {
             {dark ? <Sun className="w-3.5 h-3.5 text-pancake" /> : <Moon className="w-3.5 h-3.5 text-muted-foreground" />}
           </button>
 
+          {/* Wishlist button */}
+          <Link
+            to={isAuthenticated ? "/dashboard/buyer" : "/demo/buyer"}
+            className="relative w-8 h-8 flex items-center justify-center rounded-full border border-border/60 bg-secondary/60 hover:bg-secondary transition-colors"
+            aria-label="wishlist"
+          >
+            <Heart className="w-3.5 h-3.5 text-muted-foreground" />
+            {wishCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-foreground text-background text-[9px] font-mono flex items-center justify-center">
+                {wishCount}
+              </span>
+            )}
+          </Link>
+
           {/* Cart button */}
           <button
             onClick={() => setCartOpen(true)}
@@ -111,10 +125,10 @@ export default function Header() {
             )}
           </button>
 
-          <Link to="/store/access">
+          <Link to={isAuthenticated ? "/dashboard/buyer" : "/store/access"}>
             <Button variant="outline" className="rounded-full text-sm tracking-wide border-border/80 gap-2">
               <User className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">dashboard</span>
+              <span className="hidden sm:inline">{isAuthenticated ? "my account" : "dashboard"}</span>
             </Button>
           </Link>
         </div>
