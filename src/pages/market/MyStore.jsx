@@ -14,9 +14,11 @@ import StoreCoupons from "@/components/market/mystore/StoreCoupons";
 import StoreContent from "@/components/market/mystore/StoreContent";
 import StoreNewsletter from "@/components/market/mystore/StoreNewsletter";
 import StorePreviewCard from "@/components/market/mystore/StorePreviewCard";
+import StoreUsername from "@/components/market/mystore/StoreUsername";
 
 const TABS = [
   { id: "appearance", label: "appearance" },
+  { id: "username", label: "username" },
   { id: "content", label: "content & faq" },
   { id: "socials", label: "socials" },
   { id: "commerce", label: "tip jar & waitlist" },
