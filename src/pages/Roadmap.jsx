@@ -82,6 +82,9 @@ const phases = [
       { label: "creator analytics and revenue insights", done: false },
       { label: "bulk ordering for studios and galleries", done: false },
       { label: "mobile apps for iOS and Android", done: false },
+      { label: "native sculptura tip jar (no third-party redirect)", done: false },
+      { label: "creator account tiers based on sales volume", done: false },
+      { label: "smarter artifact seo algorithm tied to creator tier", done: false },
     ],
   },
 ];
