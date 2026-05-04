@@ -85,39 +85,11 @@ export default function Auth() {
     }
   };
 
-  const enterDemoMode = async () => {
-    setBusy(true);
-    try {
-      const creds = generateDemoCredentials();
-      const { error } = await supabase.auth.signUp({
-        email: creds.email,
-        password: creds.password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: { display_name: creds.displayName, is_demo: true },
-        },
-      });
-      if (error) throw error;
-      // demo emails on the .demo tld won't ever receive a confirmation
-      // mail, so try a direct sign-in. if confirm-email is required by
-      // the project this will surface as an error - in that case the
-      // user should disable email confirmation in the cloud auth ui or
-      // just use the regular signup flow.
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: creds.email,
-        password: creds.password,
-      });
-      if (signInError) {
-        toast.error('demo mode needs email confirmation disabled. use email signup instead.');
-      } else {
-        toast.success('welcome to demo mode');
-        navigate('/');
-      }
-    } catch (err) {
-      toast.error(err.message || 'could not start demo mode');
-    } finally {
-      setBusy(false);
-    }
+  // demo mode: skip signup entirely. we just route to the public buyer
+  // demo sandbox which uses mock data via localStorage. this avoids the
+  // email-confirmation wall and works without any backend roundtrip.
+  const enterDemoMode = () => {
+    navigate('/demo/buyer');
   };
 
   return (
