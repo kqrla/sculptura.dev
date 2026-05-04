@@ -1,17 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User, Moon, Sun, ShoppingBag } from "lucide-react";
+import { Search, User, Moon, Sun, ShoppingBag, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import CartDrawer from "@/components/cart/CartDrawer";
 import CurrencySwitcher from "@/components/layout/CurrencySwitcher";
 import { getCart } from "@/lib/cartStore";
+import { getWishlist } from "@/lib/wishlistStore";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(() => getCart().reduce((s, i) => s + (i.quantity || 1), 0));
+  const [wishCount, setWishCount] = useState(() => getWishlist().length);
   const [dark, setDark] = useState(() => {
     if (typeof window !== "undefined") {
       return document.documentElement.classList.contains("dark") ||
@@ -32,8 +36,13 @@ export default function Header() {
 
   useEffect(() => {
     const sync = () => setCartCount(getCart().reduce((s, i) => s + (i.quantity || 1), 0));
+    const syncWish = () => setWishCount(getWishlist().length);
     window.addEventListener("cart-updated", sync);
-    return () => window.removeEventListener("cart-updated", sync);
+    window.addEventListener("wishlist-updated", syncWish);
+    return () => {
+      window.removeEventListener("cart-updated", sync);
+      window.removeEventListener("wishlist-updated", syncWish);
+    };
   }, []);
 
   return (
