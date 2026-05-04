@@ -347,7 +347,7 @@ export default function Checkout() {
                   disabled={isPlacing}
                   className="flex-1 rounded-full py-6 text-sm tracking-wider bg-foreground text-background hover:bg-foreground/90 shadow-paper"
                 >
-                  {isPlacing ? "placing order..." : "confirm order"}
+                  {isPlacing ? "placing order..." : "pay with stripe (demo)"}
                 </Button>
               </div>
             </motion.div>
