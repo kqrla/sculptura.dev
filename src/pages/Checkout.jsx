@@ -84,7 +84,35 @@ export default function Checkout() {
     })();
   }, [cart]);
 
-  const total = getCartTotal(cart);
+  const subtotal = getCartTotal(cart);
+  // discount only applies to items from the matching creator handle.
+  const discountAmount = couponApplied
+    ? cart.reduce((sum, it) => {
+        if (it.creatorHandle !== couponApplied.handle) return sum;
+        return sum + it.price * (it.quantity || 1) * (couponApplied.pct / 100);
+      }, 0)
+    : 0;
+  const totalAfterDiscount = subtotal - discountAmount;
+  const tax = totalAfterDiscount * 0.1;
+  const total = totalAfterDiscount + tax;
+
+  const applyCoupon = () => {
+    setCouponError("");
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+    const match = storeCoupons.find(
+      (c) => String(c.code || "").toUpperCase() === code &&
+        c.active &&
+        (!c.expires || new Date(c.expires) >= new Date())
+    );
+    if (!match) {
+      setCouponError("coupon not valid for items in your cart");
+      setCouponApplied(null);
+      return;
+    }
+    setCouponApplied({ code, pct: Number(match.discount_pct) || 0, handle: match.handle });
+    toast.success(`coupon ${code} applied`);
+  };
 
   const goNext = () => {
     if (step === 0) {
@@ -103,16 +131,11 @@ export default function Checkout() {
     setStep((s) => Math.min(s + 1, 2));
   };
 
-  // delegating order creation to a server-side function so prices and
-  // earnings are snapshotted from the canonical artifact record rather
-  // than trusted from the cart payload. the user must be signed in -
-  // the rls policy on orders requires user_id = auth.uid().
+  // place-order accepts both signed-in users and guests. when signed in,
+  // a jwt is attached automatically so user_id gets set on the order.
+  // when guest, we still rely on customer_email so the buyer dashboard
+  // can link orders to a future account with the same email.
   const placeOrder = async () => {
-    if (!isAuthenticated) {
-      toast.error('please sign in to place your order');
-      navigate('/auth');
-      return;
-    }
     setIsPlacing(true);
     const shippingAddress = `${address.line1}${address.line2 ? ", " + address.line2 : ""}, ${address.city}, ${address.postal}, ${address.country}`;
     try {
@@ -123,12 +146,10 @@ export default function Checkout() {
             material: item.material,
             quantity: item.quantity || 1,
           })),
-          customer: {
-            name: details.name,
-            email: details.email,
-          },
+          customer: { name: details.name, email: details.email },
           shipping_address: shippingAddress,
           notes: notes || '',
+          coupon_code: couponApplied?.code || '',
         },
       });
       if (error) throw error;
