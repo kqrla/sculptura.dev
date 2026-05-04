@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Heart } from "lucide-react";
 import MaterialTag from "./MaterialTag";
 import { motion } from "framer-motion";
 import { useCurrency } from "@/lib/CurrencyContext";
+import { isWishlisted, toggleWishlist } from "@/lib/wishlistStore";
 
 export default function ArtifactCard({ artifact }) {
   const { format } = useCurrency();
+  const [wished, setWished] = useState(false);
+  useEffect(() => {
+    setWished(isWishlisted(artifact.id));
+    const sync = () => setWished(isWishlisted(artifact.id));
+    window.addEventListener("wishlist-updated", sync);
+    return () => window.removeEventListener("wishlist-updated", sync);
+  }, [artifact.id]);
   const defaultPrice = artifact.prices
     ? Object.values(artifact.prices)[0]
     : null;
@@ -41,6 +51,16 @@ export default function ArtifactCard({ artifact }) {
               </div>
             </div>
           )}
+
+          {/* Wishlist heart */}
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(artifact); }}
+            aria-label={wished ? "remove from wishlist" : "add to wishlist"}
+            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 flex items-center justify-center hover:bg-background transition-colors"
+          >
+            <Heart className={`w-3.5 h-3.5 ${wished ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
+          </button>
 
           {/* Specs annotation */}
           {artifact.specs && (

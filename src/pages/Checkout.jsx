@@ -27,7 +27,7 @@ const stepVariants = {
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuth();
   const [step, setStep] = useState(0);
   const [cart, setCart] = useState([]);
   const [placed, setPlaced] = useState(false);
@@ -36,7 +36,7 @@ export default function Checkout() {
   const savedAddr = getSavedAddress();
 
   // prefill from the signed-in user when we have one. customers can
-  // still edit these before placing the order.
+  // still edit these before placing the order. guests fill from scratch.
   const [details, setDetails] = useState({
     name: user?.display_name || "",
     email: user?.email || "",
@@ -46,6 +46,10 @@ export default function Checkout() {
   );
   const [saveAddr, setSaveAddr] = useState(!!savedAddr);
   const [notes, setNotes] = useState("");
+  const [couponInput, setCouponInput] = useState("");
+  const [couponApplied, setCouponApplied] = useState(null); // { code, pct }
+  const [couponError, setCouponError] = useState("");
+  const [storeCoupons, setStoreCoupons] = useState([]); // flattened across creators in cart
 
   useEffect(() => {
     if (user && !details.email) {
@@ -60,7 +64,55 @@ export default function Checkout() {
     setCart(c);
   }, [navigate, placed]);
 
-  const total = getCartTotal(cart);
+  // pull live coupons for the creators present in the cart so we can
+  // validate the user's promo code locally before sending the order.
+  useEffect(() => {
+    (async () => {
+      const handles = [...new Set(cart.map((i) => i.creatorHandle).filter(Boolean))];
+      if (!handles.length) { setStoreCoupons([]); return; }
+      const { data } = await supabase
+        .from("market_accounts")
+        .select("handle, coupons")
+        .in("handle", handles);
+      const flat = [];
+      for (const acc of data || []) {
+        for (const c of acc.coupons || []) {
+          flat.push({ ...c, handle: acc.handle });
+        }
+      }
+      setStoreCoupons(flat);
+    })();
+  }, [cart]);
+
+  const subtotal = getCartTotal(cart);
+  // discount only applies to items from the matching creator handle.
+  const discountAmount = couponApplied
+    ? cart.reduce((sum, it) => {
+        if (it.creatorHandle !== couponApplied.handle) return sum;
+        return sum + it.price * (it.quantity || 1) * (couponApplied.pct / 100);
+      }, 0)
+    : 0;
+  const totalAfterDiscount = subtotal - discountAmount;
+  const tax = totalAfterDiscount * 0.1;
+  const total = totalAfterDiscount + tax;
+
+  const applyCoupon = () => {
+    setCouponError("");
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+    const match = storeCoupons.find(
+      (c) => String(c.code || "").toUpperCase() === code &&
+        c.active &&
+        (!c.expires || new Date(c.expires) >= new Date())
+    );
+    if (!match) {
+      setCouponError("coupon not valid for items in your cart");
+      setCouponApplied(null);
+      return;
+    }
+    setCouponApplied({ code, pct: Number(match.discount_pct) || 0, handle: match.handle });
+    toast.success(`coupon ${code} applied`);
+  };
 
   const goNext = () => {
     if (step === 0) {
@@ -79,16 +131,11 @@ export default function Checkout() {
     setStep((s) => Math.min(s + 1, 2));
   };
 
-  // delegating order creation to a server-side function so prices and
-  // earnings are snapshotted from the canonical artifact record rather
-  // than trusted from the cart payload. the user must be signed in -
-  // the rls policy on orders requires user_id = auth.uid().
+  // place-order accepts both signed-in users and guests. when signed in,
+  // a jwt is attached automatically so user_id gets set on the order.
+  // when guest, we still rely on customer_email so the buyer dashboard
+  // can link orders to a future account with the same email.
   const placeOrder = async () => {
-    if (!isAuthenticated) {
-      toast.error('please sign in to place your order');
-      navigate('/auth');
-      return;
-    }
     setIsPlacing(true);
     const shippingAddress = `${address.line1}${address.line2 ? ", " + address.line2 : ""}, ${address.city}, ${address.postal}, ${address.country}`;
     try {
@@ -99,12 +146,10 @@ export default function Checkout() {
             material: item.material,
             quantity: item.quantity || 1,
           })),
-          customer: {
-            name: details.name,
-            email: details.email,
-          },
+          customer: { name: details.name, email: details.email },
           shipping_address: shippingAddress,
           notes: notes || '',
+          coupon_code: couponApplied?.code || '',
         },
       });
       if (error) throw error;
@@ -303,14 +348,44 @@ export default function Checkout() {
                     <span className="text-sm font-light text-foreground">${(item.price * (item.quantity || 1)).toFixed(0)}</span>
                   </div>
                 ))}
-                <div className="px-5 py-4 space-y-2">
+                <div className="px-5 py-4 space-y-3">
+                  {/* Promo code */}
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">promo code</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={couponInput}
+                        onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
+                        placeholder="enter code"
+                        className="rounded-xl bg-card border-border/60 text-sm tracking-widest font-mono uppercase"
+                      />
+                      <Button type="button" variant="outline" onClick={applyCoupon} className="rounded-full text-xs tracking-wider">
+                        apply
+                      </Button>
+                    </div>
+                    {couponError && <p className="text-[11px] text-red-500 tracking-wide">{couponError}</p>}
+                    {couponApplied && (
+                      <p className="text-[11px] text-emerald-600 tracking-wide">
+                        {couponApplied.code} applied · {couponApplied.pct}% off items by {couponApplied.handle}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="h-px bg-border/40" />
+
                   <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
                     <span>subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>${subtotal.toFixed(2)}</span>
                   </div>
+                  {discountAmount > 0 && (
+                    <div className="flex items-center justify-between text-xs text-emerald-600 tracking-wide">
+                      <span>discount ({couponApplied.code})</span>
+                      <span>- ${discountAmount.toFixed(2)}</span>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
                     <span>estimated tax (10%)</span>
-                    <span>${(total * 0.1).toFixed(2)}</span>
+                    <span>${tax.toFixed(2)}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
                     <span>shipping</span>
@@ -319,7 +394,7 @@ export default function Checkout() {
                   <div className="h-px bg-border/40 my-1" />
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-foreground tracking-wide">total due now</span>
-                    <span className="text-xl font-light tracking-wide text-foreground">${(total * 1.1).toFixed(2)}</span>
+                    <span className="text-xl font-light tracking-wide text-foreground">${total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

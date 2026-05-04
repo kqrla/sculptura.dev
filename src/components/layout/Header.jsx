@@ -1,17 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User, Moon, Sun, ShoppingBag } from "lucide-react";
+import { Search, User, Moon, Sun, ShoppingBag, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import CartDrawer from "@/components/cart/CartDrawer";
 import CurrencySwitcher from "@/components/layout/CurrencySwitcher";
 import { getCart } from "@/lib/cartStore";
+import { getWishlist } from "@/lib/wishlistStore";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(() => getCart().reduce((s, i) => s + (i.quantity || 1), 0));
+  const [wishCount, setWishCount] = useState(() => getWishlist().length);
   const [dark, setDark] = useState(() => {
     if (typeof window !== "undefined") {
       return document.documentElement.classList.contains("dark") ||
@@ -32,8 +36,13 @@ export default function Header() {
 
   useEffect(() => {
     const sync = () => setCartCount(getCart().reduce((s, i) => s + (i.quantity || 1), 0));
+    const syncWish = () => setWishCount(getWishlist().length);
     window.addEventListener("cart-updated", sync);
-    return () => window.removeEventListener("cart-updated", sync);
+    window.addEventListener("wishlist-updated", syncWish);
+    return () => {
+      window.removeEventListener("cart-updated", sync);
+      window.removeEventListener("wishlist-updated", syncWish);
+    };
   }, []);
 
   return (
@@ -88,6 +97,20 @@ export default function Header() {
             {dark ? <Sun className="w-3.5 h-3.5 text-pancake" /> : <Moon className="w-3.5 h-3.5 text-muted-foreground" />}
           </button>
 
+          {/* Wishlist button */}
+          <Link
+            to={isAuthenticated ? "/dashboard/buyer" : "/demo/buyer"}
+            className="relative w-8 h-8 flex items-center justify-center rounded-full border border-border/60 bg-secondary/60 hover:bg-secondary transition-colors"
+            aria-label="wishlist"
+          >
+            <Heart className="w-3.5 h-3.5 text-muted-foreground" />
+            {wishCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-foreground text-background text-[9px] font-mono flex items-center justify-center">
+                {wishCount}
+              </span>
+            )}
+          </Link>
+
           {/* Cart button */}
           <button
             onClick={() => setCartOpen(true)}
@@ -102,10 +125,10 @@ export default function Header() {
             )}
           </button>
 
-          <Link to="/store/access">
+          <Link to={isAuthenticated ? "/dashboard/buyer" : "/store/access"}>
             <Button variant="outline" className="rounded-full text-sm tracking-wide border-border/80 gap-2">
               <User className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">dashboard</span>
+              <span className="hidden sm:inline">{isAuthenticated ? "my account" : "dashboard"}</span>
             </Button>
           </Link>
         </div>
