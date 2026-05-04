@@ -74,7 +74,7 @@ export default function ShopProfile() {
       } : null);
   const artifacts = demoStore ? demoArtifacts : liveArtifacts;
 
-  if (profileLoading && !demoStore) {
+  if ((profileLoading || marketLoading) && !demoStore) {
     return (
       <div className="px-6 py-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
