@@ -27,7 +27,7 @@ const stepVariants = {
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuth();
   const [step, setStep] = useState(0);
   const [cart, setCart] = useState([]);
   const [placed, setPlaced] = useState(false);
@@ -36,7 +36,7 @@ export default function Checkout() {
   const savedAddr = getSavedAddress();
 
   // prefill from the signed-in user when we have one. customers can
-  // still edit these before placing the order.
+  // still edit these before placing the order. guests fill from scratch.
   const [details, setDetails] = useState({
     name: user?.display_name || "",
     email: user?.email || "",
@@ -46,6 +46,10 @@ export default function Checkout() {
   );
   const [saveAddr, setSaveAddr] = useState(!!savedAddr);
   const [notes, setNotes] = useState("");
+  const [couponInput, setCouponInput] = useState("");
+  const [couponApplied, setCouponApplied] = useState(null); // { code, pct }
+  const [couponError, setCouponError] = useState("");
+  const [storeCoupons, setStoreCoupons] = useState([]); // flattened across creators in cart
 
   useEffect(() => {
     if (user && !details.email) {
@@ -59,6 +63,26 @@ export default function Checkout() {
     if (c.length === 0 && !placed) navigate("/explore");
     setCart(c);
   }, [navigate, placed]);
+
+  // pull live coupons for the creators present in the cart so we can
+  // validate the user's promo code locally before sending the order.
+  useEffect(() => {
+    (async () => {
+      const handles = [...new Set(cart.map((i) => i.creatorHandle).filter(Boolean))];
+      if (!handles.length) { setStoreCoupons([]); return; }
+      const { data } = await supabase
+        .from("market_accounts")
+        .select("handle, coupons")
+        .in("handle", handles);
+      const flat = [];
+      for (const acc of data || []) {
+        for (const c of acc.coupons || []) {
+          flat.push({ ...c, handle: acc.handle });
+        }
+      }
+      setStoreCoupons(flat);
+    })();
+  }, [cart]);
 
   const total = getCartTotal(cart);
 
