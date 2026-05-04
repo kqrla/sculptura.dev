@@ -296,6 +296,7 @@ export type Database = {
           pricing_margin_pct: number | null
           review_notes: string | null
           rush_available: boolean
+          slug: string
           social_discord: string | null
           social_instagram: string | null
           social_patreon: string | null
@@ -357,6 +358,7 @@ export type Database = {
           pricing_margin_pct?: number | null
           review_notes?: string | null
           rush_available?: boolean
+          slug: string
           social_discord?: string | null
           social_instagram?: string | null
           social_patreon?: string | null
@@ -418,6 +420,7 @@ export type Database = {
           pricing_margin_pct?: number | null
           review_notes?: string | null
           rush_available?: boolean
+          slug?: string
           social_discord?: string | null
           social_instagram?: string | null
           social_patreon?: string | null

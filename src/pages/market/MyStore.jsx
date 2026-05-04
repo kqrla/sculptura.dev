@@ -14,9 +14,11 @@ import StoreCoupons from "@/components/market/mystore/StoreCoupons";
 import StoreContent from "@/components/market/mystore/StoreContent";
 import StoreNewsletter from "@/components/market/mystore/StoreNewsletter";
 import StorePreviewCard from "@/components/market/mystore/StorePreviewCard";
+import StoreUsername from "@/components/market/mystore/StoreUsername";
 
 const TABS = [
   { id: "appearance", label: "appearance" },
+  { id: "username", label: "username" },
   { id: "content", label: "content & faq" },
   { id: "socials", label: "socials" },
   { id: "commerce", label: "tip jar & waitlist" },
@@ -111,6 +113,12 @@ export default function MyStore() {
           {/* editor panel */}
           <div>
             {activeTab === "appearance" && <StoreAppearance account={account} onSaved={refetch} />}
+            {activeTab === "username" && (
+              <StoreUsername
+                account={account}
+                onSaved={(next) => { window.location.href = `/store/mystore?handle=${next}&key=${rawKey}`; }}
+              />
+            )}
             {activeTab === "content" && <StoreContent account={account} onSaved={refetch} />}
             {activeTab === "socials" && <StoreSocials account={account} onSaved={refetch} />}
             {activeTab === "commerce" && (
