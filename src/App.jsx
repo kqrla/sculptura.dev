@@ -89,6 +89,7 @@ const RoutedApp = () => {
         <Route path="/about" element={<About />} />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/dashboard/buyer" element={<BuyerDashboard />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
