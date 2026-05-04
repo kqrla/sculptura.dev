@@ -37,6 +37,8 @@ import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
 import CommissionPage from './pages/CommissionPage';
 import DemoApp from './pages/DemoApp';
+import BuyerDashboard from './pages/BuyerDashboard';
+import DemoBuyer from './pages/DemoBuyer';
 
 const RoutedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -70,6 +72,7 @@ const RoutedApp = () => {
 
       {/* no-login creator demo sandbox (localStorage-backed) */}
       <Route path="/demo/app" element={<DemoApp />} />
+      <Route path="/demo/buyer" element={<DemoBuyer />} />
 
       {/* main app shell */}
       <Route element={<AppLayout />}>
