@@ -348,14 +348,44 @@ export default function Checkout() {
                     <span className="text-sm font-light text-foreground">${(item.price * (item.quantity || 1)).toFixed(0)}</span>
                   </div>
                 ))}
-                <div className="px-5 py-4 space-y-2">
+                <div className="px-5 py-4 space-y-3">
+                  {/* Promo code */}
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">promo code</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={couponInput}
+                        onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
+                        placeholder="enter code"
+                        className="rounded-xl bg-card border-border/60 text-sm tracking-widest font-mono uppercase"
+                      />
+                      <Button type="button" variant="outline" onClick={applyCoupon} className="rounded-full text-xs tracking-wider">
+                        apply
+                      </Button>
+                    </div>
+                    {couponError && <p className="text-[11px] text-red-500 tracking-wide">{couponError}</p>}
+                    {couponApplied && (
+                      <p className="text-[11px] text-emerald-600 tracking-wide">
+                        {couponApplied.code} applied · {couponApplied.pct}% off items by {couponApplied.handle}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="h-px bg-border/40" />
+
                   <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
                     <span>subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>${subtotal.toFixed(2)}</span>
                   </div>
+                  {discountAmount > 0 && (
+                    <div className="flex items-center justify-between text-xs text-emerald-600 tracking-wide">
+                      <span>discount ({couponApplied.code})</span>
+                      <span>- ${discountAmount.toFixed(2)}</span>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
                     <span>estimated tax (10%)</span>
-                    <span>${(total * 0.1).toFixed(2)}</span>
+                    <span>${tax.toFixed(2)}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs text-muted-foreground tracking-wide">
                     <span>shipping</span>
@@ -364,7 +394,7 @@ export default function Checkout() {
                   <div className="h-px bg-border/40 my-1" />
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-foreground tracking-wide">total due now</span>
-                    <span className="text-xl font-light tracking-wide text-foreground">${(total * 1.1).toFixed(2)}</span>
+                    <span className="text-xl font-light tracking-wide text-foreground">${total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
