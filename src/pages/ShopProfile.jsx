@@ -44,7 +44,7 @@ export default function ShopProfile() {
   // creator_profiles row yet, so a store owner who hasn't filled in a
   // separate creator profile (or who is still in pending review) can
   // still preview their public storefront from /store/mystore.
-  const { data: marketAccount } = useQuery({
+  const { data: marketAccount, isLoading: marketLoading } = useQuery({
     queryKey: ["shop-market-account", username],
     queryFn: () => db.entities.MarketAccount.filter({ handle: username }).then((r) => r?.[0] ?? null),
     enabled: !!username && !demoStore,
