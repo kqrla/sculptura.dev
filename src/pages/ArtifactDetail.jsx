@@ -210,6 +210,33 @@ export default function ArtifactDetail() {
               </div>
             )}
 
+            {/* measurements (dimensions + weight in grams) */}
+            {(artifact.dimensions || artifact.weight_grams) && (
+              <div className="grid grid-cols-2 gap-3">
+                {artifact.dimensions && (
+                  <div className="px-4 py-3 rounded-xl bg-secondary/40 border border-border/30">
+                    <p className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">dimensions</p>
+                    <p className="text-sm tracking-wide text-foreground mt-1">{artifact.dimensions}</p>
+                  </div>
+                )}
+                {artifact.weight_grams != null && artifact.weight_grams !== "" && (
+                  <div className="px-4 py-3 rounded-xl bg-secondary/40 border border-border/30">
+                    <p className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">weight</p>
+                    <p className="text-sm tracking-wide text-foreground mt-1">{Number(artifact.weight_grams)} g</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* pendant chain disclaimer */}
+            {artifact.artifact_type === "pendant" && (
+              <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-secondary/40 border border-border/30">
+                <span className="text-xs tracking-wider text-muted-foreground">
+                  pendant only, chain not included
+                </span>
+              </div>
+            )}
+
             {/* Made to order */}
             {artifact.made_to_order && (
               <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-secondary/40 border border-border/30">
