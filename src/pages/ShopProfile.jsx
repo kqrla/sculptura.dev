@@ -1,10 +1,11 @@
 import { db } from '@/lib/db';
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import CreatorSidebar from "../components/creator/CreatorSidebar";
 import ArtifactCard from "../components/artifacts/ArtifactCard";
-import { ArrowLeft, Pencil, Eye } from "lucide-react";
+import { ArrowLeft, Pencil, Eye, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_STORES, DEMO_ARTIFACTS } from "@/lib/demoData";
 import ShopPromoCodes from "@/components/shop/ShopPromoCodes";
@@ -12,6 +13,8 @@ import ShopNewsletter from "@/components/shop/ShopNewsletter";
 import ShopCollections from "@/components/shop/ShopCollections";
 import SeoTags from "@/components/seo/SeoTags";
 import { hashKey } from "@/lib/crypto";
+
+const ARTIFACT_TYPES = ["all", "ring", "earring", "bracelet", "brooch", "pendant", "other"];
 
 export default function ShopProfile() {
   const { username } = useParams();
@@ -126,8 +129,24 @@ export default function ShopProfile() {
     return () => { cancelled = true; };
   }, [ownerKey, marketAccount?.access_key_hash]);
 
-  const featured = artifacts.find((a) => a.is_featured);
-  const rest = artifacts.filter((a) => a.id !== featured?.id);
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+
+  const filteredArtifacts = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return (artifacts || []).filter((a) => {
+      const matchType = typeFilter === "all" || (a.artifact_type || "").toLowerCase() === typeFilter;
+      const matchSearch = !q
+        || a.name?.toLowerCase().includes(q)
+        || a.description?.toLowerCase().includes(q)
+        || (a.tags || []).some((t) => t.toLowerCase().includes(q))
+        || (a.materials || []).some((m) => m.toLowerCase().includes(q));
+      return matchType && matchSearch;
+    });
+  }, [artifacts, search, typeFilter]);
+
+  const featured = filteredArtifacts.find((a) => a.is_featured);
+  const rest = filteredArtifacts.filter((a) => a.id !== featured?.id);
 
   return (
     <div className="px-6 py-10">
@@ -173,6 +192,34 @@ export default function ShopProfile() {
             </h2>
 
             {!demoStore && <ShopCollections username={profile.username} collections={collections} />}
+
+            {/* search + type filters within this store */}
+            <div className="space-y-3">
+              <div className="relative max-w-sm">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="search this store..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-10 rounded-full bg-card border-border/60 text-sm tracking-wide"
+                />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {ARTIFACT_TYPES.map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setTypeFilter(t)}
+                    className={`px-3 py-1 rounded-full text-[11px] tracking-wider lowercase border transition-all ${
+                      typeFilter === t
+                        ? "bg-foreground text-background border-foreground"
+                        : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {featured && (
               <div>
