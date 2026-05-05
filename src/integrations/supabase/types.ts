@@ -26,6 +26,7 @@ export type Database = {
           creator_handle: string
           creator_name: string | null
           description: string | null
+          dimensions: string | null
           id: string
           image_url: string | null
           image_urls: string[] | null
@@ -46,6 +47,7 @@ export type Database = {
           status: string
           tags: string[] | null
           updated_at: string
+          weight_grams: number | null
         }
         Insert: {
           admin_reviewed?: boolean
@@ -58,6 +60,7 @@ export type Database = {
           creator_handle: string
           creator_name?: string | null
           description?: string | null
+          dimensions?: string | null
           id?: string
           image_url?: string | null
           image_urls?: string[] | null
@@ -78,6 +81,7 @@ export type Database = {
           status?: string
           tags?: string[] | null
           updated_at?: string
+          weight_grams?: number | null
         }
         Update: {
           admin_reviewed?: boolean
@@ -90,6 +94,7 @@ export type Database = {
           creator_handle?: string
           creator_name?: string | null
           description?: string | null
+          dimensions?: string | null
           id?: string
           image_url?: string | null
           image_urls?: string[] | null
@@ -110,6 +115,7 @@ export type Database = {
           status?: string
           tags?: string[] | null
           updated_at?: string
+          weight_grams?: number | null
         }
         Relationships: [
           {
