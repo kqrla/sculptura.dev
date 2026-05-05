@@ -35,6 +35,8 @@ export default function PublishArtifact() {
     category: "",
     artifact_type: "",
     specs: "",
+    dimensions: "",
+    weight_grams: "",
     creator_handle: "",
     image_url: "",
     image_urls: [],
@@ -147,6 +149,8 @@ export default function PublishArtifact() {
         category: data.category,
         artifact_type: data.artifact_type || null,
         specs: data.specs,
+        dimensions: data.dimensions || null,
+        weight_grams: data.weight_grams === "" || data.weight_grams == null ? null : Number(data.weight_grams),
         creator_handle: data.creator_handle,
         image_url: data.image_url,
         image_urls: data.image_urls || [],
@@ -301,6 +305,18 @@ export default function PublishArtifact() {
                 <div className="space-y-2">
                   <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">specs</Label>
                   <Input placeholder="e.g. 12mm, polished" value={form.specs} onChange={(e) => update("specs", e.target.value)} className="rounded-xl bg-card border-border/60 text-sm tracking-wide" />
+                </div>
+              </div>
+
+              {/* dimensions + weight (metric) — shown on the listing */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">dimensions</Label>
+                  <Input placeholder="e.g. 12 x 8 x 4 mm" value={form.dimensions} onChange={(e) => update("dimensions", e.target.value)} className="rounded-xl bg-card border-border/60 text-sm tracking-wide" />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">weight (grams)</Label>
+                  <Input type="number" min="0" step="0.1" placeholder="e.g. 4.2" value={form.weight_grams} onChange={(e) => update("weight_grams", e.target.value)} className="rounded-xl bg-card border-border/60 text-sm tracking-wide" />
                 </div>
               </div>
 
@@ -577,6 +593,11 @@ export default function PublishArtifact() {
               <div>
                 <h2 className="font-serif text-2xl font-light tracking-tight lowercase text-foreground mb-1">submit for review</h2>
                 <p className="text-sm text-muted-foreground tracking-wide font-light">the sculptura team will review your design, provide a manufacturing quote, and publish it to the marketplace.</p>
+              </div>
+
+              {/* manufacturer caveat — approved listings can still be flagged later */}
+              <div className="rounded-[18px] border border-amber-200/70 bg-amber-50/60 p-4 text-xs tracking-wide text-amber-900/80 leading-relaxed">
+                heads up: even after approval, an order may not be processed if our manufacturer deems the piece unprintable or structurally unsound. if that happens, we'll reach out so you can adjust the design. a full guide on engineering pieces and design rules is coming soon in the sculptura docs and knowledge base, see the roadmap.
               </div>
 
               <div className="bg-card rounded-[20px] border border-border/50 shadow-paper overflow-hidden">

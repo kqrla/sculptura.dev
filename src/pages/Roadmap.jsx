@@ -85,6 +85,8 @@ const phases = [
       { label: "native sculptura tip jar (no third-party redirect)", done: false },
       { label: "creator account tiers based on sales volume", done: false },
       { label: "smarter artifact seo algorithm tied to creator tier", done: false },
+      { label: "engineering & design rules guide for printable pieces", done: false },
+      { label: "sculptura docs and creator knowledge base", done: false },
     ],
   },
 ];
