@@ -15,6 +15,7 @@ import { MATERIALS, REGIONS, getMfgCost, getFinalPrice, DELIVERY_ESTIMATES } fro
 import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
+const ARTIFACT_TYPES = ["ring", "earring", "bracelet", "brooch", "pendant", "other"];
 const STEPS = ["upload design", "material", "audience", "your earnings", "submit"];
 
 const stepVariants = {
@@ -32,6 +33,7 @@ export default function PublishArtifact() {
     name: "",
     description: "",
     category: "",
+    artifact_type: "",
     specs: "",
     creator_handle: "",
     image_url: "",
@@ -143,6 +145,7 @@ export default function PublishArtifact() {
         name: data.name,
         description: data.description,
         category: data.category,
+        artifact_type: data.artifact_type || null,
         specs: data.specs,
         creator_handle: data.creator_handle,
         image_url: data.image_url,
@@ -283,7 +286,6 @@ export default function PublishArtifact() {
                 <p className="text-[10px] text-muted-foreground/40 tracking-wide">collectors will see these as a slideshow on the artifact page</p>
               </div>
 
-              {/* Category & specs */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">category</Label>
@@ -300,6 +302,28 @@ export default function PublishArtifact() {
                   <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">specs</Label>
                   <Input placeholder="e.g. 12mm, polished" value={form.specs} onChange={(e) => update("specs", e.target.value)} className="rounded-xl bg-card border-border/60 text-sm tracking-wide" />
                 </div>
+              </div>
+
+              {/* artifact type — semantic tag used for buyer filtering */}
+              <div className="space-y-2">
+                <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">artifact type</Label>
+                <div className="flex flex-wrap gap-2">
+                  {ARTIFACT_TYPES.map((t) => (
+                    <button
+                      type="button"
+                      key={t}
+                      onClick={() => update("artifact_type", t)}
+                      className={`px-4 py-1.5 rounded-full text-xs tracking-wider lowercase border transition-all ${
+                        form.artifact_type === t
+                          ? "bg-foreground text-background border-foreground"
+                          : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[10px] text-muted-foreground/40 tracking-wide">helps collectors filter your store and explore</p>
               </div>
 
               <div className="space-y-2">
