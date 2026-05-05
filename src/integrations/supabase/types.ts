@@ -17,6 +17,7 @@ export type Database = {
       artifacts: {
         Row: {
           admin_reviewed: boolean
+          artifact_type: string | null
           category: string | null
           collection_id: string | null
           created_at: string
@@ -48,6 +49,7 @@ export type Database = {
         }
         Insert: {
           admin_reviewed?: boolean
+          artifact_type?: string | null
           category?: string | null
           collection_id?: string | null
           created_at?: string
@@ -79,6 +81,7 @@ export type Database = {
         }
         Update: {
           admin_reviewed?: boolean
+          artifact_type?: string | null
           category?: string | null
           collection_id?: string | null
           created_at?: string
