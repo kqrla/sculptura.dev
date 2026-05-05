@@ -15,6 +15,7 @@ import { MATERIALS, REGIONS, getMfgCost, getFinalPrice, DELIVERY_ESTIMATES } fro
 import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
+const ARTIFACT_TYPES = ["ring", "earring", "bracelet", "brooch", "pendant", "other"];
 const STEPS = ["upload design", "material", "audience", "your earnings", "submit"];
 
 const stepVariants = {
