@@ -11,6 +11,7 @@ import { DEMO_ARTIFACTS, DEMO_STORES } from "@/lib/demoData";
 
 const categories = ["all", "jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
 const materials = ["all", "silver", "brass", "gold", "bronze", "copper", "steel", "titanium"];
+const artifactTypes = ["all", "ring", "earring", "bracelet", "brooch", "pendant", "other"];
 
 export default function Explore() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -18,6 +19,7 @@ export default function Explore() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedMaterial, setSelectedMaterial] = useState("all");
+  const [selectedType, setSelectedType] = useState("all");
 
   const { data: liveArtifacts, isLoading: artifactsLoading } = useQuery({
     queryKey: ["explore-artifacts"],
@@ -40,7 +42,8 @@ export default function Explore() {
     const matchSearch = !search || a.name?.toLowerCase().includes(search.toLowerCase()) || a.creator_handle?.toLowerCase().includes(search.toLowerCase());
     const matchCategory = selectedCategory === "all" || a.category === selectedCategory;
     const matchMaterial = selectedMaterial === "all" || a.materials?.includes(selectedMaterial);
-    return matchSearch && matchCategory && matchMaterial;
+    const matchType = selectedType === "all" || (a.artifact_type || "").toLowerCase() === selectedType;
+    return matchSearch && matchCategory && matchMaterial && matchType;
   });
 
   const filteredStores = accounts.filter((s) => {
