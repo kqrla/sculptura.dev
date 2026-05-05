@@ -125,6 +125,23 @@ export default function Explore() {
                   </button>
                 ))}
               </div>
+
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-[10px] tracking-widest uppercase text-muted-foreground/40 mr-1">type</span>
+                {artifactTypes.map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setSelectedType(t)}
+                    className={`px-3 py-1 rounded-full text-[11px] tracking-wider lowercase border transition-all duration-200 ${
+                      selectedType === t
+                        ? "bg-foreground text-background border-foreground"
+                        : "bg-card text-muted-foreground border-border/50 hover:border-foreground/30"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
             </>
           )}
         </div>
