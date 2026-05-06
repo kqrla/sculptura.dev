@@ -16,7 +16,7 @@ import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
 const ARTIFACT_TYPES = ["ring", "earring", "bracelet", "brooch", "pendant", "other"];
-const STEPS = ["upload design", "material", "audience", "your earnings", "submit"];
+const STEPS = ["upload design", "metals offered", "audience", "your earnings", "submit"];
 
 const stepVariants = {
   enter: { opacity: 0, x: 30 },
