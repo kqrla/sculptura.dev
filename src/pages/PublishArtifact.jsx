@@ -662,16 +662,18 @@ export default function PublishArtifact() {
                   )}
                   <div className="pt-2 border-t border-border/30 space-y-2">
                     <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
-                      <span>material</span><span>{form.material}</span>
-                    </div>
-                    <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
-                      <span>manufacturing cost</span><span>${mfgCost}</span>
+                      <span>offered in</span><span>{form.materials.join(", ")}</span>
                     </div>
                     <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
                       <span>your earnings</span><span>${form.creator_earnings}</span>
                     </div>
-                    <div className="flex justify-between text-sm font-medium tracking-wide text-foreground">
-                      <span>final price</span><span>${finalPrice}</span>
+                    <div className="pt-2 space-y-1">
+                      {form.materials.map((m) => (
+                        <div key={m} className="flex justify-between text-xs text-muted-foreground tracking-wide">
+                          <span className="lowercase">{m}</span>
+                          <span>${getFinalPrice(m, form.region, form.creator_earnings)}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
