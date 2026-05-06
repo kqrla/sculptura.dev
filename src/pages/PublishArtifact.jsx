@@ -86,13 +86,12 @@ export default function PublishArtifact() {
   // current material's manufacturing cost.
   useEffect(() => {
     if (!marketAccount?.default_margin_pct) return;
-    const mfg = getMfgCost(form.material, form.region);
+    const firstMat = form.materials?.[0] || "silver";
+    const mfg = getMfgCost(firstMat, form.region);
     const suggested = Math.round(mfg * (Number(marketAccount.default_margin_pct) / 100));
     setForm((p) => ({ ...p, creator_earnings: suggested }));
-    // intentionally only re-run when the market account or material changes,
-    // not when earnings change, otherwise we'd overwrite manual edits.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [marketAccount?.default_margin_pct, form.material, form.region]);
+  }, [marketAccount?.default_margin_pct, form.materials?.[0], form.region]);
 
   // auto-suggest slug from name until the creator manually edits it.
   useEffect(() => {
@@ -100,8 +99,14 @@ export default function PublishArtifact() {
     setForm((p) => ({ ...p, slug: slugify(p.name) }));
   }, [form.name, form.slug_touched]);
 
-  const mfgCost = getMfgCost(form.material, form.region);
-  const finalPrice = getFinalPrice(form.material, form.region, form.creator_earnings);
+  // build per-material cost + price maps. earnings is the same flat amount
+  // the creator wants per piece sold, regardless of material chosen by the buyer.
+  const manufacturingCosts = Object.fromEntries(form.materials.map((m) => [m, getMfgCost(m, form.region)]));
+  const earningsMap = Object.fromEntries(form.materials.map((m) => [m, form.creator_earnings]));
+  const pricesMap = Object.fromEntries(form.materials.map((m) => [m, getFinalPrice(m, form.region, form.creator_earnings)]));
+  const primaryMaterial = form.materials[0] || "silver";
+  const mfgCost = getMfgCost(primaryMaterial, form.region);
+  const finalPrice = getFinalPrice(primaryMaterial, form.region, form.creator_earnings);
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
