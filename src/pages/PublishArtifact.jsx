@@ -58,6 +58,12 @@ export default function PublishArtifact() {
 
   const update = (field, val) => setForm((p) => ({ ...p, [field]: val }));
 
+  // pre-fill creator_handle from the verified store session if present.
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' ? sessionStorage.getItem('market_handle') : null;
+    if (stored) setForm((p) => (p.creator_handle ? p : { ...p, creator_handle: stored }));
+  }, []);
+
   // pull the creator's collections + default margin once a handle is typed.
   // we look up the market_account for that handle to pre-fill the default margin.
   const handle = form.creator_handle?.trim().toLowerCase();
