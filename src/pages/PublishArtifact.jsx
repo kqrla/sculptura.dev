@@ -16,7 +16,7 @@ import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
 const ARTIFACT_TYPES = ["ring", "earring", "bracelet", "brooch", "pendant", "other"];
-const STEPS = ["upload design", "material", "audience", "your earnings", "submit"];
+const STEPS = ["upload design", "metals offered", "audience", "your earnings", "submit"];
 
 const stepVariants = {
   enter: { opacity: 0, x: 30 },
@@ -41,7 +41,7 @@ export default function PublishArtifact() {
     image_url: "",
     image_urls: [],
     model_url: "",
-    material: "silver",
+    materials: ["silver"],
     region: "europe",
     creator_earnings: 30,
     made_to_order: true,
@@ -86,13 +86,12 @@ export default function PublishArtifact() {
   // current material's manufacturing cost.
   useEffect(() => {
     if (!marketAccount?.default_margin_pct) return;
-    const mfg = getMfgCost(form.material, form.region);
+    const firstMat = form.materials?.[0] || "silver";
+    const mfg = getMfgCost(firstMat, form.region);
     const suggested = Math.round(mfg * (Number(marketAccount.default_margin_pct) / 100));
     setForm((p) => ({ ...p, creator_earnings: suggested }));
-    // intentionally only re-run when the market account or material changes,
-    // not when earnings change, otherwise we'd overwrite manual edits.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [marketAccount?.default_margin_pct, form.material, form.region]);
+  }, [marketAccount?.default_margin_pct, form.materials?.[0], form.region]);
 
   // auto-suggest slug from name until the creator manually edits it.
   useEffect(() => {
@@ -100,8 +99,14 @@ export default function PublishArtifact() {
     setForm((p) => ({ ...p, slug: slugify(p.name) }));
   }, [form.name, form.slug_touched]);
 
-  const mfgCost = getMfgCost(form.material, form.region);
-  const finalPrice = getFinalPrice(form.material, form.region, form.creator_earnings);
+  // build per-material cost + price maps. earnings is the same flat amount
+  // the creator wants per piece sold, regardless of material chosen by the buyer.
+  const manufacturingCosts = Object.fromEntries(form.materials.map((m) => [m, getMfgCost(m, form.region)]));
+  const earningsMap = Object.fromEntries(form.materials.map((m) => [m, form.creator_earnings]));
+  const pricesMap = Object.fromEntries(form.materials.map((m) => [m, getFinalPrice(m, form.region, form.creator_earnings)]));
+  const primaryMaterial = form.materials[0] || "silver";
+  const mfgCost = getMfgCost(primaryMaterial, form.region);
+  const finalPrice = getFinalPrice(primaryMaterial, form.region, form.creator_earnings);
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -162,10 +167,10 @@ export default function PublishArtifact() {
         model_url: data.model_url,
         made_to_order: data.made_to_order,
         region: data.region,
-        materials: [data.material],
-        manufacturing_costs: { [data.material]: mfgCost },
-        creator_earnings: { [data.material]: data.creator_earnings },
-        prices: { [data.material]: finalPrice },
+        materials: data.materials,
+        manufacturing_costs: manufacturingCosts,
+        creator_earnings: earningsMap,
+        prices: pricesMap,
         slug: data.slug ? slugify(data.slug) : slugify(data.name),
         seo_title: data.seo_title || null,
         seo_description: data.seo_description || null,
@@ -201,6 +206,7 @@ export default function PublishArtifact() {
 
   const next = () => {
     if (step === 0 && !form.name.trim()) { toast.error("give your artifact a name"); return; }
+    if (step === 1 && (!form.materials || form.materials.length === 0)) { toast.error("select at least one material you'd offer this in"); return; }
     setStep((s) => Math.min(s + 1, 4));
   };
   const back = () => setStep((s) => Math.max(s - 1, 0));
@@ -467,41 +473,57 @@ export default function PublishArtifact() {
             </motion.div>
           )}
 
-          {/* STEP 1 — Material */}
+          {/* STEP 1 — Materials offered */}
           {step === 1 && (
             <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" className="space-y-7">
               <div>
-                <h2 className="font-serif text-2xl font-light tracking-tight lowercase text-foreground mb-1">choose material</h2>
-                <p className="text-sm text-muted-foreground tracking-wide font-light">this determines manufacturing cost and character</p>
+                <h2 className="font-serif text-2xl font-light tracking-tight lowercase text-foreground mb-1">which metals do you offer this in?</h2>
+                <p className="text-sm text-muted-foreground tracking-wide font-light">buyers will pick one at checkout. select every metal you're happy to see this design cast in.</p>
               </div>
 
-              <div className="space-y-3">
-                {MATERIALS.map((mat) => (
-                  <button
-                    key={mat}
-                    onClick={() => update("material", mat)}
-                    className={`w-full flex items-center justify-between p-5 rounded-[18px] border text-left transition-all ${
-                      form.material === mat
-                        ? "border-foreground bg-foreground/5 shadow-paper"
-                        : "border-border/50 bg-card hover:border-foreground/20"
-                    }`}
-                  >
-                    <div>
-                      <p className="text-sm font-medium tracking-wide lowercase text-foreground">{mat}</p>
-                      <p className="text-xs text-muted-foreground/60 tracking-wide mt-0.5">
-                        {mat === "silver" && "cool, versatile. most popular"}
-                        {mat === "brass" && "warm, architectural feel"}
-                        {mat === "gold" && "precious, statement pieces"}
-                      </p>
-                    </div>
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                      form.material === mat ? "border-foreground" : "border-border"
-                    }`}>
-                      {form.material === mat && <div className="w-2.5 h-2.5 rounded-full bg-foreground" />}
-                    </div>
-                  </button>
-                ))}
+              <div className="rounded-[18px] border border-border/50 bg-card/60 p-4 text-xs tracking-wide text-muted-foreground leading-relaxed">
+                every piece is made to order. after a purchase, the design is sent to the platform's affiliated manufacturer, resin printed, and then cast in metal using the lost wax casting method. you don't pick the metal, the buyer does.
               </div>
+
+              <div className="flex flex-wrap gap-2">
+                {MATERIALS.map((mat) => {
+                  const selected = form.materials.includes(mat);
+                  return (
+                    <button
+                      type="button"
+                      key={mat}
+                      onClick={() => setForm((p) => ({
+                        ...p,
+                        materials: selected
+                          ? p.materials.filter((m) => m !== mat)
+                          : [...p.materials, mat],
+                      }))}
+                      className={`px-4 py-2 rounded-full text-xs tracking-wider lowercase border transition-all ${
+                        selected
+                          ? "bg-foreground text-background border-foreground"
+                          : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                      }`}
+                    >
+                      {mat}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {form.materials.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-[11px] tracking-widest text-muted-foreground/50 uppercase">indicative manufacturing cost</p>
+                  <div className="rounded-[18px] border border-border/50 bg-card divide-y divide-border/40">
+                    {form.materials.map((m) => (
+                      <div key={m} className="flex items-center justify-between px-4 py-3">
+                        <span className="text-sm tracking-wide lowercase text-foreground">{m}</span>
+                        <span className="text-sm tracking-wide text-muted-foreground">${getMfgCost(m, form.region)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/40 tracking-wide">your earnings are added on top of the metal the buyer chooses.</p>
+                </div>
+              )}
 
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={back} className="rounded-full text-sm tracking-wider text-muted-foreground">back</Button>
@@ -594,7 +616,7 @@ export default function PublishArtifact() {
                   </div>
                 </div>
                 <p className="text-[10px] text-muted-foreground/40 tracking-wide">
-                  {form.material}, {form.region.replace("_", " ")}, {DELIVERY_ESTIMATES[form.region]}
+                  {form.materials.join(", ")}, {form.region.replace("_", " ")}, {DELIVERY_ESTIMATES[form.region]}
                 </p>
               </div>
 
@@ -640,16 +662,18 @@ export default function PublishArtifact() {
                   )}
                   <div className="pt-2 border-t border-border/30 space-y-2">
                     <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
-                      <span>material</span><span>{form.material}</span>
-                    </div>
-                    <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
-                      <span>manufacturing cost</span><span>${mfgCost}</span>
+                      <span>offered in</span><span>{form.materials.join(", ")}</span>
                     </div>
                     <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
                       <span>your earnings</span><span>${form.creator_earnings}</span>
                     </div>
-                    <div className="flex justify-between text-sm font-medium tracking-wide text-foreground">
-                      <span>final price</span><span>${finalPrice}</span>
+                    <div className="pt-2 space-y-1">
+                      {form.materials.map((m) => (
+                        <div key={m} className="flex justify-between text-xs text-muted-foreground tracking-wide">
+                          <span className="lowercase">{m}</span>
+                          <span>${getFinalPrice(m, form.region, form.creator_earnings)}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
