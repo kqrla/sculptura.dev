@@ -616,7 +616,7 @@ export default function PublishArtifact() {
                   </div>
                 </div>
                 <p className="text-[10px] text-muted-foreground/40 tracking-wide">
-                  {form.material}, {form.region.replace("_", " ")}, {DELIVERY_ESTIMATES[form.region]}
+                  {form.materials.join(", ")}, {form.region.replace("_", " ")}, {DELIVERY_ESTIMATES[form.region]}
                 </p>
               </div>
 
