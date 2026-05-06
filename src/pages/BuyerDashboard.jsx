@@ -87,12 +87,15 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
           <Link to="/auth"><Button className="rounded-full">sign in or create account</Button></Link>
           <Link to="/demo/buyer"><Button variant="outline" className="rounded-full">try the demo</Button></Link>
         </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
+    <div className="min-h-screen bg-background">
+      <BuyerHeader demo={demo} />
+      <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
       <div>
         <h1 className="font-serif text-3xl md:text-4xl font-light tracking-tight lowercase text-foreground">
           {demo ? "buyer demo dashboard" : `welcome back${user?.display_name ? `, ${user.display_name.toLowerCase()}` : ""}`}
