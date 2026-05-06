@@ -76,7 +76,9 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
 
   if (!demo && !isAuthenticated) {
     return (
-      <div className="max-w-2xl mx-auto px-6 py-20 text-center">
+      <div className="min-h-screen bg-background">
+        <BuyerHeader demo={demo} />
+        <div className="max-w-2xl mx-auto px-6 py-20 text-center">
         <h1 className="font-serif text-3xl font-light tracking-tight lowercase text-foreground mb-3">your buyer dashboard</h1>
         <p className="text-sm text-muted-foreground tracking-wide mb-6">
           you don't need an account to buy. but creating one links your past orders and unlocks tracking.
