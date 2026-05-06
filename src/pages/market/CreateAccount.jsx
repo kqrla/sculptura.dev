@@ -50,6 +50,7 @@ export default function CreateAccount() {
 
       return db.entities.MarketAccount.create({
         handle: form.handle,
+        slug: form.handle,
         display_name: form.display_name,
         bio: form.bio,
         email: form.email,

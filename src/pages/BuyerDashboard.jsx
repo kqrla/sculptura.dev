@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getWishlist, removeFromWishlist } from "@/lib/wishlistStore";
 import ArtifactCard from "@/components/artifacts/ArtifactCard";
 import { Button } from "@/components/ui/button";
+import BuyerHeader from "@/components/layout/BuyerHeader";
 
 function StatusPill({ status }) {
   const colors = {
@@ -75,7 +76,9 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
 
   if (!demo && !isAuthenticated) {
     return (
-      <div className="max-w-2xl mx-auto px-6 py-20 text-center">
+      <div className="min-h-screen bg-background">
+        <BuyerHeader demo={demo} />
+        <div className="max-w-2xl mx-auto px-6 py-20 text-center">
         <h1 className="font-serif text-3xl font-light tracking-tight lowercase text-foreground mb-3">your buyer dashboard</h1>
         <p className="text-sm text-muted-foreground tracking-wide mb-6">
           you don't need an account to buy. but creating one links your past orders and unlocks tracking.
@@ -84,12 +87,15 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
           <Link to="/auth"><Button className="rounded-full">sign in or create account</Button></Link>
           <Link to="/demo/buyer"><Button variant="outline" className="rounded-full">try the demo</Button></Link>
         </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
+    <div className="min-h-screen bg-background">
+      <BuyerHeader demo={demo} />
+      <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
       <div>
         <h1 className="font-serif text-3xl md:text-4xl font-light tracking-tight lowercase text-foreground">
           {demo ? "buyer demo dashboard" : `welcome back${user?.display_name ? `, ${user.display_name.toLowerCase()}` : ""}`}
@@ -205,6 +211,7 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
           </div>
         </section>
       )}
+      </div>
     </div>
   );
 }
