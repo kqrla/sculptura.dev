@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getWishlist, removeFromWishlist } from "@/lib/wishlistStore";
 import ArtifactCard from "@/components/artifacts/ArtifactCard";
 import { Button } from "@/components/ui/button";
+import BuyerHeader from "@/components/layout/BuyerHeader";
 
 function StatusPill({ status }) {
   const colors = {
