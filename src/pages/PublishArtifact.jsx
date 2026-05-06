@@ -41,7 +41,7 @@ export default function PublishArtifact() {
     image_url: "",
     image_urls: [],
     model_url: "",
-    material: "silver",
+    materials: ["silver"],
     region: "europe",
     creator_earnings: 30,
     made_to_order: true,
