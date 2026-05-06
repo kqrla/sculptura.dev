@@ -211,6 +211,7 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
           </div>
         </section>
       )}
+      </div>
     </div>
   );
 }
