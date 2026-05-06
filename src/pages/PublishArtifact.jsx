@@ -473,41 +473,57 @@ export default function PublishArtifact() {
             </motion.div>
           )}
 
-          {/* STEP 1 — Material */}
+          {/* STEP 1 — Materials offered */}
           {step === 1 && (
             <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" className="space-y-7">
               <div>
-                <h2 className="font-serif text-2xl font-light tracking-tight lowercase text-foreground mb-1">choose material</h2>
-                <p className="text-sm text-muted-foreground tracking-wide font-light">this determines manufacturing cost and character</p>
+                <h2 className="font-serif text-2xl font-light tracking-tight lowercase text-foreground mb-1">which metals do you offer this in?</h2>
+                <p className="text-sm text-muted-foreground tracking-wide font-light">buyers will pick one at checkout. select every metal you're happy to see this design cast in.</p>
               </div>
 
-              <div className="space-y-3">
-                {MATERIALS.map((mat) => (
-                  <button
-                    key={mat}
-                    onClick={() => update("material", mat)}
-                    className={`w-full flex items-center justify-between p-5 rounded-[18px] border text-left transition-all ${
-                      form.material === mat
-                        ? "border-foreground bg-foreground/5 shadow-paper"
-                        : "border-border/50 bg-card hover:border-foreground/20"
-                    }`}
-                  >
-                    <div>
-                      <p className="text-sm font-medium tracking-wide lowercase text-foreground">{mat}</p>
-                      <p className="text-xs text-muted-foreground/60 tracking-wide mt-0.5">
-                        {mat === "silver" && "cool, versatile. most popular"}
-                        {mat === "brass" && "warm, architectural feel"}
-                        {mat === "gold" && "precious, statement pieces"}
-                      </p>
-                    </div>
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                      form.material === mat ? "border-foreground" : "border-border"
-                    }`}>
-                      {form.material === mat && <div className="w-2.5 h-2.5 rounded-full bg-foreground" />}
-                    </div>
-                  </button>
-                ))}
+              <div className="rounded-[18px] border border-border/50 bg-card/60 p-4 text-xs tracking-wide text-muted-foreground leading-relaxed">
+                every piece is made to order. after a purchase, the design is sent to the platform's affiliated manufacturer, resin printed, and then cast in metal using the lost wax casting method. you don't pick the metal, the buyer does.
               </div>
+
+              <div className="flex flex-wrap gap-2">
+                {MATERIALS.map((mat) => {
+                  const selected = form.materials.includes(mat);
+                  return (
+                    <button
+                      type="button"
+                      key={mat}
+                      onClick={() => setForm((p) => ({
+                        ...p,
+                        materials: selected
+                          ? p.materials.filter((m) => m !== mat)
+                          : [...p.materials, mat],
+                      }))}
+                      className={`px-4 py-2 rounded-full text-xs tracking-wider lowercase border transition-all ${
+                        selected
+                          ? "bg-foreground text-background border-foreground"
+                          : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                      }`}
+                    >
+                      {mat}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {form.materials.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-[11px] tracking-widest text-muted-foreground/50 uppercase">indicative manufacturing cost</p>
+                  <div className="rounded-[18px] border border-border/50 bg-card divide-y divide-border/40">
+                    {form.materials.map((m) => (
+                      <div key={m} className="flex items-center justify-between px-4 py-3">
+                        <span className="text-sm tracking-wide lowercase text-foreground">{m}</span>
+                        <span className="text-sm tracking-wide text-muted-foreground">${getMfgCost(m, form.region)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/40 tracking-wide">your earnings are added on top of the metal the buyer chooses.</p>
+                </div>
+              )}
 
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={back} className="rounded-full text-sm tracking-wider text-muted-foreground">back</Button>
