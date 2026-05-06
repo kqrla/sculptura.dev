@@ -138,7 +138,7 @@ export default function PublishArtifact() {
   const removeTag = (t) => setForm((p) => ({ ...p, tags: p.tags.filter((x) => x !== t) }));
 
   const publishMutation = useMutation({
-    mutationFn: (data) => {
+    mutationFn: async (data) => {
       const keywords = data.keywords
         .split(',')
         .map((k) => k.trim().toLowerCase())
@@ -151,7 +151,6 @@ export default function PublishArtifact() {
         specs: data.specs,
         dimensions: data.dimensions || null,
         weight_grams: data.weight_grams === "" || data.weight_grams == null ? null : Number(data.weight_grams),
-        creator_handle: data.creator_handle,
         image_url: data.image_url,
         image_urls: data.image_urls || [],
         model_url: data.model_url,
@@ -161,7 +160,6 @@ export default function PublishArtifact() {
         manufacturing_costs: { [data.material]: mfgCost },
         creator_earnings: { [data.material]: data.creator_earnings },
         prices: { [data.material]: finalPrice },
-        status: "pending_review",
         slug: data.slug ? slugify(data.slug) : slugify(data.name),
         seo_title: data.seo_title || null,
         seo_description: data.seo_description || null,
@@ -169,7 +167,23 @@ export default function PublishArtifact() {
         tags: data.tags,
         collection_id: data.collection_id || null,
       };
-      return db.entities.Artifact.create(payload);
+
+      // stores authenticate via access key, not supabase auth, so the
+      // artifacts rls insert policy blocks direct writes. route through
+      // the publish-artifact edge function which verifies the store's
+      // key and inserts under the service role.
+      const handle = (data.creator_handle || sessionStorage.getItem('market_handle') || '').trim().toLowerCase();
+      const key = sessionStorage.getItem('market_key');
+      if (!handle) throw new Error('missing creator handle');
+      if (!key) throw new Error('open your store dashboard first so we can verify your access key, then come back to publish');
+
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data: res, error } = await supabase.functions.invoke('publish-artifact', {
+        body: { handle, key, payload },
+      });
+      if (error) throw error;
+      if (res?.error) throw new Error(res.error);
+      return res?.artifact;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-artifacts"] });
