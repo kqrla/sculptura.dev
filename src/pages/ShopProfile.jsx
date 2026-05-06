@@ -145,8 +145,9 @@ export default function ShopProfile() {
     });
   }, [artifacts, search, typeFilter]);
 
-  const featured = filteredArtifacts.find((a) => a.is_featured);
-  const rest = filteredArtifacts.filter((a) => a.id !== featured?.id);
+  const featuredItems = filteredArtifacts.filter((a) => a.is_featured);
+  const featuredIds = new Set(featuredItems.map((a) => a.id));
+  const rest = filteredArtifacts.filter((a) => !featuredIds.has(a.id));
 
   return (
     <div className="px-6 py-10">
@@ -221,11 +222,11 @@ export default function ShopProfile() {
               </div>
             </div>
 
-            {featured && (
+            {featuredItems.length > 0 && (
               <div>
                 <p className="text-[11px] tracking-wider text-muted-foreground/50 uppercase mb-3">featured</p>
-                <div className="max-w-md">
-                  <ArtifactCard artifact={featured} />
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {featuredItems.map((a) => <ArtifactCard key={a.id} artifact={a} />)}
                 </div>
               </div>
             )}
