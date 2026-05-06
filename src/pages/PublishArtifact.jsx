@@ -206,6 +206,7 @@ export default function PublishArtifact() {
 
   const next = () => {
     if (step === 0 && !form.name.trim()) { toast.error("give your artifact a name"); return; }
+    if (step === 1 && (!form.materials || form.materials.length === 0)) { toast.error("select at least one material you'd offer this in"); return; }
     setStep((s) => Math.min(s + 1, 4));
   };
   const back = () => setStep((s) => Math.max(s - 1, 0));
