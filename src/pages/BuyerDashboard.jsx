@@ -18,6 +18,7 @@ import { getWishlist, removeFromWishlist } from "@/lib/wishlistStore";
 import ArtifactCard from "@/components/artifacts/ArtifactCard";
 import { Button } from "@/components/ui/button";
 import BuyerHeader from "@/components/layout/BuyerHeader";
+import FollowsAndLists from "@/components/follow/FollowsAndLists";
 
 function StatusPill({ status }) {
   const colors = {
@@ -177,6 +178,9 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
           </div>
         )}
       </section>
+
+      {/* follows + creator lists */}
+      <FollowsAndLists />
 
       {/* Similar artifacts */}
       {similar.length > 0 && (

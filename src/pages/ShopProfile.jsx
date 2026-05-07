@@ -12,6 +12,7 @@ import ShopPromoCodes from "@/components/shop/ShopPromoCodes";
 import ShopNewsletter from "@/components/shop/ShopNewsletter";
 import ShopCollections from "@/components/shop/ShopCollections";
 import SeoTags from "@/components/seo/SeoTags";
+import FollowButton from "@/components/follow/FollowButton";
 import { hashKey } from "@/lib/crypto";
 
 const ARTIFACT_TYPES = ["all", "ring", "earring", "bracelet", "brooch", "pendant", "other"];
@@ -188,9 +189,12 @@ export default function ShopProfile() {
           </div>
 
           <div className="space-y-8">
-            <h2 className="font-serif text-xl font-light tracking-tight text-foreground lowercase">
-              {profile.display_name || profile.username}'s artifacts
-            </h2>
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <h2 className="font-serif text-xl font-light tracking-tight text-foreground lowercase">
+                {profile.display_name || profile.username}'s artifacts
+              </h2>
+              <FollowButton creatorHandle={profile.username} creatorName={profile.display_name} />
+            </div>
 
             {!demoStore && <ShopCollections username={profile.username} collections={collections} />}
 

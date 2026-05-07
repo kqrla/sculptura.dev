@@ -211,6 +211,92 @@ export type Database = {
         }
         Relationships: []
       }
+      creator_follows: {
+        Row: {
+          created_at: string
+          creator_handle: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          creator_handle: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          creator_handle?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      creator_list_items: {
+        Row: {
+          created_at: string
+          creator_handle: string
+          id: string
+          list_id: string
+          note: string | null
+        }
+        Insert: {
+          created_at?: string
+          creator_handle: string
+          id?: string
+          list_id: string
+          note?: string | null
+        }
+        Update: {
+          created_at?: string
+          creator_handle?: string
+          id?: string
+          list_id?: string
+          note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "creator_list_items_list_id_fkey"
+            columns: ["list_id"]
+            isOneToOne: false
+            referencedRelation: "creator_lists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      creator_lists: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          share_token: string
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          share_token?: string
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          share_token?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
       creator_profiles: {
         Row: {
           avatar_url: string | null

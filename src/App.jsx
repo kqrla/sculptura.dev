@@ -39,6 +39,7 @@ import CommissionPage from './pages/CommissionPage';
 import DemoApp from './pages/DemoApp';
 import BuyerDashboard from './pages/BuyerDashboard';
 import DemoBuyer from './pages/DemoBuyer';
+import SharedList from './pages/SharedList';
 
 const RoutedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -90,6 +91,7 @@ const RoutedApp = () => {
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/dashboard/buyer" element={<BuyerDashboard />} />
+        <Route path="/list/:token" element={<SharedList />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
