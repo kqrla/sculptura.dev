@@ -12,6 +12,7 @@ import ShopPromoCodes from "@/components/shop/ShopPromoCodes";
 import ShopNewsletter from "@/components/shop/ShopNewsletter";
 import ShopCollections from "@/components/shop/ShopCollections";
 import SeoTags from "@/components/seo/SeoTags";
+import FollowButton from "@/components/follow/FollowButton";
 import { hashKey } from "@/lib/crypto";
 
 const ARTIFACT_TYPES = ["all", "ring", "earring", "bracelet", "brooch", "pendant", "other"];
