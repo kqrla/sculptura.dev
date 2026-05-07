@@ -179,6 +179,9 @@ export default function BuyerDashboard({ demo = false, demoOrders = [], demoWish
         )}
       </section>
 
+      {/* follows + creator lists */}
+      <FollowsAndLists />
+
       {/* Similar artifacts */}
       {similar.length > 0 && (
         <section className="space-y-4">
