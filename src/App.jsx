@@ -39,6 +39,7 @@ import CommissionPage from './pages/CommissionPage';
 import DemoApp from './pages/DemoApp';
 import BuyerDashboard from './pages/BuyerDashboard';
 import DemoBuyer from './pages/DemoBuyer';
+import SharedList from './pages/SharedList';
 
 const RoutedApp = () => {
   const { isLoadingAuth } = useAuth();
