@@ -33,11 +33,17 @@ export default function ArtifactDetail() {
   const artifact = liveArtifact || demoArtifact;
 
   const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
+  const offeredSizes = Array.isArray(artifact?.sizes) ? artifact.sizes : [];
+  const requiresSize = offeredSizes.length > 0 && (artifact?.size_type && artifact.size_type !== "unisize");
   const currentMaterial = selectedMaterial || artifact?.materials?.[0];
-  const currentPrice = artifact?.prices?.[currentMaterial];
+  const currentSize = selectedSize || (requiresSize ? offeredSizes[0] : null);
+  const basePrice = artifact?.prices?.[currentMaterial];
+  const sizeSurcharge = currentSize ? Number((artifact?.size_surcharges || {})[currentSize] || 0) : 0;
+  const currentPrice = basePrice != null ? Number(basePrice) + sizeSurcharge : null;
 
   // gallery: combine optional image_urls[] with the legacy image_url cover
   const gallery = (() => {
@@ -49,7 +55,11 @@ export default function ArtifactDetail() {
 
   const handleAddToCart = () => {
     if (!artifact || !currentMaterial) return;
-    addToCart(artifact, currentMaterial);
+    if (requiresSize && !currentSize) {
+      toast.error("pick a size first");
+      return;
+    }
+    addToCart(artifact, currentMaterial, currentSize);
     setJustAdded(true);
     toast.success(`${artifact.name} added to your queue`);
     setTimeout(() => setJustAdded(false), 2000);
@@ -193,6 +203,34 @@ export default function ArtifactDetail() {
                       {mat}
                     </button>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* Size selector — only when the creator offers multiple sizes */}
+            {requiresSize && (
+              <div className="space-y-3">
+                <p className="text-xs tracking-wider text-muted-foreground/70 uppercase">
+                  {artifact.size_type === "ring" ? "ring size (US)" : "size"}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {offeredSizes.map((s) => {
+                    const sel = currentSize === s;
+                    const sc = Number((artifact.size_surcharges || {})[s] || 0);
+                    return (
+                      <button
+                        key={s}
+                        onClick={() => setSelectedSize(s)}
+                        className={`px-4 py-2 rounded-full text-xs tracking-wider lowercase border transition-all duration-200 ${
+                          sel
+                            ? "bg-foreground text-background border-foreground"
+                            : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                        }`}
+                      >
+                        {s}{sc > 0 ? <span className="opacity-60 ml-1">+${sc}</span> : null}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowRight, Upload, X, Box, Check, Tag as TagIcon } from "lu
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { MATERIALS, REGIONS, getMfgCost, getFinalPrice, DELIVERY_ESTIMATES } from "@/lib/pricing";
+import { SIZE_TYPES, presetSizes, defaultSizesFor } from "@/lib/sizing";
 import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
@@ -45,6 +46,11 @@ export default function PublishArtifact() {
     region: "europe",
     creator_earnings: 30,
     made_to_order: true,
+    // sizing: 'unisize' (default) | 'standard' (S/M/L) | 'ring' (US ring sizes) | 'custom'
+    size_type: "unisize",
+    sizes: [],
+    size_surcharges: {}, // map of size -> usd surcharge added to base material price
+    custom_size_draft: "",
     // seo + grouping
     slug: "",
     slug_touched: false, // once edited manually we stop auto-syncing from name
@@ -148,6 +154,32 @@ export default function PublishArtifact() {
 
   const removeTag = (t) => setForm((p) => ({ ...p, tags: p.tags.filter((x) => x !== t) }));
 
+  // ---- size helpers ----
+  const setSizeType = (t) => setForm((p) => ({
+    ...p,
+    size_type: t,
+    sizes: t === "unisize" ? [] : (p.sizes?.length ? p.sizes : defaultSizesFor(t)),
+    size_surcharges: t === "unisize" ? {} : p.size_surcharges,
+  }));
+  const toggleSize = (s) => setForm((p) => ({
+    ...p,
+    sizes: p.sizes.includes(s) ? p.sizes.filter((x) => x !== s) : [...p.sizes, s],
+  }));
+  const addCustomSize = () => {
+    const s = (form.custom_size_draft || "").trim();
+    if (!s) return;
+    setForm((p) => p.sizes.includes(s) ? { ...p, custom_size_draft: "" } : { ...p, sizes: [...p.sizes, s], custom_size_draft: "" });
+  };
+  const removeSize = (s) => setForm((p) => {
+    const next = { ...p.size_surcharges };
+    delete next[s];
+    return { ...p, sizes: p.sizes.filter((x) => x !== s), size_surcharges: next };
+  });
+  const setSurcharge = (s, v) => setForm((p) => ({
+    ...p,
+    size_surcharges: { ...p.size_surcharges, [s]: Number(v) || 0 },
+  }));
+
   const publishMutation = useMutation({
     mutationFn: async (data) => {
       const keywords = data.keywords
@@ -171,6 +203,9 @@ export default function PublishArtifact() {
         manufacturing_costs: manufacturingCosts,
         creator_earnings: earningsMap,
         prices: pricesMap,
+        size_type: data.size_type || "unisize",
+        sizes: data.size_type === "unisize" ? [] : (data.sizes || []),
+        size_surcharges: data.size_type === "unisize" ? {} : (data.size_surcharges || {}),
         slug: data.slug ? slugify(data.slug) : slugify(data.name),
         seo_title: data.seo_title || null,
         seo_description: data.seo_description || null,
@@ -207,6 +242,7 @@ export default function PublishArtifact() {
   const next = () => {
     if (step === 0 && !form.name.trim()) { toast.error("give your artifact a name"); return; }
     if (step === 1 && (!form.materials || form.materials.length === 0)) { toast.error("select at least one material you'd offer this in"); return; }
+    if (step === 1 && form.size_type !== "unisize" && (!form.sizes || form.sizes.length === 0)) { toast.error("add at least one size, or pick one size only"); return; }
     setStep((s) => Math.min(s + 1, 4));
   };
   const back = () => setStep((s) => Math.max(s - 1, 0));
@@ -525,6 +561,95 @@ export default function PublishArtifact() {
                 </div>
               )}
 
+              {/* sizing — unisize, generic apparel sizes, ring sizes, or custom */}
+              <div className="space-y-4 pt-2 border-t border-border/40">
+                <div>
+                  <p className="text-[11px] tracking-widest text-muted-foreground/50 uppercase mb-1">sizing</p>
+                  <p className="text-xs text-muted-foreground/60 tracking-wide font-light">offer this design in one size, or let buyers pick from a list. add an optional surcharge per size if larger sizes use more metal.</p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {SIZE_TYPES.map((opt) => (
+                    <button
+                      type="button"
+                      key={opt.value}
+                      onClick={() => setSizeType(opt.value)}
+                      className={`px-4 py-2 rounded-full text-xs tracking-wider lowercase border transition-all ${
+                        form.size_type === opt.value
+                          ? "bg-foreground text-background border-foreground"
+                          : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+
+                {form.size_type !== "unisize" && (
+                  <div className="space-y-3">
+                    {presetSizes(form.size_type).length > 0 && (
+                      <div className="space-y-1.5">
+                        <p className="text-[10px] tracking-widest text-muted-foreground/40 uppercase">offered sizes</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {presetSizes(form.size_type).map((s) => {
+                            const sel = form.sizes.includes(s);
+                            return (
+                              <button
+                                type="button"
+                                key={s}
+                                onClick={() => toggleSize(s)}
+                                className={`px-3 py-1.5 rounded-full text-[11px] tracking-wider border transition-all ${
+                                  sel ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                                }`}
+                              >
+                                {s}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {form.size_type === "custom" && (
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="add a size, e.g. 38mm"
+                          value={form.custom_size_draft}
+                          onChange={(e) => update("custom_size_draft", e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomSize(); } }}
+                          className="rounded-xl bg-card border-border/60 text-sm tracking-wide flex-1"
+                        />
+                        <Button type="button" variant="outline" onClick={addCustomSize} className="rounded-full text-xs tracking-wider border-border/60">add</Button>
+                      </div>
+                    )}
+
+                    {form.sizes.length > 0 && (
+                      <div className="rounded-[18px] border border-border/50 bg-card divide-y divide-border/40">
+                        {form.sizes.map((s) => (
+                          <div key={s} className="flex items-center gap-3 px-4 py-2.5">
+                            <span className="text-sm tracking-wide text-foreground flex-1 lowercase">{s}</span>
+                            <span className="text-[10px] tracking-widest text-muted-foreground/40 uppercase">surcharge</span>
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs text-muted-foreground">$</span>
+                              <Input
+                                type="number"
+                                min="0"
+                                value={form.size_surcharges[s] ?? 0}
+                                onChange={(e) => setSurcharge(s, e.target.value)}
+                                className="w-16 h-8 rounded-lg bg-background border-border/60 text-xs"
+                              />
+                            </div>
+                            <button type="button" onClick={() => removeSize(s)} className="text-muted-foreground/50 hover:text-foreground"><X className="w-3.5 h-3.5" /></button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-[10px] text-muted-foreground/40 tracking-wide">final price = material price + size surcharge. leave at 0 if all sizes cost the same.</p>
+                  </div>
+                )}
+              </div>
+
+
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={back} className="rounded-full text-sm tracking-wider text-muted-foreground">back</Button>
                 <Button onClick={next} className="flex-1 rounded-full text-sm tracking-wider bg-foreground text-background hover:bg-foreground/90 gap-2">
@@ -663,6 +788,10 @@ export default function PublishArtifact() {
                   <div className="pt-2 border-t border-border/30 space-y-2">
                     <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
                       <span>offered in</span><span>{form.materials.join(", ")}</span>
+                    </div>
+                    <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
+                      <span>sizing</span>
+                      <span>{form.size_type === "unisize" ? "one size only" : `${form.sizes.length} ${form.size_type === "ring" ? "ring " : ""}sizes (${form.sizes.join(", ")})`}</span>
                     </div>
                     <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
                       <span>your earnings</span><span>${form.creator_earnings}</span>

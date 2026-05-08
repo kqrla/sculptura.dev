@@ -82,7 +82,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
               ) : (
                 cart.map((item) => (
                   <div
-                    key={`${item.artifactId}-${item.material}`}
+                    key={`${item.artifactId}-${item.material}-${item.size || "_"}`}
                     className="flex gap-4 bg-background rounded-[16px] border border-border/40 p-4"
                   >
                     <div className="w-16 h-16 rounded-xl overflow-hidden bg-secondary flex-shrink-0">
@@ -103,7 +103,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
                         {item.artifactName}
                       </Link>
                       <p className="text-[11px] text-muted-foreground/50 tracking-wide mt-0.5">
-                        {item.material}, made to order
+                        {item.material}{item.size ? ` · size ${item.size}` : ""}, made to order
                       </p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2">
@@ -112,6 +112,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
                               updateQuantity(
                                 item.artifactId,
                                 item.material,
+                                item.size || null,
                                 Math.max(1, (item.quantity || 1) - 1)
                               )
                             }
@@ -127,6 +128,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
                               updateQuantity(
                                 item.artifactId,
                                 item.material,
+                                item.size || null,
                                 (item.quantity || 1) + 1
                               )
                             }
@@ -141,7 +143,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
                       </div>
                     </div>
                     <button
-                      onClick={() => removeFromCart(item.artifactId, item.material)}
+                      onClick={() => removeFromCart(item.artifactId, item.material, item.size || null)}
                       className="self-start w-7 h-7 flex items-center justify-center rounded-full hover:bg-secondary transition-colors flex-shrink-0"
                     >
                       <Trash2 className="w-3.5 h-3.5 text-muted-foreground/40" />

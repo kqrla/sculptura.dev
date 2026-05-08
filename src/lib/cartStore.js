@@ -1,7 +1,11 @@
-// Simple in-memory cart store using localStorage for persistence
+// Simple in-memory cart store using localStorage for persistence.
+// Items are keyed by (artifactId, material, size) so the same design can
+// sit in the queue multiple times in different sizes / metals.
 
 const CART_KEY = "sculptura_cart";
 const ADDRESS_KEY = "sculptura_saved_address";
+
+const sizeKey = (s) => s ?? "";
 
 export function getCart() {
   try {
@@ -15,10 +19,14 @@ export function saveCart(items) {
   localStorage.setItem(CART_KEY, JSON.stringify(items));
 }
 
-export function addToCart(artifact, material) {
+export function addToCart(artifact, material, size = null) {
   const cart = getCart();
+  const surcharge = Number((artifact.size_surcharges || {})[size] || 0);
+  const basePrice = Number(artifact.prices?.[material] || 0);
+  const unitPrice = basePrice + surcharge;
+
   const existingIdx = cart.findIndex(
-    (item) => item.artifactId === artifact.id && item.material === material
+    (item) => item.artifactId === artifact.id && item.material === material && sizeKey(item.size) === sizeKey(size)
   );
   if (existingIdx >= 0) {
     cart[existingIdx].quantity = (cart[existingIdx].quantity || 1) + 1;
@@ -29,7 +37,8 @@ export function addToCart(artifact, material) {
       artifactImage: artifact.image_url,
       creatorHandle: artifact.creator_handle,
       material,
-      price: artifact.prices?.[material] || 0,
+      size: size || null,
+      price: unitPrice,
       quantity: 1,
     });
   }
@@ -38,18 +47,18 @@ export function addToCart(artifact, material) {
   return cart;
 }
 
-export function removeFromCart(artifactId, material) {
+export function removeFromCart(artifactId, material, size = null) {
   const cart = getCart().filter(
-    (item) => !(item.artifactId === artifactId && item.material === material)
+    (item) => !(item.artifactId === artifactId && item.material === material && sizeKey(item.size) === sizeKey(size))
   );
   saveCart(cart);
   window.dispatchEvent(new Event("cart-updated"));
   return cart;
 }
 
-export function updateQuantity(artifactId, material, quantity) {
+export function updateQuantity(artifactId, material, size, quantity) {
   const cart = getCart().map((item) =>
-    item.artifactId === artifactId && item.material === material
+    item.artifactId === artifactId && item.material === material && sizeKey(item.size) === sizeKey(size)
       ? { ...item, quantity }
       : item
   );
