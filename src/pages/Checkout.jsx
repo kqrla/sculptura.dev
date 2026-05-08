@@ -144,6 +144,7 @@ export default function Checkout() {
           items: cart.map((item) => ({
             artifact_id: item.artifactId,
             material: item.material,
+            size: item.size || null,
             quantity: item.quantity || 1,
           })),
           customer: { name: details.name, email: details.email },
