@@ -561,6 +561,95 @@ export default function PublishArtifact() {
                 </div>
               )}
 
+              {/* sizing — unisize, generic apparel sizes, ring sizes, or custom */}
+              <div className="space-y-4 pt-2 border-t border-border/40">
+                <div>
+                  <p className="text-[11px] tracking-widest text-muted-foreground/50 uppercase mb-1">sizing</p>
+                  <p className="text-xs text-muted-foreground/60 tracking-wide font-light">offer this design in one size, or let buyers pick from a list. add an optional surcharge per size if larger sizes use more metal.</p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {SIZE_TYPES.map((opt) => (
+                    <button
+                      type="button"
+                      key={opt.value}
+                      onClick={() => setSizeType(opt.value)}
+                      className={`px-4 py-2 rounded-full text-xs tracking-wider lowercase border transition-all ${
+                        form.size_type === opt.value
+                          ? "bg-foreground text-background border-foreground"
+                          : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+
+                {form.size_type !== "unisize" && (
+                  <div className="space-y-3">
+                    {presetSizes(form.size_type).length > 0 && (
+                      <div className="space-y-1.5">
+                        <p className="text-[10px] tracking-widest text-muted-foreground/40 uppercase">offered sizes</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {presetSizes(form.size_type).map((s) => {
+                            const sel = form.sizes.includes(s);
+                            return (
+                              <button
+                                type="button"
+                                key={s}
+                                onClick={() => toggleSize(s)}
+                                className={`px-3 py-1.5 rounded-full text-[11px] tracking-wider border transition-all ${
+                                  sel ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                                }`}
+                              >
+                                {s}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {form.size_type === "custom" && (
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="add a size, e.g. 38mm"
+                          value={form.custom_size_draft}
+                          onChange={(e) => update("custom_size_draft", e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomSize(); } }}
+                          className="rounded-xl bg-card border-border/60 text-sm tracking-wide flex-1"
+                        />
+                        <Button type="button" variant="outline" onClick={addCustomSize} className="rounded-full text-xs tracking-wider border-border/60">add</Button>
+                      </div>
+                    )}
+
+                    {form.sizes.length > 0 && (
+                      <div className="rounded-[18px] border border-border/50 bg-card divide-y divide-border/40">
+                        {form.sizes.map((s) => (
+                          <div key={s} className="flex items-center gap-3 px-4 py-2.5">
+                            <span className="text-sm tracking-wide text-foreground flex-1 lowercase">{s}</span>
+                            <span className="text-[10px] tracking-widest text-muted-foreground/40 uppercase">surcharge</span>
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs text-muted-foreground">$</span>
+                              <Input
+                                type="number"
+                                min="0"
+                                value={form.size_surcharges[s] ?? 0}
+                                onChange={(e) => setSurcharge(s, e.target.value)}
+                                className="w-16 h-8 rounded-lg bg-background border-border/60 text-xs"
+                              />
+                            </div>
+                            <button type="button" onClick={() => removeSize(s)} className="text-muted-foreground/50 hover:text-foreground"><X className="w-3.5 h-3.5" /></button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-[10px] text-muted-foreground/40 tracking-wide">final price = material price + size surcharge. leave at 0 if all sizes cost the same.</p>
+                  </div>
+                )}
+              </div>
+
+
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={back} className="rounded-full text-sm tracking-wider text-muted-foreground">back</Button>
                 <Button onClick={next} className="flex-1 rounded-full text-sm tracking-wider bg-foreground text-background hover:bg-foreground/90 gap-2">
