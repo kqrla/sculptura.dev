@@ -93,10 +93,17 @@ Deno.serve(async (req) => {
       if (!a) return json({ error: `unknown artifact ${item.artifact_id}` }, 400);
       if (a.status !== "published") return json({ error: `artifact ${a.name} is not available` }, 400);
       const material = String(item.material || "");
+      const size = item.size ? String(item.size) : null;
       const qty = Math.max(1, Math.min(10, Number(item.quantity || 1)));
+      // validate size against the artifact's offered sizes when applicable
+      const offeredSizes: string[] = Array.isArray(a.sizes) ? a.sizes : [];
+      if (offeredSizes.length > 1 && (!size || !offeredSizes.includes(size))) {
+        return json({ error: `pick a size for ${a.name}` }, 400);
+      }
       const baseUnitPrice = Number((a.prices || {})[material] || 0);
+      const sizeSurcharge = size ? Number((a.size_surcharges || {})[size] || 0) : 0;
       const discountPct = discountByHandle.get(a.creator_handle) || 0;
-      const unitPrice = baseUnitPrice * (1 - discountPct / 100);
+      const unitPrice = (baseUnitPrice + sizeSurcharge) * (1 - discountPct / 100);
       const unitMfg = Number((a.manufacturing_costs || {})[material] || 0);
       const unitEarn = Number((a.creator_earnings || {})[material] || 0);
 
@@ -109,6 +116,7 @@ Deno.serve(async (req) => {
         customer_email: String(customer.email),
         customer_name: String(customer.name),
         material,
+        size,
         price: unitPrice * qty,
         manufacturing_cost: unitMfg * qty,
         creator_earnings: unitEarn * qty,
