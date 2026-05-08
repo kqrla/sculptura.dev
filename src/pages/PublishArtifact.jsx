@@ -154,6 +154,32 @@ export default function PublishArtifact() {
 
   const removeTag = (t) => setForm((p) => ({ ...p, tags: p.tags.filter((x) => x !== t) }));
 
+  // ---- size helpers ----
+  const setSizeType = (t) => setForm((p) => ({
+    ...p,
+    size_type: t,
+    sizes: t === "unisize" ? [] : (p.sizes?.length ? p.sizes : defaultSizesFor(t)),
+    size_surcharges: t === "unisize" ? {} : p.size_surcharges,
+  }));
+  const toggleSize = (s) => setForm((p) => ({
+    ...p,
+    sizes: p.sizes.includes(s) ? p.sizes.filter((x) => x !== s) : [...p.sizes, s],
+  }));
+  const addCustomSize = () => {
+    const s = (form.custom_size_draft || "").trim();
+    if (!s) return;
+    setForm((p) => p.sizes.includes(s) ? { ...p, custom_size_draft: "" } : { ...p, sizes: [...p.sizes, s], custom_size_draft: "" });
+  };
+  const removeSize = (s) => setForm((p) => {
+    const next = { ...p.size_surcharges };
+    delete next[s];
+    return { ...p, sizes: p.sizes.filter((x) => x !== s), size_surcharges: next };
+  });
+  const setSurcharge = (s, v) => setForm((p) => ({
+    ...p,
+    size_surcharges: { ...p.size_surcharges, [s]: Number(v) || 0 },
+  }));
+
   const publishMutation = useMutation({
     mutationFn: async (data) => {
       const keywords = data.keywords
