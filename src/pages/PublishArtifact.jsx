@@ -790,6 +790,10 @@ export default function PublishArtifact() {
                       <span>offered in</span><span>{form.materials.join(", ")}</span>
                     </div>
                     <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
+                      <span>sizing</span>
+                      <span>{form.size_type === "unisize" ? "one size only" : `${form.sizes.length} ${form.size_type === "ring" ? "ring " : ""}sizes (${form.sizes.join(", ")})`}</span>
+                    </div>
+                    <div className="flex justify-between text-xs text-muted-foreground tracking-wide">
                       <span>your earnings</span><span>${form.creator_earnings}</span>
                     </div>
                     <div className="pt-2 space-y-1">
