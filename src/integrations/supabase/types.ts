@@ -42,6 +42,9 @@ export type Database = {
           review_notes: string | null
           seo_description: string | null
           seo_title: string | null
+          size_surcharges: Json
+          size_type: string
+          sizes: string[]
           slug: string | null
           specs: string | null
           status: string
@@ -76,6 +79,9 @@ export type Database = {
           review_notes?: string | null
           seo_description?: string | null
           seo_title?: string | null
+          size_surcharges?: Json
+          size_type?: string
+          sizes?: string[]
           slug?: string | null
           specs?: string | null
           status?: string
@@ -110,6 +116,9 @@ export type Database = {
           review_notes?: string | null
           seo_description?: string | null
           seo_title?: string | null
+          size_surcharges?: Json
+          size_type?: string
+          sizes?: string[]
           slug?: string | null
           specs?: string | null
           status?: string
@@ -559,6 +568,7 @@ export type Database = {
           payment_status: string
           price: number
           shipping_address: string | null
+          size: string | null
           status: string
           stripe_payment_intent: string | null
           stripe_session_id: string | null
@@ -584,6 +594,7 @@ export type Database = {
           payment_status?: string
           price?: number
           shipping_address?: string | null
+          size?: string | null
           status?: string
           stripe_payment_intent?: string | null
           stripe_session_id?: string | null
@@ -609,6 +620,7 @@ export type Database = {
           payment_status?: string
           price?: number
           shipping_address?: string | null
+          size?: string | null
           status?: string
           stripe_payment_intent?: string | null
           stripe_session_id?: string | null
