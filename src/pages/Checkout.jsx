@@ -338,13 +338,13 @@ export default function Checkout() {
               {/* Items summary */}
               <div className="bg-card rounded-[18px] border border-border/50 shadow-paper divide-y divide-border/30">
                 {cart.map((item) => (
-                  <div key={`${item.artifactId}-${item.material}`} className="flex items-center gap-3 px-5 py-4">
+                  <div key={`${item.artifactId}-${item.material}-${item.size || "_"}`} className="flex items-center gap-3 px-5 py-4">
                     <div className="w-10 h-10 rounded-lg overflow-hidden bg-secondary flex-shrink-0">
                       {item.artifactImage && <img src={item.artifactImage} alt={item.artifactName} className="w-full h-full object-cover" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm tracking-wide text-foreground lowercase truncate">{item.artifactName}</p>
-                      <p className="text-[11px] text-muted-foreground/50 tracking-wide">{item.material} x{item.quantity || 1}</p>
+                      <p className="text-[11px] text-muted-foreground/50 tracking-wide">{item.material}{item.size ? ` · size ${item.size}` : ""} x{item.quantity || 1}</p>
                     </div>
                     <span className="text-sm font-light text-foreground">${(item.price * (item.quantity || 1)).toFixed(0)}</span>
                   </div>
