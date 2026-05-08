@@ -27,6 +27,7 @@ const ALLOWED = new Set([
   "image_url","image_urls","model_url",
   "made_to_order","region",
   "materials","manufacturing_costs","creator_earnings","prices",
+  "size_type","sizes","size_surcharges",
   "slug","seo_title","seo_description","keywords","tags",
   "collection_id",
 ]);
