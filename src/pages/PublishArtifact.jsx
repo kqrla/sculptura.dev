@@ -46,6 +46,11 @@ export default function PublishArtifact() {
     region: "europe",
     creator_earnings: 30,
     made_to_order: true,
+    // sizing: 'unisize' (default) | 'standard' (S/M/L) | 'ring' (US ring sizes) | 'custom'
+    size_type: "unisize",
+    sizes: [],
+    size_surcharges: {}, // map of size -> usd surcharge added to base material price
+    custom_size_draft: "",
     // seo + grouping
     slug: "",
     slug_touched: false, // once edited manually we stop auto-syncing from name
