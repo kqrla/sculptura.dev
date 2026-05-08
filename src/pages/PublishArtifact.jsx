@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowRight, Upload, X, Box, Check, Tag as TagIcon } from "lu
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { MATERIALS, REGIONS, getMfgCost, getFinalPrice, DELIVERY_ESTIMATES } from "@/lib/pricing";
+import { SIZE_TYPES, presetSizes, defaultSizesFor } from "@/lib/sizing";
 import { slugify } from "@/lib/slug";
 
 const CATEGORIES = ["jewelry", "sculpture", "functional", "wearable", "decorative", "experimental"];
