@@ -62,7 +62,7 @@ Deno.serve(async (req) => {
     const ids = [...new Set(items.map((i: any) => String(i.artifact_id)))];
     const { data: artifacts, error: aerr } = await serviceClient
       .from("artifacts")
-      .select("id,name,image_url,creator_handle,prices,manufacturing_costs,creator_earnings,status")
+      .select("id,name,image_url,creator_handle,prices,manufacturing_costs,creator_earnings,size_surcharges,sizes,size_type,status")
       .in("id", ids);
     if (aerr) return json({ error: aerr.message }, 500);
 
