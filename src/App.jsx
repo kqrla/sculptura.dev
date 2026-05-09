@@ -31,6 +31,7 @@ import StoreSettings from './pages/market/StoreSettings';
 import MyStore from './pages/market/MyStore';
 import FAQ from './pages/FAQ';
 import SizeGuide from './pages/SizeGuide';
+import CreatorDocs from './pages/CreatorDocs';
 import About from './pages/About';
 import AdminReview from './pages/AdminReview';
 import Roadmap from './pages/Roadmap';
@@ -89,6 +90,7 @@ const RoutedApp = () => {
         <Route path="/publish" element={<PublishArtifact />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/size-guide" element={<SizeGuide />} />
+        <Route path="/creator-docs" element={<CreatorDocs />} />
         <Route path="/about" element={<About />} />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/checkout" element={<Checkout />} />
