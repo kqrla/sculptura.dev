@@ -175,6 +175,28 @@ export default function SizeGuide() {
                 creators choose which sizes they want to offer for each design. if you need a size that is not listed, reach out to the creator directly. many creators are open to custom sizing for an additional fee. you can also commission a fully bespoke piece through their profile if commissions are enabled.
               </p>
             </div>
+
+            <div className="bg-card rounded-[20px] border border-border/50 shadow-paper px-7 py-6">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <HelpCircle className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div>
+                  <h2 className="font-serif text-lg font-light tracking-tight lowercase text-foreground mb-3">
+                    for creators
+                  </h2>
+                  <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed mb-3">
+                    a full sizing and creation guide is coming soon. it will cover everything our pilot-affiliated manufacturers currently support — from ring sizing and wall thickness tolerances to surface detailing, sprue placement, and castable geometry limits — as well as the capabilities we plan to add in future program phases.
+                  </p>
+                  <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed mb-3">
+                    the documentation will be open to all creators and include base templates, printable-ready checklists, material-specific tips, common pitfalls, and design ideas to help you get the most out of the lost-wax casting pipeline.
+                  </p>
+                  <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed">
+                    if you have questions about a specific design before the guide goes live, reach out and we will review your model manually.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
