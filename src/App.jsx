@@ -31,6 +31,7 @@ import StoreSettings from './pages/market/StoreSettings';
 import MyStore from './pages/market/MyStore';
 import FAQ from './pages/FAQ';
 import SizeGuide from './pages/SizeGuide';
+import CreatorDocs from './pages/CreatorDocs';
 import About from './pages/About';
 import AdminReview from './pages/AdminReview';
 import Roadmap from './pages/Roadmap';
