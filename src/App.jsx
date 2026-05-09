@@ -90,6 +90,7 @@ const RoutedApp = () => {
         <Route path="/publish" element={<PublishArtifact />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/size-guide" element={<SizeGuide />} />
+        <Route path="/creator-docs" element={<CreatorDocs />} />
         <Route path="/about" element={<About />} />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/checkout" element={<Checkout />} />
