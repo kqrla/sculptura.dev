@@ -6,6 +6,7 @@ const links = {
     { label: "browse artifacts", to: "/explore" },
     { label: "browse stores", to: "/explore?tab=stores" },
     { label: "faq", to: "/faq" },
+    { label: "size guide", to: "/size-guide" },
   ],
   creators: [
     { label: "open a store", to: "/store/create" },
