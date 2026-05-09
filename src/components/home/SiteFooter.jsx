@@ -11,6 +11,7 @@ const links = {
   creators: [
     { label: "open a store", to: "/store/create" },
     { label: "access dashboard", to: "/store/access" },
+    { label: "creator docs", to: "/creator-docs" },
     { label: "pricing model", to: "/faq#pricing" },
   ],
   company: [
