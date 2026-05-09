@@ -191,9 +191,15 @@ export default function SizeGuide() {
                   <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed mb-3">
                     the documentation will be open to all creators and include base templates, printable-ready checklists, material-specific tips, common pitfalls, and design ideas to help you get the most out of the lost-wax casting pipeline.
                   </p>
-                  <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed">
+                  <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed mb-4">
                     if you have questions about a specific design before the guide goes live, reach out and we will review your model manually.
                   </p>
+                  <Link
+                    to="/creator-docs"
+                    className="inline-flex items-center gap-2 text-xs tracking-wider text-foreground border border-border/60 px-4 py-2 rounded-full hover:bg-secondary transition-colors"
+                  >
+                    preview the creator docs outline
+                  </Link>
                 </div>
               </div>
             </div>
