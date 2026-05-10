@@ -146,7 +146,7 @@ export default function CreatorDocs() {
                 why this exists
               </h2>
               <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed">
-                most creators we have spoken to are excellent designers and reluctant marketers. the goal of these docs is to take everything we learn from running the platform — what casts well, what sells well, what listings convert, what photos work — and put it in one place so you do not have to figure it out alone.
+                most creators we have spoken to are excellent designers and reluctant marketers. the goal of these docs is to take everything we learn from running the platform - what casts well, what sells well, what listings convert, what photos work - and put it in one place so you do not have to figure it out alone.
               </p>
             </div>
           </div>

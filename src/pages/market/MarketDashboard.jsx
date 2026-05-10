@@ -19,7 +19,7 @@ import CommissionRequestsSection from "@/components/market/sections/CommissionRe
  * market account dashboard.
  * credentials are passed as url params (?handle=...&key=...) and verified
  * client-side by hashing the key and comparing to the stored hash.
- * no server-side session is created — the key lives only in memory for this visit.
+ * no server-side session is created - the key lives only in memory for this visit.
  */
 export default function MarketDashboard() {
   const navigate = useNavigate();

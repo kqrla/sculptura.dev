@@ -56,7 +56,7 @@ export default function ShopArtifactBySlug() {
 
   return (
     <SeoTags
-      title={artifact.seo_title || `${artifact.name} by ${artifact.creator_handle} — sculptura`}
+      title={artifact.seo_title || `${artifact.name} by ${artifact.creator_handle} - sculptura`}
       description={artifact.seo_description || artifact.description}
       image={artifact.image_url}
       canonical={`/shop/${artifact.creator_handle}/${artifact.slug}`}

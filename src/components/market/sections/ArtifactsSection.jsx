@@ -89,7 +89,7 @@ export default function ArtifactsSection({ handle }) {
                 {artifact.status === "pending_review" ? "in review" : artifact.status}
               </span>
 
-              {/* toggle — only allow archive/publish for published or archived */}
+              {/* toggle - only allow archive/publish for published or archived */}
               {(artifact.status === "published" || artifact.status === "archived") && (
                 <button
                   onClick={() => toggleStatusMutation.mutate({ id: artifact.id, currentStatus: artifact.status })}

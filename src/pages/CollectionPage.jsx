@@ -59,7 +59,7 @@ export default function CollectionPage() {
   return (
     <div className="px-6 py-10">
       <SeoTags
-        title={`${collection.name} — ${username} on sculptura`}
+        title={`${collection.name} - ${username} on sculptura`}
         description={collection.description || `${collection.name}, a collection by ${username} on sculptura`}
         image={collection.cover_image_url}
         canonical={`/shop/${username}/c/${collection.slug}`}

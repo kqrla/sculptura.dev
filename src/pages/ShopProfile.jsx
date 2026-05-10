@@ -41,7 +41,7 @@ export default function ShopProfile() {
     enabled: !!username && !demoStore,
   });
 
-  // market account is optional — only stores that went through the
+  // market account is optional - only stores that went through the
   // /store/create flow will have one, but it carries promo codes,
   // newsletter settings, and customization data we want to surface.
   // we also fall back to it as the profile source if there is no
@@ -163,7 +163,7 @@ export default function ShopProfile() {
           <div className="mb-6 rounded-[14px] border border-foreground/20 bg-card px-4 py-3 flex items-center gap-3 flex-wrap">
             <Eye className="w-3.5 h-3.5 text-muted-foreground/60 shrink-0" />
             <p className="text-[12px] text-muted-foreground/80 tracking-wide">
-              you're previewing your own store{marketAccount?.status !== "active" && " (pending review — public visitors can't see this yet)"}.
+              you're previewing your own store{marketAccount?.status !== "active" && " (pending review - public visitors can't see this yet)"}.
             </p>
             <Link
               to={`/store/mystore?handle=${username}&key=${ownerKey}`}

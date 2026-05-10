@@ -94,7 +94,7 @@ export default function ArtifactDetail() {
   return (
     <div className="px-6 py-10">
       <SeoTags
-        title={artifact.seo_title || `${artifact.name}${artifact.creator_handle ? ` by ${artifact.creator_handle}` : ''} — sculptura`}
+        title={artifact.seo_title || `${artifact.name}${artifact.creator_handle ? ` by ${artifact.creator_handle}` : ''} - sculptura`}
         description={artifact.seo_description || artifact.description}
         image={artifact.image_url}
         canonical={artifact.creator_handle && artifact.slug ? `/shop/${artifact.creator_handle}/${artifact.slug}` : `/artifact/${artifact.id}`}
@@ -207,7 +207,7 @@ export default function ArtifactDetail() {
               </div>
             )}
 
-            {/* Size selector — only when the creator offers multiple sizes */}
+            {/* Size selector - only when the creator offers multiple sizes */}
             {requiresSize && (
               <div className="space-y-3">
                 <p className="text-xs tracking-wider text-muted-foreground/70 uppercase">

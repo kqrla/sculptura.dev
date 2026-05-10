@@ -273,7 +273,7 @@ export default function PublishArtifact() {
         </div>
 
         <AnimatePresence mode="wait">
-          {/* STEP 0 — Upload design */}
+          {/* STEP 0 - Upload design */}
           {step === 0 && (
             <motion.div key="s0" variants={stepVariants} initial="enter" animate="center" exit="exit" className="space-y-7">
               <div>
@@ -370,7 +370,7 @@ export default function PublishArtifact() {
                 </div>
               </div>
 
-              {/* dimensions + weight (metric) — shown on the listing */}
+              {/* dimensions + weight (metric) - shown on the listing */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">dimensions</Label>
@@ -382,7 +382,7 @@ export default function PublishArtifact() {
                 </div>
               </div>
 
-              {/* artifact type — semantic tag used for buyer filtering */}
+              {/* artifact type - semantic tag used for buyer filtering */}
               <div className="space-y-2">
                 <Label className="text-xs tracking-wider text-muted-foreground/60 uppercase">artifact type</Label>
                 <div className="flex flex-wrap gap-2">
@@ -509,7 +509,7 @@ export default function PublishArtifact() {
             </motion.div>
           )}
 
-          {/* STEP 1 — Materials offered */}
+          {/* STEP 1 - Materials offered */}
           {step === 1 && (
             <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" className="space-y-7">
               <div>
@@ -561,7 +561,7 @@ export default function PublishArtifact() {
                 </div>
               )}
 
-              {/* sizing — unisize, generic apparel sizes, ring sizes, or custom */}
+              {/* sizing - unisize, generic apparel sizes, ring sizes, or custom */}
               <div className="space-y-4 pt-2 border-t border-border/40">
                 <div>
                   <p className="text-[11px] tracking-widest text-muted-foreground/50 uppercase mb-1">sizing</p>
@@ -659,7 +659,7 @@ export default function PublishArtifact() {
             </motion.div>
           )}
 
-          {/* STEP 2 — Region */}
+          {/* STEP 2 - Region */}
           {step === 2 && (
             <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" className="space-y-7">
               <div>
@@ -700,7 +700,7 @@ export default function PublishArtifact() {
             </motion.div>
           )}
 
-          {/* STEP 3 — Creator earnings */}
+          {/* STEP 3 - Creator earnings */}
           {step === 3 && (
             <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit" className="space-y-7">
               <div>
@@ -754,7 +754,7 @@ export default function PublishArtifact() {
             </motion.div>
           )}
 
-          {/* STEP 4 — Review */}
+          {/* STEP 4 - Review */}
           {step === 4 && (
             <motion.div key="s4" variants={stepVariants} initial="enter" animate="center" exit="exit" className="space-y-7">
               <div>
@@ -762,7 +762,7 @@ export default function PublishArtifact() {
                 <p className="text-sm text-muted-foreground tracking-wide font-light">the sculptura team will review your design, provide a manufacturing quote, and publish it to the marketplace.</p>
               </div>
 
-              {/* manufacturer caveat — approved listings can still be flagged later */}
+              {/* manufacturer caveat - approved listings can still be flagged later */}
               <div className="rounded-[18px] border border-amber-200/70 bg-amber-50/60 p-4 text-xs tracking-wide text-amber-900/80 leading-relaxed">
                 heads up: even after approval, an order may not be processed if our manufacturer deems the piece unprintable or structurally unsound. if that happens, we'll reach out so you can adjust the design. a full guide on engineering pieces and design rules is coming soon in the sculptura docs and knowledge base, see the roadmap.
               </div>

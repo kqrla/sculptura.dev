@@ -10,7 +10,7 @@ import { Save } from "lucide-react";
 // Username (handle) editor.
 //
 // the public storefront url uses the editable handle, but the permanent
-// `slug` never changes — internal references and admin links stay stable
+// `slug` never changes - internal references and admin links stay stable
 // regardless of how often the creator renames themselves.
 //
 // rules: lowercase letters and numbers only, 4+ chars, unique. uniqueness
@@ -62,7 +62,7 @@ export default function StoreUsername({ account, onSaved }) {
 
         <div className="bg-secondary/40 rounded-xl border border-border/30 p-4 space-y-1">
           <p className="text-[10px] tracking-widest text-muted-foreground/50 uppercase">permanent slug</p>
-          <p className="text-xs font-mono text-muted-foreground/80">{account?.slug || "—"}</p>
+          <p className="text-xs font-mono text-muted-foreground/80">{account?.slug || "-"}</p>
           <p className="text-[11px] text-muted-foreground/40 tracking-wide leading-relaxed">
             this internal id never changes, even if you rename your store. links shared with admins or in
             integrations stay valid.

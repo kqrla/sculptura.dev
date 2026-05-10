@@ -52,7 +52,7 @@ export default function SharedList() {
 
   return (
     <div className="px-6 py-12 max-w-4xl mx-auto">
-      <SeoTags title={`${list.name} — a creator list on sculptura`} description={list.description || ""} />
+      <SeoTags title={`${list.name} - a creator list on sculptura`} description={list.description || ""} />
       <p className="text-[11px] tracking-widest uppercase text-muted-foreground/60 mb-2">a creator list</p>
       <h1 className="font-serif text-3xl md:text-4xl font-light tracking-tight lowercase text-foreground mb-2">
         {list.name}

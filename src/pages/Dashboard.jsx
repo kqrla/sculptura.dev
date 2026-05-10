@@ -48,7 +48,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
-          {/* Left — main content */}
+          {/* Left - main content */}
           <div className="space-y-10">
             {/* Insights grid */}
             <div>
@@ -91,7 +91,7 @@ export default function Dashboard() {
             <MyArtifacts />
           </div>
 
-          {/* Right sidebar — wallet */}
+          {/* Right sidebar - wallet */}
           <div className="lg:sticky lg:top-24 lg:self-start space-y-6">
             <WalletSection />
           </div>

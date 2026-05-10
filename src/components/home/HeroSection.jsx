@@ -66,7 +66,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Artifact preview cards — staggered, right side */}
+          {/* Artifact preview cards - staggered, right side */}
           <div className="hidden md:flex absolute right-12 top-1/2 -translate-y-1/2 items-end gap-3">
             {previewCards.map((card, i) => (
               <motion.div

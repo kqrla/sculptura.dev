@@ -3,7 +3,7 @@
 // adaptive: standard fields up top (name / email / budget / timeline /
 // intended use / description / references) + any custom intake
 // questions defined by the creator. submitted requests insert directly
-// into the commission_requests table — anyone can submit (rls allows
+// into the commission_requests table - anyone can submit (rls allows
 // anon insert), the creator sees them in their dashboard.
 //
 // honors the creator's terms: shows allowed-use chips, the min-budget
@@ -83,7 +83,7 @@ export default function CommissionRequestForm({ creator, onSubmit, onDone }) {
       } else {
         await db.entities.CommissionRequest.create(payload);
       }
-      toast.success("request sent — the creator will reach out");
+      toast.success("request sent - the creator will reach out");
       onDone?.();
     } catch (err) {
       toast.error(err.message || "could not send request");

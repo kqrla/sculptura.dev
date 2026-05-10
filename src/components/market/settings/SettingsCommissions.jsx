@@ -1,6 +1,6 @@
 // commission settings for a market account.
 //
-// thin wrapper around CommissionTermsEditor — saves the patch through
+// thin wrapper around CommissionTermsEditor - saves the patch through
 // the store-update edge function (db facade routes MarketAccount
 // updates there automatically).
 

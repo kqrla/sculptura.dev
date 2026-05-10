@@ -1,4 +1,4 @@
-// /demo/app — try-it-out sandbox entry point.
+// /demo/app - try-it-out sandbox entry point.
 //
 // sculptura is public-storefront-first, so the demo lands the visitor
 // on a real-looking mock storefront (kaiform) instead of dropping them

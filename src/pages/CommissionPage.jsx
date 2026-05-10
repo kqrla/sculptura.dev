@@ -65,7 +65,7 @@ export default function CommissionPage() {
         hourly_rate: creatorProfile.hourly_rate,
         turnaround_time: creatorProfile.turnaround_time,
         rush_available: creatorProfile.rush_available,
-        // creator_profiles doesn't yet store these — fall back to
+        // creator_profiles doesn't yet store these - fall back to
         // sensible defaults so the form still renders meaningfully.
         commission_intro: "",
         commission_allow_commercial: false,
