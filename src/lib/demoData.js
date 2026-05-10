@@ -96,7 +96,7 @@ export const DEMO_ARTIFACTS = [
   {
     id: "demo-3",
     name: "orbit_cuff_07",
-    description: "an open bangle with asymmetric orbital detail on one terminus. the weight distribution is intentional — it settles on the wrist in a way that feels inevitable.",
+    description: "an open bangle with asymmetric orbital detail on one terminus. the weight distribution is intentional - it settles on the wrist in a way that feels inevitable.",
     image_url: "https://images.unsplash.com/photo-1573408301185-9519f94815b2?w=600&h=600&fit=crop&auto=format",
     creator_handle: "orbitobjects",
     creator_name: "orbit objects",

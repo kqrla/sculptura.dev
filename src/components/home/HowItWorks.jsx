@@ -10,7 +10,7 @@ const steps = [
   {
     icon: Palette,
     title: "choose materials",
-    desc: "silver, brass, gold — each changes the price and character.",
+    desc: "silver, brass, gold - each changes the price and character.",
   },
   {
     icon: Package,

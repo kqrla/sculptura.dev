@@ -115,7 +115,7 @@ export default function FollowsAndLists() {
 
         {lists.length === 0 ? (
           <p className="text-sm text-muted-foreground tracking-wide">
-            no lists yet. group creators by what they make — like "everyday earrings" or "wedding rings".
+            no lists yet. group creators by what they make - like "everyday earrings" or "wedding rings".
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

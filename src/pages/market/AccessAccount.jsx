@@ -37,7 +37,7 @@ export default function AccessAccount() {
       return;
     }
 
-    // key is valid — navigate with credentials in url params (session-only, not stored)
+    // key is valid - navigate with credentials in url params (session-only, not stored)
     navigate(`/store/dashboard?handle=${handle}&key=${key}`);
   };
 

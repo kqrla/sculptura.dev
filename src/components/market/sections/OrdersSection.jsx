@@ -91,7 +91,7 @@ export default function OrdersSection({ handle }) {
                   <span className={`text-[11px] tracking-wider lowercase px-2.5 py-0.5 rounded-full border block ${ORDER_STATUS_COLORS[order.status] || "text-muted-foreground bg-secondary"}`}>
                     {order.status?.replace("_", " ")}
                   </span>
-                  <p className="text-xs text-muted-foreground/50 tracking-wide mt-1">+${order.creator_earnings ?? "—"}</p>
+                  <p className="text-xs text-muted-foreground/50 tracking-wide mt-1">+${order.creator_earnings ?? "-"}</p>
                 </div>
               </div>
 

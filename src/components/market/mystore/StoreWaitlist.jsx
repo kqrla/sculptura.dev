@@ -13,7 +13,7 @@ import { Save } from "lucide-react";
 export default function StoreWaitlist({ account, onSaved }) {
   const queryClient = useQueryClient();
   const [enabled, setEnabled] = useState(account?.waitlist_enabled ?? false);
-  const [message, setMessage] = useState(account?.waitlist_message ?? "orders are currently closed — join the waitlist to be notified when i reopen.");
+  const [message, setMessage] = useState(account?.waitlist_message ?? "orders are currently closed - join the waitlist to be notified when i reopen.");
 
   const saveMutation = useMutation({
     mutationFn: () => db.entities.MarketAccount.update(account.id, {

@@ -186,7 +186,7 @@ export default function SizeGuide() {
                     for creators
                   </h2>
                   <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed mb-3">
-                    a full sizing and creation guide is coming soon. it will cover everything our pilot-affiliated manufacturers currently support — from ring sizing and wall thickness tolerances to surface detailing, sprue placement, and castable geometry limits — as well as the capabilities we plan to add in future program phases.
+                    a full sizing and creation guide is coming soon. it will cover everything our pilot-affiliated manufacturers currently support - from ring sizing and wall thickness tolerances to surface detailing, sprue placement, and castable geometry limits - as well as the capabilities we plan to add in future program phases.
                   </p>
                   <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed mb-3">
                     the documentation will be open to all creators and include base templates, printable-ready checklists, material-specific tips, common pitfalls, and design ideas to help you get the most out of the lost-wax casting pipeline.

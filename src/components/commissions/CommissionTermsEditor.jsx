@@ -57,7 +57,7 @@ export default function CommissionTermsEditor({ initial = {}, onSave, hasMarketA
   const handleSave = async () => {
     setSaving(true);
     try {
-      // strip empty question labels — those are noise
+      // strip empty question labels - those are noise
       const cleaned = {
         ...form,
         hourly_rate: form.hourly_rate ? parseFloat(form.hourly_rate) : null,

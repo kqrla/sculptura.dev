@@ -1,7 +1,7 @@
 /**
  * client-side sha256 hashing using the web crypto api.
  * used to hash market account access keys before storing them.
- * the raw key is never sent to the server — only the hash is persisted.
+ * the raw key is never sent to the server - only the hash is persisted.
  */
 export async function hashKey(rawKey) {
   const encoder = new TextEncoder();
