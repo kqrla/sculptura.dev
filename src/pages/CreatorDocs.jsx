@@ -114,6 +114,46 @@ const sections = [
       "platform fees, payouts, and how disputes are handled",
     ],
   },
+  {
+    icon: Store,
+    title: "storefront and customization",
+    items: [
+      "customising your store banner, accent colours, icon, and layout",
+      "how to use the built-in newsletter, tip jar, and waitlist banners",
+      "choosing a public handle and what the permanent slug means for your links",
+      "best practices for making your storefront feel intentional and cohesive",
+    ],
+  },
+  {
+    icon: BarChart3,
+    title: "analytics and link tracking",
+    items: [
+      "adding your own analytics id to your profile to see sources where your links work",
+      "reading traffic sources: instagram, pinterest, direct, and referral",
+      "using tracked links to measure which posts and campaigns actually convert",
+      "understanding views, clicks, and orders without needing an external dashboard",
+    ],
+  },
+  {
+    icon: ClipboardList,
+    title: "commissions and terms",
+    items: [
+      "creating proper documentation for commissions: what you offer, what you do not",
+      "writing commission terms that protect you and set clear expectations",
+      "pricing custom work, revision limits, and deposit structures",
+      "handling enquiries, timelines, and contracts for one-off pieces",
+    ],
+  },
+  {
+    icon: Gem,
+    title: "bring-your-own-stone design",
+    items: [
+      "designing pieces where gemstones can be set later by local jewellers",
+      "bezels, prongs, and channels: what geometry supports post-cast stone setting",
+      "communicating to buyers that stones are not included and where to get them set",
+      "partnering with local jewellers and what to tell them about your cast piece",
+    ],
+  },
 ];
 
 export default function CreatorDocs() {
