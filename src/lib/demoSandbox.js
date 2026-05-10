@@ -4,7 +4,7 @@
 // commission terms, custom intake questions, mock published artifacts,
 // incoming commission requests) lives under one namespaced key so the
 // whole experience can be wiped with a single button. nothing here ever
-// reaches the database — this is purely a try-it-out surface.
+// reaches the database - this is purely a try-it-out surface.
 //
 // shape:
 //   {
@@ -38,7 +38,7 @@ export function getSandbox() {
     store: root.store || {
       display_name: "your demo store",
       handle: "demo-creator",
-      bio: "this is a sandbox — try it without signing up.",
+      bio: "this is a sandbox - try it without signing up.",
       avatar_url: "",
       accent_color: "#84A48B",
     },

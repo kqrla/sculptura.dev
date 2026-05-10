@@ -3,7 +3,7 @@
 // every price in the database is stored in usd. this module converts
 // numbers to whatever display currency the visitor has picked (kept in
 // localStorage under "display_currency"). there is no checkout-side
-// conversion — payments still settle in usd. the goal is to give
+// conversion - payments still settle in usd. the goal is to give
 // international collectors a familiar number on the page, not to act
 // as a real fx engine.
 //
