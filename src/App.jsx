@@ -83,7 +83,7 @@ const RoutedApp = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/artifact/:id" element={<ArtifactDetail />} />
         <Route path="/shop/:username" element={<ShopProfile />} />
-        {/* slug-aware routes — fixed prefixes first so 'c' / 'commission' don't get matched as slugs */}
+        {/* slug-aware routes - fixed prefixes first so 'c' / 'commission' don't get matched as slugs */}
         <Route path="/shop/:username/commission" element={<CommissionPage />} />
         <Route path="/shop/:username/c/:collectionSlug" element={<CollectionPage />} />
         <Route path="/shop/:username/:slug" element={<ShopArtifactBySlug />} />
