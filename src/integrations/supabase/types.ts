@@ -220,6 +220,33 @@ export type Database = {
         }
         Relationships: []
       }
+      creator_docs_notes: {
+        Row: {
+          category: string | null
+          created_at: string
+          email: string | null
+          id: string
+          message: string
+          subject: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          message: string
+          subject?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          message?: string
+          subject?: string | null
+        }
+        Relationships: []
+      }
       creator_follows: {
         Row: {
           created_at: string
