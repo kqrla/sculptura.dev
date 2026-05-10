@@ -13,6 +13,10 @@ import {
   TrendingUp,
   ShieldCheck,
   Sparkles,
+  Store,
+  BarChart3,
+  ClipboardList,
+  Gem,
 } from "lucide-react";
 import SiteFooter from "../components/home/SiteFooter";
 
