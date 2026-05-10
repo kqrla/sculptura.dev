@@ -1,25 +1,41 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   Compass,
   Ruler,
-  Wand2,
-  Megaphone,
-  Tags,
   Camera,
+  Tags,
+  Megaphone,
   Package,
-  Scale,
-  MessageCircle,
   TrendingUp,
-  ShieldCheck,
+  Scale,
   Sparkles,
-  Store,
-  BarChart3,
-  ClipboardList,
-  Gem,
+  ShieldCheck,
 } from "lucide-react";
 import SiteFooter from "../components/home/SiteFooter";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
+// consolidated sections: similar topics clubbed together so the page reads
+// as a tighter outline rather than a long shopping list of cards.
 const sections = [
   {
     icon: Compass,
@@ -32,21 +48,16 @@ const sections = [
   },
   {
     icon: Ruler,
-    title: "designing for cast metal",
+    title: "designing, templates, and stone setting",
     items: [
       "minimum wall thickness, undercut limits, and tolerances supported by our pilot manufacturer",
       "what the lost-wax pipeline can and cannot reproduce in fine detail",
-      "sprue and venting considerations you can plan for in your model",
       "size systems we support today (rings, bracelets, free-size pieces) and what's coming next",
-    ],
-  },
-  {
-    icon: Wand2,
-    title: "tips, tricks, and base templates",
-    items: [
       "starter cad files for rings, pendants, brooches, and earrings",
       "patterns that print and cast cleanly, patterns that fight you",
       "finishing notes: polished, brushed, oxidised, and what each one costs in time",
+      "designing pieces where stones can be set later by local jewellers",
+      "bezels, prongs, and channels that support post-cast stone setting",
     ],
   },
   {
@@ -70,36 +81,35 @@ const sections = [
   },
   {
     icon: Megaphone,
-    title: "marketing your shop",
+    title: "marketing, storefront, and analytics",
     items: [
-      "naming and positioning that actually distinguishes you from other creators",
-      "how to use the tip jar, newsletter, and waitlist features built into your store",
+      "naming and positioning that distinguishes you from other creators",
+      "customising your store banner, accent colours, icon, and layout",
+      "using the built-in newsletter, tip jar, and waitlist banners",
+      "choosing a public handle and what the permanent slug means for your links",
       "off-platform: instagram, pinterest, and craft fairs",
-      "collaborations, drops, and limited series",
+      "adding your own analytics id to your profile to see traffic sources",
+      "tracked links to measure which posts and campaigns actually convert",
     ],
   },
   {
     icon: Package,
-    title: "fulfillment and made-to-order",
+    title: "fulfillment and commissions",
     items: [
       "what happens between a confirmed order and a finished piece",
       "lead times: what to promise, what to under-promise",
-      "handling commissions, custom sizing, and revision requests",
-    ],
-  },
-  {
-    icon: MessageCircle,
-    title: "talking to collectors",
-    items: [
-      "responding to enquiries, especially around custom work",
-      "setting expectations on timeline and finish",
-      "handling refunds, remakes, and edge cases gracefully",
+      "creating commission documentation: what you offer, what you do not",
+      "writing commission terms that protect you and set clear expectations",
+      "pricing custom work, revision limits, and deposit structures",
     ],
   },
   {
     icon: TrendingUp,
-    title: "growing over time",
+    title: "talking to collectors and growing over time",
     items: [
+      "responding to enquiries, especially around custom work",
+      "setting expectations on timeline and finish",
+      "handling refunds, remakes, and edge cases gracefully",
       "reading your analytics: views, conversion, repeat buyers",
       "building a body of work vs. one-off experiments",
       "creator tiers, seo weighting, and how rank works on sculptura",
@@ -114,49 +124,66 @@ const sections = [
       "platform fees, payouts, and how disputes are handled",
     ],
   },
-  {
-    icon: Store,
-    title: "storefront and customization",
-    items: [
-      "customising your store banner, accent colours, icon, and layout",
-      "how to use the built-in newsletter, tip jar, and waitlist banners",
-      "choosing a public handle and what the permanent slug means for your links",
-      "best practices for making your storefront feel intentional and cohesive",
-    ],
-  },
-  {
-    icon: BarChart3,
-    title: "analytics and link tracking",
-    items: [
-      "adding your own analytics id to your profile to see sources where your links work",
-      "reading traffic sources: instagram, pinterest, direct, and referral",
-      "using tracked links to measure which posts and campaigns actually convert",
-      "understanding views, clicks, and orders without needing an external dashboard",
-    ],
-  },
-  {
-    icon: ClipboardList,
-    title: "commissions and terms",
-    items: [
-      "creating proper documentation for commissions: what you offer, what you do not",
-      "writing commission terms that protect you and set clear expectations",
-      "pricing custom work, revision limits, and deposit structures",
-      "handling enquiries, timelines, and contracts for one-off pieces",
-    ],
-  },
-  {
-    icon: Gem,
-    title: "bring-your-own-stone design",
-    items: [
-      "designing pieces where gemstones can be set later by local jewellers",
-      "bezels, prongs, and channels: what geometry supports post-cast stone setting",
-      "communicating to buyers that stones are not included and where to get them set",
-      "partnering with local jewellers and what to tell them about your cast piece",
-    ],
-  },
+];
+
+const categories = [
+  "design and casting",
+  "pricing",
+  "photography",
+  "marketing and storefront",
+  "commissions",
+  "policy and trust",
+  "something else",
 ];
 
 export default function CreatorDocs() {
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    category: "",
+    subject: "",
+    message: "",
+    email: "",
+  });
+
+  const resetForm = () =>
+    setForm({ category: "", subject: "", message: "", email: "" });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.message.trim()) {
+      toast({
+        title: "add a note",
+        description: "the note can't be empty.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await supabase.from("creator_docs_notes").insert({
+      category: form.category || null,
+      subject: form.subject.trim() || null,
+      message: form.message.trim(),
+      email: form.email.trim() || null,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast({
+        title: "couldn't send your note",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "note sent",
+      description: "thanks, we read every one of these.",
+    });
+    resetForm();
+    setOpen(false);
+  };
+
   return (
     <div>
       <div className="px-6 py-10">
@@ -236,18 +263,115 @@ export default function CreatorDocs() {
                 in the meantime
               </h2>
               <p className="text-sm text-muted-foreground font-light tracking-wide leading-relaxed mb-3">
-                if you are designing a piece right now and want to know whether it will cast cleanly, send it over and we will review it manually. the same goes for pricing, photography, or anything else where you would normally check a docs page.
+                if you are designing a piece right now and want to know whether it will cast cleanly, send a note. the same goes for pricing, photography, or anything else where you would normally check a docs page. leaving an email is optional, anonymous notes are welcome too.
               </p>
-              <a
-                href="mailto:hello@sculptura.shop"
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
                 className="inline-flex items-center gap-2 text-xs tracking-wider text-foreground border border-border/60 px-4 py-2 rounded-full hover:bg-secondary transition-colors"
               >
                 send a note
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-serif font-light tracking-tight lowercase">
+              send a note
+            </DialogTitle>
+            <DialogDescription className="text-xs tracking-wide">
+              tell us what you're stuck on, what you wish existed, or what you'd like the docs to cover. email is optional.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-xs tracking-wide lowercase text-muted-foreground">
+                category (optional)
+              </Label>
+              <Select
+                value={form.category}
+                onValueChange={(value) =>
+                  setForm((f) => ({ ...f, category: value }))
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="pick a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs tracking-wide lowercase text-muted-foreground">
+                subject (optional)
+              </Label>
+              <Input
+                value={form.subject}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, subject: e.target.value }))
+                }
+                maxLength={200}
+                placeholder="a one-line summary"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs tracking-wide lowercase text-muted-foreground">
+                your note
+              </Label>
+              <Textarea
+                value={form.message}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, message: e.target.value }))
+                }
+                maxLength={4000}
+                rows={5}
+                placeholder="what would you like to tell us?"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs tracking-wide lowercase text-muted-foreground">
+                email (optional, leave blank to stay anonymous)
+              </Label>
+              <Input
+                type="email"
+                value={form.email}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, email: e.target.value }))
+                }
+                maxLength={320}
+                placeholder="you@example.com"
+              />
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="text-xs tracking-wider px-4 py-2 rounded-full border border-border/60 hover:bg-secondary transition-colors"
+              >
+                cancel
+              </button>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="text-xs tracking-wider px-4 py-2 rounded-full bg-foreground text-background hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                {submitting ? "sending..." : "send note"}
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       <SiteFooter />
     </div>
   );
