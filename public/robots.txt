@@ -12,3 +12,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /store/dashboard
+Disallow: /store/settings
+Disallow: /store/mystore
+Disallow: /checkout
+Disallow: /dashboard/buyer
+
+Sitemap: https://sculptura.lovable.app/sitemap.xml
