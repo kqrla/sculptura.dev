@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, X, Package, ShoppingBag, Box, ExternalLink, Truck } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const STATUS_COLORS = {
   pending_review: "text-amber-600 bg-amber-50 border-amber-200",
@@ -256,23 +257,7 @@ export default function AdminReview() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* header */}
-      <header className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b border-border/40 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="font-wordmark text-xl text-foreground">sculptura</span>
-          <span className="text-muted-foreground/30 text-xs">/</span>
-          <span className="text-xs tracking-widest text-muted-foreground/60 uppercase">admin</span>
-        </div>
-        <a href="/" className="text-xs tracking-wide text-muted-foreground hover:text-foreground transition-colors">back to site</a>
-      </header>
-
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h1 className="font-serif text-2xl md:text-4xl font-light tracking-tight lowercase text-foreground">review panel</h1>
-          <p className="text-sm text-muted-foreground/60 tracking-wide mt-1">manage submissions, artifacts, and orders</p>
-        </div>
-
+    <AdminLayout title="review queue" subtitle="manage submissions, artifacts, and orders">
         {/* tabs */}
         <div className="flex gap-2 mb-8 flex-wrap">
           {tabs.map((t) => (
@@ -364,7 +349,6 @@ export default function AdminReview() {
             )}
           </div>
         )}
-      </div>
-    </div>
+    </AdminLayout>
   );
 }
