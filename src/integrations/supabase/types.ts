@@ -387,6 +387,57 @@ export type Database = {
         }
         Relationships: []
       }
+      manufacturers: {
+        Row: {
+          api_endpoint: string | null
+          capabilities: string[]
+          contact_email: string | null
+          created_at: string
+          credential_ref: string | null
+          id: string
+          is_default: boolean
+          name: string
+          notes: string | null
+          region: string | null
+          slug: string
+          status: string
+          supported_materials: string[]
+          updated_at: string
+        }
+        Insert: {
+          api_endpoint?: string | null
+          capabilities?: string[]
+          contact_email?: string | null
+          created_at?: string
+          credential_ref?: string | null
+          id?: string
+          is_default?: boolean
+          name: string
+          notes?: string | null
+          region?: string | null
+          slug: string
+          status?: string
+          supported_materials?: string[]
+          updated_at?: string
+        }
+        Update: {
+          api_endpoint?: string | null
+          capabilities?: string[]
+          contact_email?: string | null
+          created_at?: string
+          credential_ref?: string | null
+          id?: string
+          is_default?: boolean
+          name?: string
+          notes?: string | null
+          region?: string | null
+          slug?: string
+          status?: string
+          supported_materials?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       market_accounts: {
         Row: {
           accent_color: string | null
@@ -661,6 +712,53 @@ export type Database = {
             columns: ["artifact_id"]
             isOneToOne: false
             referencedRelation: "artifacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_settings: {
+        Row: {
+          created_at: string
+          default_manufacturer_id: string | null
+          id: string
+          maintenance_mode: boolean
+          payout_mode: string
+          sales_routing_mode: string
+          settings: Json
+          singleton: boolean
+          support_email: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          default_manufacturer_id?: string | null
+          id?: string
+          maintenance_mode?: boolean
+          payout_mode?: string
+          sales_routing_mode?: string
+          settings?: Json
+          singleton?: boolean
+          support_email?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          default_manufacturer_id?: string | null
+          id?: string
+          maintenance_mode?: boolean
+          payout_mode?: string
+          sales_routing_mode?: string
+          settings?: Json
+          singleton?: boolean
+          support_email?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_settings_default_manufacturer_id_fkey"
+            columns: ["default_manufacturer_id"]
+            isOneToOne: false
+            referencedRelation: "manufacturers"
             referencedColumns: ["id"]
           },
         ]
