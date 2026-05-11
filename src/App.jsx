@@ -34,6 +34,11 @@ import SizeGuide from './pages/SizeGuide';
 import CreatorDocs from './pages/CreatorDocs';
 import About from './pages/About';
 import AdminReview from './pages/AdminReview';
+import AdminOverview from './pages/admin/AdminOverview';
+import AdminManufacturers from './pages/admin/AdminManufacturers';
+import AdminRouting from './pages/admin/AdminRouting';
+import AdminSettings from './pages/admin/AdminSettings';
+import AdminDocs from './pages/admin/AdminDocs';
 import Roadmap from './pages/Roadmap';
 import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
@@ -60,7 +65,12 @@ const RoutedApp = () => {
       <Route path="/auth" element={<Auth />} />
 
       {/* standalone pages (no header) */}
-      <Route path="/admin" element={<AdminReview />} />
+      <Route path="/admin" element={<AdminOverview />} />
+      <Route path="/admin/review" element={<AdminReview />} />
+      <Route path="/admin/manufacturers" element={<AdminManufacturers />} />
+      <Route path="/admin/routing" element={<AdminRouting />} />
+      <Route path="/admin/settings" element={<AdminSettings />} />
+      <Route path="/admin/docs" element={<AdminDocs />} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/store/create" element={<CreateAccount />} />
       <Route path="/store/access" element={<AccessAccount />} />
