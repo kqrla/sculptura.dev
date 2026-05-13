@@ -12,6 +12,7 @@ import {
   Route as RouteIcon,
   Settings,
   BookOpen,
+  Lightbulb,
   Lock,
   LogOut,
 } from "lucide-react";
@@ -26,6 +27,7 @@ const NAV = [
   { to: "/admin/review", label: "review queue", icon: Package },
   { to: "/admin/manufacturers", label: "manufacturers", icon: Factory },
   { to: "/admin/routing", label: "sales routing", icon: RouteIcon },
+  { to: "/admin/idea", label: "idea notebook", icon: Lightbulb },
   { to: "/admin/settings", label: "platform settings", icon: Settings },
   { to: "/admin/docs", label: "admin docs", icon: BookOpen },
 ];
