@@ -39,6 +39,8 @@ import AdminManufacturers from './pages/admin/AdminManufacturers';
 import AdminRouting from './pages/admin/AdminRouting';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminDocs from './pages/admin/AdminDocs';
+import AdminIdea from './pages/admin/AdminIdea';
+import Compare from './pages/Compare';
 import Roadmap from './pages/Roadmap';
 import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
@@ -71,6 +73,7 @@ const RoutedApp = () => {
       <Route path="/admin/routing" element={<AdminRouting />} />
       <Route path="/admin/settings" element={<AdminSettings />} />
       <Route path="/admin/docs" element={<AdminDocs />} />
+      <Route path="/admin/idea" element={<AdminIdea />} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/store/create" element={<CreateAccount />} />
       <Route path="/store/access" element={<AccessAccount />} />
@@ -102,6 +105,7 @@ const RoutedApp = () => {
         <Route path="/size-guide" element={<SizeGuide />} />
         <Route path="/creator-docs" element={<CreatorDocs />} />
         <Route path="/about" element={<About />} />
+        <Route path="/compare" element={<Compare />} />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/dashboard/buyer" element={<BuyerDashboard />} />

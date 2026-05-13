@@ -15,6 +15,8 @@ const links = {
     { label: "pricing model", to: "/faq#pricing" },
   ],
   company: [
+    { label: "about", to: "/about" },
+    { label: "compare", to: "/compare" },
     { label: "how it works", to: "/#how-it-works" },
     { label: "roadmap", to: "/roadmap" },
     { label: "for designers", to: "/#for-who" },
