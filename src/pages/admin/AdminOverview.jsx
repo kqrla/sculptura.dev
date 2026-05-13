@@ -13,6 +13,7 @@ import {
   Route as RouteIcon,
   Settings,
   BookOpen,
+  Lightbulb,
   ArrowRight,
 } from "lucide-react";
 
@@ -110,6 +111,12 @@ export default function AdminOverview() {
           icon={Settings}
           title="platform settings"
           description="payouts, support contact, maintenance mode, and global toggles."
+        />
+        <SectionCard
+          to="/admin/idea"
+          icon={Lightbulb}
+          title="idea notebook"
+          description="markdown scratchpad for working through manufacturing, routing, and product decisions."
         />
         <SectionCard
           to="/admin/docs"
