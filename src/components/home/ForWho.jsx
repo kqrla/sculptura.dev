@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Store, ShoppingBag, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SketchUnderline, SketchHeart, SketchStar, HandNote } from "./SketchDoodles";
 
 const creatorPoints = [
   "upload cad files (.glb, .stl, .gltf)",
@@ -19,12 +20,25 @@ const buyerPoints = [
 
 export default function ForWho() {
   return (
-    <section className="px-6 py-16 border-t border-border/40">
+    <section className="relative px-6 py-16 border-t border-border/40">
+      <SketchHeart className="hidden md:block absolute top-12 right-12 w-5 h-5 opacity-70" />
+      <SketchStar className="hidden md:block absolute bottom-10 left-8 w-4 h-4 opacity-60" color="var(--rose)" />
+
       <div className="max-w-7xl mx-auto">
-        <div className="mb-10">
+        <div className="mb-10 relative">
           <p className="text-[10px] tracking-widest font-mono uppercase mb-3 text-muted-foreground/50">who it's for</p>
           <h2 className="font-serif text-2xl md:text-4xl font-light leading-tight tracking-tight text-foreground">
-            built for creators and collectors alike
+            built for{" "}
+            <span className="relative inline-block">
+              creators
+              <SketchUnderline className="absolute left-0 -bottom-1 w-full h-2 opacity-80" color="var(--spanish-green)" />
+            </span>{" "}
+            and{" "}
+            <span className="relative inline-block">
+              collectors
+              <SketchUnderline className="absolute left-0 -bottom-1 w-full h-2 opacity-80" color="var(--horizon)" />
+            </span>{" "}
+            alike
           </h2>
         </div>
 

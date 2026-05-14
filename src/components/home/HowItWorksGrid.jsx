@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Upload, Sliders, Package, Search, MessageSquare, Truck } from "lucide-react";
+import { SketchUnderline, SketchStar, SketchSparkle, SketchSpiral } from "./SketchDoodles";
 
 const creatorSteps = [
   {
@@ -88,15 +89,24 @@ function StepCard({ step, index }) {
 
 export default function HowItWorksGrid() {
   return (
-    <section className="px-6 py-16 border-t border-border/40">
+    <section className="relative px-6 py-16 border-t border-border/40">
+      <SketchSpiral className="hidden md:block absolute top-10 right-8 w-10 h-10 opacity-50" color="var(--lavender)" />
+      <SketchStar className="hidden md:block absolute top-1/2 left-4 w-4 h-4 opacity-60" color="var(--horizon)" />
+
       <div className="max-w-7xl mx-auto space-y-16">
 
-        {/* Creator flow */}
+        {/* creator flow */}
         <div>
-          <div className="mb-8">
+          <div className="mb-8 relative">
             <p className="text-[10px] tracking-widest font-mono uppercase mb-3" style={{ color: "#558E9B" }}>for designers</p>
             <h2 className="font-serif text-2xl md:text-4xl font-light leading-tight tracking-tight text-foreground">
-              publish a design. earn from every sale.
+              publish a design.{" "}
+              <span className="relative inline-block">
+                earn
+                <SketchUnderline className="absolute left-0 -bottom-1 w-full h-2 opacity-80" color="var(--spanish-green)" />
+              </span>{" "}
+              from every sale.
+              <SketchSparkle className="hidden md:inline-block w-4 h-4 ml-2 align-middle" color="var(--buttercup)" />
             </h2>
             <p className="text-sm text-muted-foreground font-light tracking-wide mt-3 max-w-xl">
               no factory. no logistics. just your cad work and a store that ships real objects worldwide.
@@ -109,12 +119,17 @@ export default function HowItWorksGrid() {
           </div>
         </div>
 
-        {/* Buyer flow */}
+        {/* buyer flow */}
         <div>
-          <div className="mb-8">
+          <div className="mb-8 relative">
             <p className="text-[10px] tracking-widest font-mono uppercase mb-3" style={{ color: "#A386A9" }}>for collectors</p>
             <h2 className="font-serif text-2xl md:text-4xl font-light leading-tight tracking-tight text-foreground">
-              discover objects that don't exist anywhere else.
+              discover objects that{" "}
+              <span className="relative inline-block">
+                don't exist
+                <SketchUnderline className="absolute left-0 -bottom-1 w-full h-2 opacity-80" color="var(--terracotta)" />
+              </span>{" "}
+              anywhere else.
             </h2>
             <p className="text-sm text-muted-foreground font-light tracking-wide mt-3 max-w-xl">
               original designs, manufactured on demand. or go further and commission something entirely your own.
