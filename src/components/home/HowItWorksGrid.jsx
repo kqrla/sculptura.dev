@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Upload, Sliders, Package, Search, MessageSquare, Truck } from "lucide-react";
+import { SketchUnderline, SketchStar, SketchSparkle, SketchSpiral } from "./SketchDoodles";
 
 const creatorSteps = [
   {
