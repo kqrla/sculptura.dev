@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Store, ShoppingBag, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SketchUnderline, SketchHeart, SketchStar, HandNote } from "./SketchDoodles";
 
 const creatorPoints = [
   "upload cad files (.glb, .stl, .gltf)",
