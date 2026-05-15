@@ -156,7 +156,7 @@ function Polaroid({ data, dragArea, baseZ, onPickUp }) {
       }}
     >
       <div className="bg-white p-3 pb-12 rounded-[2px] w-[200px] border border-black/5">
-        <div className="w-[156px] h-[156px] overflow-hidden bg-foreground/5">
+        <div className="w-[176px] h-[176px] overflow-hidden bg-foreground/5">
           <PixelSwirl seed={data.seed} palette={data.palette} />
         </div>
         <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
