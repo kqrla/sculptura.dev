@@ -155,7 +155,7 @@ function Polaroid({ data, dragArea, baseZ, onPickUp }) {
           "drop-shadow(0 1px 1px rgba(40,30,20,0.18)) drop-shadow(0 14px 22px rgba(40,30,20,0.18))",
       }}
     >
-      <div className="bg-[#fdfaf3] dark:bg-[#f1ece0] p-3 pb-10 rounded-[3px] w-[180px]">
+      <div className="bg-white p-3 pb-12 rounded-[2px] w-[200px] border border-black/5">
         <div className="w-[156px] h-[156px] overflow-hidden bg-foreground/5">
           <PixelSwirl seed={data.seed} palette={data.palette} />
         </div>
