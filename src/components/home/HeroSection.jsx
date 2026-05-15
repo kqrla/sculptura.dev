@@ -97,8 +97,8 @@ const polaroids = [
       [123, 178, 186],
       [60, 98, 112],
     ],
-    rotate: -7,
-    offset: { x: -20, y: 0 },
+    rotate: -8,
+    offset: { x: -120, y: -60 },
   },
   {
     label: "pendant_01",
@@ -109,8 +109,8 @@ const polaroids = [
       [200, 130, 158],
       [88, 50, 78],
     ],
-    rotate: 4,
-    offset: { x: 30, y: 40 },
+    rotate: 5,
+    offset: { x: 20, y: 30 },
   },
   {
     label: "cuff_07",
@@ -121,8 +121,8 @@ const polaroids = [
       [200, 110, 70],
       [80, 38, 30],
     ],
-    rotate: -2,
-    offset: { x: 80, y: 10 },
+    rotate: -3,
+    offset: { x: 140, y: -20 },
   },
 ];
 
@@ -155,12 +155,12 @@ function Polaroid({ data, dragArea, baseZ, onPickUp }) {
           "drop-shadow(0 1px 1px rgba(40,30,20,0.18)) drop-shadow(0 14px 22px rgba(40,30,20,0.18))",
       }}
     >
-      <div className="bg-[#fdfaf3] dark:bg-[#f1ece0] p-3 pb-10 rounded-[3px] w-[180px]">
-        <div className="w-[156px] h-[156px] overflow-hidden bg-foreground/5">
+      <div className="bg-white p-3 pb-12 rounded-[2px] w-[200px] border border-black/5">
+        <div className="w-[176px] h-[176px] overflow-hidden bg-foreground/5">
           <PixelSwirl seed={data.seed} palette={data.palette} />
         </div>
-        <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
-          <span className="font-mono text-[10px] tracking-[0.18em] text-[#3a2f25]/60 lowercase">
+        <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
+          <span className="font-mono text-[10px] tracking-[0.18em] text-neutral-500 lowercase">
             {data.label}
           </span>
         </div>
@@ -180,14 +180,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section
-      className="relative px-6 pt-10 pb-16 md:pt-14 md:pb-20 overflow-hidden"
-      style={{
-        backgroundImage:
-          "linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--foreground) / 0.05) 1px, transparent 1px)",
-        backgroundSize: "40px 40px",
-      }}
-    >
+    <section className="relative px-6 pt-20 pb-20 md:pt-28 md:pb-28 overflow-hidden">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center min-h-[520px]">
         {/* left: pill, headline, sub, ctas */}
         <motion.div
@@ -236,7 +229,7 @@ export default function HeroSection() {
         {/* right: draggable polaroid stack */}
         <div
           ref={dragAreaRef}
-          className="relative h-[460px] hidden md:block"
+          className="relative h-[520px] hidden md:block"
         >
           {polaroids.map((p, i) => (
             <Polaroid
