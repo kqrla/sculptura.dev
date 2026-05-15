@@ -159,8 +159,8 @@ function Polaroid({ data, dragArea, baseZ, onPickUp }) {
         <div className="w-[176px] h-[176px] overflow-hidden bg-foreground/5">
           <PixelSwirl seed={data.seed} palette={data.palette} />
         </div>
-        <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
-          <span className="font-mono text-[10px] tracking-[0.18em] text-[#3a2f25]/60 lowercase">
+        <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
+          <span className="font-mono text-[10px] tracking-[0.18em] text-neutral-500 lowercase">
             {data.label}
           </span>
         </div>
