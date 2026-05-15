@@ -180,14 +180,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section
-      className="relative px-6 pt-10 pb-16 md:pt-14 md:pb-20 overflow-hidden"
-      style={{
-        backgroundImage:
-          "linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--foreground) / 0.05) 1px, transparent 1px)",
-        backgroundSize: "40px 40px",
-      }}
-    >
+    <section className="relative px-6 pt-20 pb-20 md:pt-28 md:pb-28 overflow-hidden">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center min-h-[520px]">
         {/* left: pill, headline, sub, ctas */}
         <motion.div
