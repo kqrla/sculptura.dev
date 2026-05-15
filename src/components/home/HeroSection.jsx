@@ -97,8 +97,8 @@ const polaroids = [
       [123, 178, 186],
       [60, 98, 112],
     ],
-    rotate: -7,
-    offset: { x: -20, y: 0 },
+    rotate: -8,
+    offset: { x: -120, y: -60 },
   },
   {
     label: "pendant_01",
@@ -109,8 +109,8 @@ const polaroids = [
       [200, 130, 158],
       [88, 50, 78],
     ],
-    rotate: 4,
-    offset: { x: 30, y: 40 },
+    rotate: 5,
+    offset: { x: 20, y: 30 },
   },
   {
     label: "cuff_07",
@@ -121,8 +121,8 @@ const polaroids = [
       [200, 110, 70],
       [80, 38, 30],
     ],
-    rotate: -2,
-    offset: { x: 80, y: 10 },
+    rotate: -3,
+    offset: { x: 140, y: -20 },
   },
 ];
 
