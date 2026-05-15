@@ -229,7 +229,7 @@ export default function HeroSection() {
         {/* right: draggable polaroid stack */}
         <div
           ref={dragAreaRef}
-          className="relative h-[460px] hidden md:block"
+          className="relative h-[520px] hidden md:block"
         >
           {polaroids.map((p, i) => (
             <Polaroid
