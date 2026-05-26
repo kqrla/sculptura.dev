@@ -20,6 +20,11 @@ export default function Explore() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedMaterial, setSelectedMaterial] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const activeFilterCount =
+    (selectedCategory !== "all" ? 1 : 0) +
+    (selectedMaterial !== "all" ? 1 : 0) +
+    (selectedType !== "all" ? 1 : 0);
 
   const { data: liveArtifacts, isLoading: artifactsLoading } = useQuery({
     queryKey: ["explore-artifacts"],
@@ -79,70 +84,109 @@ export default function Explore() {
           </div>
         </div>
 
-        {/* Search */}
+        {/* Search + filter toggle */}
         <div className="space-y-4 mb-8">
-          <div className="relative max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder={tab === "artifacts" ? "search by name or creator..." : "search stores..."}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 rounded-full bg-card border-border/60 text-sm tracking-wide"
-            />
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder={tab === "artifacts" ? "search by name or creator..." : "search stores..."}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10 rounded-full bg-card border-border/60 text-sm tracking-wide w-full"
+              />
+            </div>
+            {tab === "artifacts" && (
+              <button
+                onClick={() => setFiltersOpen((v) => !v)}
+                aria-label="toggle filters"
+                aria-expanded={filtersOpen}
+                className={`relative h-10 w-10 flex-shrink-0 flex items-center justify-center rounded-full border transition-colors ${
+                  filtersOpen || activeFilterCount > 0
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                }`}
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                {activeFilterCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-foreground text-background text-[9px] font-mono flex items-center justify-center border border-background">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+            )}
           </div>
 
-          {tab === "artifacts" && (
-            <>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`px-4 py-1.5 rounded-full text-xs tracking-wider lowercase border transition-all duration-200 ${
-                      selectedCategory === cat
-                        ? "bg-foreground text-background border-foreground"
-                        : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+          {tab === "artifacts" && filtersOpen && (
+            <div className="space-y-3 rounded-2xl border border-border/50 bg-card/60 p-4">
+              <div>
+                <p className="text-[10px] tracking-widest uppercase text-muted-foreground/40 mb-2">category</p>
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-3 py-1 rounded-full text-[11px] tracking-wider lowercase border transition-all duration-200 ${
+                        selectedCategory === cat
+                          ? "bg-foreground text-background border-foreground"
+                          : "bg-card text-muted-foreground border-border/60 hover:border-foreground/30"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 items-center">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground/40" />
-                {materials.map((mat) => (
-                  <button
-                    key={mat}
-                    onClick={() => setSelectedMaterial(mat)}
-                    className={`px-3 py-1 rounded-full text-[11px] tracking-wider lowercase border transition-all duration-200 ${
-                      selectedMaterial === mat
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-card text-muted-foreground border-border/50 hover:border-primary/30"
-                    }`}
-                  >
-                    {mat}
-                  </button>
-                ))}
+              <div>
+                <p className="text-[10px] tracking-widest uppercase text-muted-foreground/40 mb-2">metal</p>
+                <div className="flex flex-wrap gap-2">
+                  {materials.map((mat) => (
+                    <button
+                      key={mat}
+                      onClick={() => setSelectedMaterial(mat)}
+                      className={`px-3 py-1 rounded-full text-[11px] tracking-wider lowercase border transition-all duration-200 ${
+                        selectedMaterial === mat
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-card text-muted-foreground border-border/50 hover:border-primary/30"
+                      }`}
+                    >
+                      {mat}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[10px] tracking-widest uppercase text-muted-foreground/40 mr-1">type</span>
-                {artifactTypes.map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setSelectedType(t)}
-                    className={`px-3 py-1 rounded-full text-[11px] tracking-wider lowercase border transition-all duration-200 ${
-                      selectedType === t
-                        ? "bg-foreground text-background border-foreground"
-                        : "bg-card text-muted-foreground border-border/50 hover:border-foreground/30"
-                    }`}
-                  >
-                    {t}
-                  </button>
-                ))}
+              <div>
+                <p className="text-[10px] tracking-widest uppercase text-muted-foreground/40 mb-2">artifact type</p>
+                <div className="flex flex-wrap gap-2">
+                  {artifactTypes.map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setSelectedType(t)}
+                      className={`px-3 py-1 rounded-full text-[11px] tracking-wider lowercase border transition-all duration-200 ${
+                        selectedType === t
+                          ? "bg-foreground text-background border-foreground"
+                          : "bg-card text-muted-foreground border-border/50 hover:border-foreground/30"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </>
+
+              {activeFilterCount > 0 && (
+                <div className="pt-1">
+                  <button
+                    onClick={() => { setSelectedCategory("all"); setSelectedMaterial("all"); setSelectedType("all"); }}
+                    className="text-[11px] tracking-wider lowercase text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+                  >
+                    clear filters
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
 

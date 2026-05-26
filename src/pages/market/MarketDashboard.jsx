@@ -93,7 +93,7 @@ export default function MarketDashboard() {
     collections: <CollectionsSection handle={handle} />,
     orders: <OrdersSection handle={handle} />,
     commissions: <CommissionRequestsSection handle={handle} />,
-    analytics: <AnalyticsSection />,
+    analytics: <AnalyticsSection account={account} handle={handle} />,
     finance: <FinanceSection account={account} />,
     insights: <InsightsSection account={account} handle={handle} />,
   };
