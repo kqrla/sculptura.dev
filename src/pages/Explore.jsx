@@ -6,6 +6,7 @@ import ArtifactGrid from "../components/artifacts/ArtifactGrid";
 import StoreGrid from "../components/explore/StoreGrid";
 import { Input } from "@/components/ui/input";
 import { Search, SlidersHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_ARTIFACTS, DEMO_STORES } from "@/lib/demoData";
 
