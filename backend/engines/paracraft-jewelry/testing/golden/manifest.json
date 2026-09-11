@@ -1,0 +1,44 @@
+{
+  "harness_version": 1,
+  "openscad_wasm": "0.0.4",
+  "updated": "2026-09-11",
+  "note": "golden hashes — any change here must be a deliberate harness --update tied to a commit that explains the geometry change",
+  "cases": [
+    {
+      "id": "band-comfort-fn32-b250",
+      "fn": 32,
+      "source_sha256": "f5fc45beeab122c3eea397d9311caf03be57a60b2d80a9b8b5ae60cc6194aba7",
+      "stl_sha256": "7ae3e55a3bd7b4c010f58f7bad3cc80d0b72329061fa65e92de91ff11c152dd3",
+      "stl_bytes": 718605,
+      "tris": 2304,
+      "ms_budget": 250
+    },
+    {
+      "id": "band-flat-fn192-b1000",
+      "fn": 192,
+      "source_sha256": "ab06012a54c0d46f214ecec396ef40b6e768b3b667aece9a21f29c1cdf164840",
+      "stl_sha256": "382e99cf264bfc3aad99c9619c8f5ef804339692f606bbef781b9a2df3d54590",
+      "stl_bytes": 23630719,
+      "tris": 73728,
+      "ms_budget": 1000
+    },
+    {
+      "id": "band-flat-fn32-b250",
+      "fn": 32,
+      "source_sha256": "764719c85704ec193dcad042cd0cbc9d0a9db212c3f5d5cf5921baee176e580e",
+      "stl_sha256": "b91d422eec6cbbadff640e7bb69b49adced02c52284d8e671ec1d3ad3b1aed34",
+      "stl_bytes": 634705,
+      "tris": 2048,
+      "ms_budget": 250
+    },
+    {
+      "id": "band-groove-fn32-b1200",
+      "fn": 32,
+      "source_sha256": "e8f7bb2932f79e074f2ddf933ed5c1d45979b773886b807271b6a8549202886a",
+      "stl_sha256": "c67433f0157b9864877c32641e7c9dffeb258d9b77cad3580d50a547d6ba290b",
+      "stl_bytes": 666798,
+      "tris": 2160,
+      "ms_budget": 1200
+    }
+  ]
+}

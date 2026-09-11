@@ -1,0 +1,8 @@
+{
+  "name": "paracraft-jewelry",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "parametric jewelry model engine — openscad canonical, stl export",
+  "dependencies": { "openscad-wasm": "0.0.4" }
+}

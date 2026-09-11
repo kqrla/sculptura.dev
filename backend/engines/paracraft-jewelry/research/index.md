@@ -65,7 +65,7 @@ status: `open` → `drafted` → `cited` → `accepted`
 | libraries/study-bosl2.md — revisit trigger: curved-sweep geometry painful in vanilla | open |
 | patterns/csg-evaluation.md, rotate-extrude.md, profiles.md | open |
 | performance/budget.md — measured: band $fn24≈12ms / $fn192≈458ms; engraved ring 18.7s (text CSG); instance-reuse heap oom | accepted |
-| testing/determinism.md — golden files, hash caching | open |
+| testing/determinism.md — harness shipped + green: openscad-wasm byte-deterministic across runs, 4 goldens pinned | accepted |
 | ../../preview/index.html — in-browser openscad-wasm → webgl engine (3 presets, verbatim-verified) | drafted |
 
 ## xano
