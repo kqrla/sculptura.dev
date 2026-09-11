@@ -319,7 +319,7 @@ use the right tool. do not use an inference call where a retrieval or a measurem
 
 **inference** summarizes and organizes what the other three retrieved, and drafts documentation. it does not originate a constraint value. ever.
 
-**adoptionlabs.ai** does not apply to this phase but its instrumentation plan should be sketched now, because the funnel it will measure is the creator-to-agent conversation that this research defines.
+**adaptionlabs.ai** does not apply to this phase but its instrumentation plan should be sketched now, because the funnel it will measure is the creator-to-agent conversation that this research defines.
 
 ---
 

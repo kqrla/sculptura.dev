@@ -197,7 +197,7 @@ forbidden in these places:
 - computing price
 - producing the final product render
 
-### adoptionlabs.ai
+### adaptionlabs.ai
 
 creator adoption and onboarding instrumentation. use for:
 
@@ -240,7 +240,7 @@ hand base mesh with morph parameters, attachment coordinate spaces, camera and l
 
 **phase 7: creator surface**
 
-the editing ui, presets, saved hand configurations, and the render export. adoptionlabs instrumentation ships with it, not after it.
+the editing ui, presets, saved hand configurations, and the render export. adaptionlabs instrumentation ships with it, not after it.
 
 ---
 
