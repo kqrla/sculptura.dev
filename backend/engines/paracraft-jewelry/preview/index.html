@@ -106,15 +106,15 @@
 </footer>
 
 <script>
-// silent-failure watchdog: if the module scripts (three + openscad-wasm from cdn.jsdelivr.net)
-// never execute, tell the human instead of showing a dead page.
+// silent-failure watchdog: the module sets __sculpturaAlive as its very first act.
+// if that never happens, no cdn was reachable — say so instead of showing a dead page.
 setTimeout(() => {
-  if (!window.__sculpturaReady) {
+  if (!window.__sculpturaAlive) {
     const e = document.getElementById("err");
     e.style.display = "block";
-    e.textContent = "app scripts failed to load — three.js / openscad-wasm come from cdn.jsdelivr.net; check network or retry. if this persists the cdn is having a moment.";
+    e.textContent = "app scripts failed to start — three.js / openscad-wasm load from public cdns (jsdelivr, unpkg, esm.sh). check your connection and retry; if this persists, the network is blocking all three cdns.";
   }
-}, 15000);
+}, 25000);
 </script>
 <script type="importmap">
 { "imports": {
@@ -125,12 +125,46 @@ setTimeout(() => {
 </script>
 
 <script type="module">
-import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { mergeVertices } from "three/addons/utils/BufferGeometryUtils.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+window.__sculpturaAlive = true;
+window.addEventListener("error", (e) => { const el = document.getElementById("err"); el.style.display = "block"; el.textContent = "page error: " + (e.message || e.type); });
+window.addEventListener("unhandledrejection", (e) => { const el = document.getElementById("err"); el.style.display = "block"; el.textContent = "unhandled: " + String(e.reason).slice(0, 400); });
+
+const loadBusy = document.getElementById("busy");
+const say = (t) => { loadBusy.style.display = "block"; loadBusy.textContent = t; };
+const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("cdn timeout after " + ms + "ms")), ms))]);
+
+// resilient loader — a cdn hiccup must never leave the page silently dead.
+// route 1: jsdelivr via importmap (addon bare-imports of "three" resolve through it).
+// route 2: esm.sh wholesale (its addons carry absolute internal imports — no importmap needed).
+// engine: jsdelivr → unpkg → esm.sh.
+say("loading three.js…");
+let THREE, OrbitControls, mergeVertices, RoomEnvironment, createOpenSCAD;
+try {
+  THREE = await withTimeout(import("three"), 25000);
+  ({ OrbitControls } = await withTimeout(import("three/addons/controls/OrbitControls.js"), 25000));
+  ({ mergeVertices } = await withTimeout(import("three/addons/utils/BufferGeometryUtils.js"), 25000));
+  ({ RoomEnvironment } = await withTimeout(import("three/addons/environments/RoomEnvironment.js"), 25000));
+} catch (_) {
+  // jsdelivr failed — fall back wholesale to esm.sh
+  THREE = await withTimeout(import("https://esm.sh/three@0.160.0"), 30000);
+  ({ OrbitControls } = await withTimeout(import("https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js"), 30000));
+  ({ mergeVertices } = await withTimeout(import("https://esm.sh/three@0.160.0/examples/jsm/utils/BufferGeometryUtils.js"), 30000));
+  ({ RoomEnvironment } = await withTimeout(import("https://esm.sh/three@0.160.0/examples/jsm/environments/RoomEnvironment.js"), 30000));
+}
+say("loading openscad engine — first load pulls ~14 MB, one time");
+let oscadMod = null;
+for (const u of [
+  "https://cdn.jsdelivr.net/npm/openscad-wasm@0.0.4/openscad.js",
+  "https://unpkg.com/openscad-wasm@0.0.4/openscad.js",
+  "https://esm.sh/openscad-wasm@0.0.4",
+]) {
+  try { oscadMod = await withTimeout(import(u), 90000); break; } catch (_) {}
+}
+if (!oscadMod) throw new Error("openscad-wasm unreachable on every cdn — jsdelivr, unpkg, esm.sh all failed");
+createOpenSCAD = oscadMod.createOpenSCAD || oscadMod.default?.createOpenSCAD;
+if (!createOpenSCAD) throw new Error("openscad-wasm module loaded but no createOpenSCAD export — wrapper mismatch");
 window.__sculpturaReady = true;
-import { createOpenSCAD } from "openscad-wasm";
+loadBusy.style.display = "none";
 
 // ---------- parameters ----------
 const $ = (id) => document.getElementById(id);
@@ -281,8 +315,6 @@ resize();
 const busy = $("busy"), err = $("err"), stats = $("stats");
 let oscad = null, compiling = false, pending = false, gen = 0;
 
-window.addEventListener("error", (e) => { err.style.display = "block"; err.textContent = "page error: " + (e.message || e.type); });
-window.addEventListener("unhandledrejection", (e) => { err.style.display = "block"; err.textContent = "unhandled: " + String(e.reason).slice(0, 400); });
 let engineReady = false;
 async function compile() {
   const myGen = ++gen;
