@@ -45,6 +45,8 @@ status: `open` → `drafted` → `cited` → `accepted`
 | primitives/bands.md, profiles.md, bezels.md, prongs.md, bails.md, clasps.md, posts.md, backs.md, hinges.md, shanks.md | open |
 | primitives/vocabulary.md — the schema proposal | open |
 | primitives/language-surface.md — creator phrasing to parameter mapping | open |
+| primitives/openscad-patterns.md — existing open jewelry scad catalog: CSG vs polyhedron-sweep paradigms, licenses mapped (17 sources) | cited |
+| primitives/adjacent-cad-techniques.md — domain techniques extracted from cadquery/build123d/freecad jewelry wb/matrixgold, each mapped to a scad primitive (12 sources) | cited |
 
 ### manufacturing
 | note | status |
@@ -62,6 +64,8 @@ status: `open` → `drafted` → `cited` → `accepted`
 | note | status |
 |---|---|
 | libraries/decision.md — vanilla scad for v1 + the prior-art lift policy, adopted | cited |
+| language/reference-digest.md — official docs digest: extrusion semantics, $fn/$fa/$fs, customizer syntax, epsilons (10 sources) | cited |
+| stack/engine-landscape.md — 2021→2026 releases, CGAL→Manifold shift; openscad-wasm 0.0.4 = 2022 snapshot pre-Manifold, goldens must pin per compile path (22 sources) | cited |
 | libraries/study-bosl2.md — revisit trigger: curved-sweep geometry painful in vanilla | open |
 | patterns/csg-evaluation.md, rotate-extrude.md, profiles.md | open |
 | performance/budget.md — measured: band $fn24≈12ms / $fn192≈458ms; engraved ring 18.7s (text CSG); instance-reuse heap oom | accepted |

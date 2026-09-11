@@ -78,10 +78,10 @@
         <div><label>band thickness (mm)</label><input type="number" id="p-thick" value="2.5" step="0.1" min="1" max="5"/></div>
       </div>
       <div>
-        <label>$fn — preview 12–48 · export 96–192 · (measured: fn24≈12ms, fn192≈460ms for band geometry)</label>
+        <label>$fn — preview 32–64 · export 96–192 · (measured: fn64≈60ms, fn192≈460ms for band geometry)</label>
         <div id="fn-wrap">
-          <input type="range" id="fn" min="8" max="256" step="4" value="32"/>
-          <span id="fn-val">32</span>
+          <input type="range" id="fn" min="8" max="256" step="4" value="64"/>
+          <span id="fn-val">64</span>
           <span id="fn-tag" class="preview">preview</span>
         </div>
       </div>
@@ -105,6 +105,17 @@
   <span>$fn split: low for preview, high for export — byte-identical determinism per fn</span>
 </footer>
 
+<script>
+// silent-failure watchdog: if the module scripts (three + openscad-wasm from cdn.jsdelivr.net)
+// never execute, tell the human instead of showing a dead page.
+setTimeout(() => {
+  if (!window.__sculpturaReady) {
+    const e = document.getElementById("err");
+    e.style.display = "block";
+    e.textContent = "app scripts failed to load — three.js / openscad-wasm come from cdn.jsdelivr.net; check network or retry. if this persists the cdn is having a moment.";
+  }
+}, 15000);
+</script>
 <script type="importmap">
 { "imports": {
     "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -116,6 +127,9 @@
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { mergeVertices } from "three/addons/utils/BufferGeometryUtils.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+window.__sculpturaReady = true;
 import { createOpenSCAD } from "openscad-wasm";
 
 // ---------- parameters ----------
@@ -134,7 +148,7 @@ ring_size_mm = ${p.size};      // inner diameter
 band_width_mm = ${p.width};
 band_thickness_mm = ${p.thick};
 /* [render] */
-$fn = ${p.fn};               // preview: 12-48 · export: 96-192
+$fn = ${p.fn};               // preview: 32-64 · export: 96-192
 
 ring_r = ring_size_mm / 2;
 mid_r = ring_r + band_thickness_mm / 2;
@@ -208,12 +222,14 @@ scene.fog = new THREE.Fog(0xf5f1e8, 60, 160);
 const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 500);
 camera.position.set(28, 20, 34);
 const controls = new OrbitControls(camera, renderer.domElement);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
 controls.enableDamping = true;
 controls.target.set(0, 0, 0);
 
-scene.add(new THREE.HemisphereLight(0xffffff, 0xd8cfc0, 0.9));
-const key = new THREE.DirectionalLight(0xfff4e0, 1.4); key.position.set(30, 40, 20); scene.add(key);
-const rim = new THREE.DirectionalLight(0xc9a227, 0.6); rim.position.set(-25, 10, -30); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xd8cfc0, 0.3));
+const key = new THREE.DirectionalLight(0xfff4e0, 1.0); key.position.set(30, 40, 20); scene.add(key);
+const rim = new THREE.DirectionalLight(0xc9a227, 0.35); rim.position.set(-25, 10, -30); scene.add(rim);
 
 const gold = new THREE.MeshStandardMaterial({ color: 0xc9a227, metalness: 0.95, roughness: 0.28 });
 const grid = new THREE.GridHelper(80, 40, 0xc9bfae, 0xe3dac9);
@@ -224,8 +240,9 @@ let mesh = null;
 function showStl(text) {
   const tri = parseAsciiStl(text);
   if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); }
-  const geo = new THREE.BufferGeometry();
+  let geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.BufferAttribute(tri, 3));
+  geo = mergeVertices(geo, 1e-4); // stl is a triangle soup — weld shared verts so curves shade smooth
   geo.computeVertexNormals();
   mesh = new THREE.Mesh(geo, gold);
   scene.add(mesh);
@@ -264,16 +281,25 @@ resize();
 const busy = $("busy"), err = $("err"), stats = $("stats");
 let oscad = null, compiling = false, pending = false, gen = 0;
 
+window.addEventListener("error", (e) => { err.style.display = "block"; err.textContent = "page error: " + (e.message || e.type); });
+window.addEventListener("unhandledrejection", (e) => { err.style.display = "block"; err.textContent = "unhandled: " + String(e.reason).slice(0, 400); });
+let engineReady = false;
 async function compile() {
   const myGen = ++gen;
   const p = params();
   const src = $("editor").value;
   busy.style.display = "block";
+  busy.textContent = engineReady ? "compiling…" : "loading engine — first load pulls ~14 MB of wasm, one time";
+  const watchdog = setTimeout(() => {
+    if (myGen === gen && busy.style.display === "block")
+      { err.style.display = "block"; err.textContent = "engine stalled — the openscad wasm (14 MB from cdn.jsdelivr.net) hasn't finished in 60s. check your connection; a hard refresh usually clears it."; }
+  }, 60000);
   const t0 = performance.now();
   try {
     // fresh instance per compile — instance reuse across large renders ooms the wasm heap
     if (oscad) { try { oscad.getInstance().FS = null; } catch (_) {} oscad = null; }
     oscad = await createOpenSCAD({ print: () => {}, printErr: () => {} });
+    engineReady = true;
     const stl = await oscad.renderToStl(src);
     if (myGen !== gen) return; // stale — a newer edit is compiling
     const ms = Math.round(performance.now() - t0);
@@ -285,6 +311,7 @@ async function compile() {
     err.style.display = "block";
     err.textContent = "compile failed:\n" + String(e).slice(0, 600);
   } finally {
+    clearTimeout(watchdog);
     if (myGen === gen) busy.style.display = "none";
   }
 }
@@ -299,7 +326,7 @@ function schedule() {
 function fnTag() {
   const v = parseInt($("fn").value, 10);
   const tag = $("fn-tag");
-  if (v <= 48) { tag.textContent = "preview"; tag.className = "preview"; }
+  if (v <= 64) { tag.textContent = "preview"; tag.className = "preview"; }
   else if (v >= 96) { tag.textContent = "export"; tag.className = "export"; }
   else { tag.textContent = "—"; tag.className = ""; }
 }
