@@ -1,0 +1,600 @@
+{
+  "manufacturers": [
+    {
+      "id": "apex-jewelry-casting",
+      "name": "Apex Jewelry Casting",
+      "website": "https://apexjewelrycasting.com",
+      "status": "operational",
+      "regions_served": [
+        "US",
+        "North America"
+      ],
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": true,
+        "processes_offered": [
+          {
+            "process": "castable resin print to lost wax casting",
+            "materials": [
+              "Sterling Silver",
+              "10K Gold",
+              "14K Gold",
+              "18K Gold",
+              "21K Gold",
+              "Platinum",
+              "Palladium",
+              "Copper"
+            ],
+            "source_ref": "0"
+          }
+        ],
+        "stone_setting_service": true
+      },
+      "api": {
+        "has_public_api": false,
+        "self_serve": true
+      },
+      "file_requirements": {
+        "accepted_formats": [
+          "STL",
+          "OBJ",
+          "3DM"
+        ],
+        "units_expected": "mm"
+      },
+      "pricing": {
+        "quote_method": "instant_api",
+        "currency": "USD",
+        "typical_turnaround_days": 1,
+        "notes": "Instant drag-and-drop web calculator computes mesh volume and metal density for real-time pricing. Next-day shipping available."
+      },
+      "onboarding": {
+        "requires_manual_setup": false,
+        "steps": [
+          "Drag and drop 3D CAD file (STL/OBJ) into web calculator on apexjewelrycasting.com",
+          "Select desired precious metal alloy",
+          "Lock instant price quote and submit order"
+        ]
+      },
+      "sources": [
+        {
+          "name": "Apex Jewelry Casting Official Website",
+          "url": "https://apexjewelrycasting.com",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Documented 3D resin printing to lost-wax casting process, precious alloys list, drag-and-drop instant pricing engine, and next-day turnaround."
+        }
+      ],
+      "review_status": "drafted"
+    },
+    {
+      "id": "cooksongold",
+      "name": "Cooksongold",
+      "website": "https://www.cooksongold.com",
+      "parent_company": "Heimerle + Meule Group",
+      "status": "operational",
+      "regions_served": [
+        "UK",
+        "Europe",
+        "International"
+      ],
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": true,
+        "processes_offered": [
+          {
+            "process": "castable resin/wax print to lost wax casting",
+            "materials": [
+              "Sterling Silver",
+              "Fine Silver",
+              "9K Gold",
+              "14K Gold",
+              "18K Gold",
+              "22K Gold",
+              "Platinum",
+              "Palladium"
+            ],
+            "source_ref": "0"
+          },
+          {
+            "process": "direct precious metal laser sintering",
+            "materials": [
+              "18K Gold",
+              "Platinum"
+            ],
+            "source_ref": "0"
+          }
+        ],
+        "stone_setting_service": true
+      },
+      "api": {
+        "has_public_api": false,
+        "self_serve": true
+      },
+      "file_requirements": {
+        "accepted_formats": [
+          "STL",
+          "OBJ",
+          "3DM"
+        ],
+        "units_expected": "mm"
+      },
+      "pricing": {
+        "quote_method": "instant_api",
+        "currency": "GBP",
+        "typical_turnaround_days": 5,
+        "notes": "Automated online portal calculates instant quote based on CAD model volume and daily precious metal market fixes."
+      },
+      "onboarding": {
+        "requires_manual_setup": false,
+        "steps": [
+          "Create customer account on cooksongold.com",
+          "Upload CAD file into precious metal casting portal",
+          "Select alloy and finish options",
+          "Review instant price quote and proceed to checkout"
+        ]
+      },
+      "sources": [
+        {
+          "name": "Cooksongold Precious Metal Casting Overview",
+          "url": "https://www.cooksongold.com/precious-metal-casting/how-it-works",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Documented 3D wax printing, precious metal lost-wax casting process, online portal file uploads, and daily fix pricing."
+        }
+      ],
+      "review_status": "drafted"
+    },
+    {
+      "id": "design-build-cast",
+      "name": "Design Build Cast (DBC)",
+      "website": "https://designbuildcast.co.uk",
+      "status": "operational",
+      "regions_served": [
+        "UK",
+        "Europe",
+        "International"
+      ],
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": true,
+        "processes_offered": [
+          {
+            "process": "castable resin print to lost wax casting",
+            "materials": [
+              "Sterling Silver",
+              "9K Gold",
+              "14K Gold",
+              "18K Gold",
+              "22K Gold",
+              "Platinum",
+              "Palladium",
+              "Bronze",
+              "Brass"
+            ],
+            "source_ref": "0"
+          }
+        ],
+        "stone_setting_service": true
+      },
+      "api": {
+        "has_public_api": false,
+        "self_serve": true
+      },
+      "file_requirements": {
+        "accepted_formats": [
+          "STL",
+          "OBJ",
+          "ZIP"
+        ],
+        "max_file_size_mb": 40,
+        "units_expected": "mm"
+      },
+      "pricing": {
+        "quote_method": "instant_api",
+        "currency": "GBP",
+        "typical_turnaround_days": 7,
+        "notes": "Automated online quoter analyzes STL/OBJ mesh, calculates model volume, and returns real-time precious metal casting pricing."
+      },
+      "onboarding": {
+        "requires_manual_setup": false,
+        "steps": [
+          "Navigate to designbuildcast.co.uk/instant-quote/",
+          "Upload STL or OBJ CAD file (max 40MB)",
+          "System analyzes geometry and provides instant precious metal quote",
+          "Select alloy and complete order"
+        ]
+      },
+      "sources": [
+        {
+          "name": "Design Build Cast Instant Quote Portal",
+          "url": "https://designbuildcast.co.uk/instant-quote/",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Documented instant online 3D model parsing (STL, OBJ, max 40MB), real-time pricing for all precious metals, and mesh validation."
+        }
+      ],
+      "review_status": "drafted"
+    },
+    {
+      "id": "rio-grande",
+      "name": "Rio Grande",
+      "website": "https://www.riogrande.com",
+      "parent_company": "Berkshire Hathaway (Richline Group)",
+      "status": "operational",
+      "regions_served": [
+        "US",
+        "North America",
+        "International"
+      ],
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": true,
+        "processes_offered": [
+          {
+            "process": "castable resin print to lost wax casting",
+            "materials": [
+              "Sterling Silver",
+              "Fine Silver",
+              "10K Gold",
+              "14K Gold",
+              "18K Gold",
+              "22K Gold",
+              "Platinum",
+              "Palladium",
+              "Bronze",
+              "Brass"
+            ],
+            "source_ref": "0"
+          }
+        ],
+        "stone_setting_service": true,
+        "byo_stone_supported": true
+      },
+      "api": {
+        "has_public_api": false,
+        "self_serve": false
+      },
+      "file_requirements": {
+        "accepted_formats": [
+          "STL",
+          "3DM",
+          "OBJ"
+        ],
+        "units_expected": "mm"
+      },
+      "pricing": {
+        "quote_method": "manual_quote",
+        "currency": "USD",
+        "typical_turnaround_days": 10,
+        "notes": "Quotes provided via customer portal request form based on daily metal fix and model complexity."
+      },
+      "onboarding": {
+        "requires_manual_setup": true,
+        "steps": [
+          "Register customer account on riogrande.com",
+          "Submit custom casting request form with CAD file (STL/3DM/OBJ)",
+          "Design review by customization team",
+          "Approve quote and order placement"
+        ],
+        "contact": "customcasting@riogrande.com"
+      },
+      "sources": [
+        {
+          "name": "Rio Grande Custom Jewelry Manufacturing Landing Page",
+          "url": "https://www.riogrande.com/custom-casting-services",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Documented custom lost-wax precious metal casting capabilities, accepted CAD formats (STL, 3DM, OBJ), turnaround (~2 weeks), and manual request workflow."
+        },
+        {
+          "name": "Rio Grande Custom Casting File Requirements",
+          "url": "https://www.riogrande.com/knowledge-hub/videos/custom-casting-file-requirements",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Documented design review requirements, CAD model preparation, and shrinkage guidelines."
+        }
+      ],
+      "review_status": "drafted"
+    },
+    {
+      "id": "sculpteo",
+      "name": "Sculpteo",
+      "website": "https://www.sculpteo.com",
+      "parent_company": "3D Prod Group",
+      "status": "operational",
+      "regions_served": [
+        "Europe",
+        "North America",
+        "Global"
+      ],
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": true,
+        "processes_offered": [
+          {
+            "process": "lost wax casting",
+            "materials": [
+              "Sterling Silver (925)",
+              "Brass",
+              "Bronze"
+            ],
+            "min_wall_thickness_mm": 0.8,
+            "min_feature_size_mm": 0.8,
+            "max_part_size_mm": {
+              "x": 125,
+              "y": 125,
+              "z": 100
+            },
+            "source_ref": "0"
+          }
+        ],
+        "stone_setting_service": false,
+        "byo_stone_supported": false
+      },
+      "api": {
+        "has_public_api": true,
+        "self_serve": false,
+        "docs_url": "https://www.sculpteo.com/en/services/api-services/",
+        "base_url": "https://www.sculpteo.com/en/api/v2/",
+        "auth_type": "api_key",
+        "endpoints": {
+          "upload": "https://www.sculpteo.com/en/api/v2/",
+          "quote": "https://www.sculpteo.com/en/api/v2/",
+          "order": "https://www.sculpteo.com/en/api/v2/",
+          "materials_catalog": "https://www.sculpteo.com/en/api/v2/"
+        },
+        "webhook_support": false
+      },
+      "file_requirements": {
+        "accepted_formats": [
+          ".3dm",
+          ".3ds",
+          ".3mf",
+          ".stl",
+          ".step",
+          ".iges",
+          ".obj",
+          ".ply",
+          ".skp",
+          ".sldprt"
+        ],
+        "max_file_size_mb": 50,
+        "units_expected": "mm"
+      },
+      "pricing": {
+        "quote_method": "instant_api",
+        "currency": "EUR",
+        "typical_turnaround_days": 18,
+        "notes": "15 to 21 business days turnaround time for Sterling Silver casting."
+      },
+      "onboarding": {
+        "requires_manual_setup": true,
+        "steps": [
+          "Create a free user account on Sculpteo platform",
+          "Contact Sculpteo technical/sales team to request API key and enable invoice payment for order placement"
+        ],
+        "contact": "https://www.sculpteo.com/en/contact/"
+      },
+      "sources": [
+        {
+          "name": "Sculpteo Sterling Silver Material Guide",
+          "url": "https://www.sculpteo.com/en/materials/metal-casting-material/silver-material/",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Sterling Silver (92.5% silver, 7.5% alloy) manufactured using 3D printed wax models and lost-wax casting. Min wall thickness 0.8mm, max size 125x125x100mm, turnaround 15-21 business days, max file size 50MB."
+        },
+        {
+          "name": "Sculpteo API Services Page",
+          "url": "https://www.sculpteo.com/en/services/api-services/",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Sculpteo provides REST API v2 for file upload, configuration, instant quoting, and order placement. API access is free for partners with API key authentication, requiring contact with sales for onboarding."
+        },
+        {
+          "name": "Sculpteo Brass Material Guide",
+          "url": "https://www.sculpteo.com/en/materials/metal-casting-material/brass-material/",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Brass material produced via 3D printed wax pattern and lost-wax casting. Offers finishing options including raw, mirror polished, white rhodium, gold, pink gold, and black rhodium plating."
+        }
+      ],
+      "review_status": "cited"
+    },
+    {
+      "id": "shapeways",
+      "name": "Shapeways",
+      "website": "https://www.shapeways.com",
+      "parent_company": "WVS International Inc / Manuevo BV",
+      "status": "operational_recently_restructured",
+      "regions_served": [
+        "Europe",
+        "North America",
+        "Global"
+      ],
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": true,
+        "processes_offered": [
+          {
+            "process": "lost wax casting",
+            "materials": [
+              "Silver (Silver 930 / Sterling Silver 925)",
+              "Gold (14k / 18k)",
+              "Platinum (Platinum 950 / Ruthenium)",
+              "Tin Bronze",
+              "Brass Copper Alloy"
+            ],
+            "min_wall_thickness_mm": 0.6,
+            "min_feature_size_mm": 0.6,
+            "max_part_size_mm": {
+              "x": 89,
+              "y": 89,
+              "z": 100
+            },
+            "source_ref": "0"
+          }
+        ],
+        "stone_setting_service": false,
+        "byo_stone_supported": false
+      },
+      "api": {
+        "has_public_api": true,
+        "self_serve": true,
+        "docs_url": "https://developers.shapeways.com",
+        "base_url": "https://api.shapeways.com",
+        "auth_type": "oauth2",
+        "endpoints": {
+          "upload": "https://api.shapeways.com/models/v1",
+          "quote": "https://api.shapeways.com/models/{modelId}/v1",
+          "order": "https://api.shapeways.com/orders/v1",
+          "status": "https://api.shapeways.com/orders/{orderId}/v1",
+          "materials_catalog": "https://api.shapeways.com/materials/v1"
+        },
+        "webhook_support": false
+      },
+      "file_requirements": {
+        "accepted_formats": [
+          ".stl",
+          ".obj",
+          ".x3d",
+          ".dae",
+          ".3mf"
+        ],
+        "max_file_size_mb": 64,
+        "units_expected": "mm"
+      },
+      "pricing": {
+        "quote_method": "instant_api",
+        "currency": "USD",
+        "typical_turnaround_days": 15,
+        "notes": "Instant pricing based on 3D model volume, bounding box, and material selection."
+      },
+      "onboarding": {
+        "requires_manual_setup": false,
+        "steps": [
+          "Register a developer account on developers.shapeways.com",
+          "Create an OAuth2 application to obtain Client ID and Client Secret",
+          "Authenticate via OAuth2 authorization flow to make API requests against api.shapeways.com"
+        ],
+        "contact": "https://support.shapeways.com"
+      },
+      "sources": [
+        {
+          "name": "Shapeways Silver 930 Material Page",
+          "url": "https://www.shapeways.com/materials/silver-930",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Silver 930 / Sterling Silver manufactured via lost-wax casting from 3D printed wax models. Bounding box min 2.4x2.4x0.6mm, max 89x89x100mm. Min supported wall thickness 0.6mm (natural) / 0.8mm (polished)."
+        },
+        {
+          "name": "Shapeways Lost Wax Casting Overview",
+          "url": "https://www.shapeways.com/3d-print-material-technology/lost-wax-casting",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Lost wax casting offered for precious metals including Silver, Platinum (95% Platinum / 5% Ruthenium), Gold, Tin Bronze, and Copper."
+        },
+        {
+          "name": "Shapeways Developers Quick Start",
+          "url": "https://developers.shapeways.com/quick-start",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "REST API v1 with OAuth2 authentication. Endpoints for POST /models/v1 (upload), GET /materials/v1 (catalog), GET /models/{modelId}/v1 (quote), POST /orders/v1 (order)."
+        },
+        {
+          "name": "Shapeways FAQ - Company History & Restructuring",
+          "url": "https://support.shapeways.com/hc/en-nl/articles/17209325443484-Shapeways-FAQ",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "After Chapter 7 bankruptcy in July 2024, European subsidiary assets were acquired by Manuevo BV, and full brand/assets were acquired by WVS International Inc in late 2024, restarting operations under the Shapeways brand."
+        }
+      ],
+      "review_status": "cited"
+    },
+    {
+      "id": "xometry",
+      "name": "Xometry",
+      "website": "https://www.xometry.com",
+      "parent_company": "Xometry, Inc.",
+      "status": "operational",
+      "regions_served": [
+        "US",
+        "Europe",
+        "Global"
+      ],
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": false,
+        "processes_offered": [
+          {
+            "process": "direct metal laser sintering (dmls)",
+            "materials": [
+              "Stainless Steel 316L",
+              "Titanium Ti6Al4V",
+              "Aluminum AlSi10Mg",
+              "Inconel 718",
+              "CoCr"
+            ],
+            "source_ref": "0"
+          },
+          {
+            "process": "industrial investment casting",
+            "materials": [
+              "Aluminum Alloys",
+              "Steel Alloys",
+              "Iron",
+              "Bronze",
+              "Brass"
+            ],
+            "source_ref": "0"
+          }
+        ],
+        "stone_setting_service": false
+      },
+      "api": {
+        "has_public_api": true,
+        "self_serve": true,
+        "docs_url": "https://www.xometry.com/api-docs/",
+        "base_url": "https://api.xometry.com",
+        "auth_type": "oauth2",
+        "endpoints": {
+          "upload": "/v1/parts",
+          "quote": "/v1/quotes",
+          "order": "/v1/orders",
+          "status": "/v1/orders/{id}"
+        }
+      },
+      "file_requirements": {
+        "accepted_formats": [
+          "STEP",
+          "STP",
+          "SLDPRT",
+          "STL",
+          "IPT",
+          "3MF",
+          "3DXML",
+          "PRT",
+          "SAT"
+        ],
+        "max_file_size_mb": 300,
+        "units_expected": "mm"
+      },
+      "pricing": {
+        "quote_method": "instant_api",
+        "currency": "USD",
+        "typical_turnaround_days": 5,
+        "notes": "Instant API quoting engine for industrial manufacturing; no precious metal casting available."
+      },
+      "onboarding": {
+        "requires_manual_setup": false,
+        "steps": [
+          "Register developer account at developer.xometry.com",
+          "Obtain API client ID and client secret",
+          "Authenticate via OAuth2 to make API requests"
+        ]
+      },
+      "sources": [
+        {
+          "name": "Xometry 3D Printing Service Capabilities & Materials",
+          "url": "https://www.xometry.com/capabilities/3d-printing-service/",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Documented 3D printing technologies and materials; confirmed absence of solid gold, silver, or platinum lost-wax casting."
+        },
+        {
+          "name": "Xometry Electroplating Services",
+          "url": "https://www.xometry.com/capabilities/electroplating-services",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Confirmed gold and silver are restricted to surface electroplating on base metals."
+        },
+        {
+          "name": "Xometry API Documentation Portal",
+          "url": "https://www.xometry.com/api-docs/",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "Documented public REST API endpoints for instant quoting, file uploading, and order placement."
+        }
+      ],
+      "review_status": "drafted"
+    }
+  ]
+}

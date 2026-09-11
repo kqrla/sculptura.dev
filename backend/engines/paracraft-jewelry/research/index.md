@@ -49,7 +49,12 @@ status: `open` → `drafted` → `cited` → `accepted`
 ### manufacturing
 | note | status |
 |---|---|
-| manufacturing/<partner>.md + manufacturer-capabilities.json | open |
+| manufacturing/find-manufacturers.md — the section 3.5 research brief | accepted |
+| manufacturing/sculpteo.md, shapeways.md | cited |
+| manufacturing/cooksongold.md, rio-grande.md, xometry.md | drafted |
+| manufacturing/apex-jewelry-casting.md, design-build-cast.md — discovered jewelry-specific bureaus | drafted |
+| manufacturing/imaterialise.md, stuller.md — pending verification | open |
+| reference/manufacturer-capabilities.json — 7 entries merged, schema-valid | drafted |
 
 ## track b: openscad
 
