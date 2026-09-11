@@ -37,6 +37,9 @@
   #editor-wrap { flex: 1; display: flex; flex-direction: column; min-height: 0; }
   #editor-head { display: flex; justify-content: space-between; padding: 8px 16px 4px; color: var(--dim); font-size: 11px; }
   #editor { flex: 1; resize: none; border: 0; border-radius: 0; background: var(--bg); padding: 4px 16px 12px; font: 12px/1.55 var(--mono); tab-size: 2; }
+  #editor-wrap.collapsed { flex: 0 0 auto; }
+  #editor-wrap.collapsed #editor { display: none; }
+  #editor-head button { padding: 3px 10px; font-size: 11px; font-family: var(--mono); }
   #view { flex: 1; position: relative; min-width: 0; }
   canvas { display: block; }
   #stats { position: absolute; left: 12px; bottom: 12px; font: 11px var(--mono); color: var(--dim); background: rgba(13,11,9,.8); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; white-space: pre; }
@@ -72,8 +75,11 @@
         </div>
       </div>
     </div>
-    <div id="editor-wrap">
-      <div id="editor-head"><span>openscad source — the artifact is the file</span><span id="auto">auto-compile on change</span></div>
+    <div id="editor-wrap" class="collapsed">
+      <div id="editor-head">
+        <span>openscad <span id="auto">— auto-compiles on every slider move</span></span>
+        <button id="toggle-code">view source</button>
+      </div>
       <textarea id="editor" spellcheck="false"></textarea>
     </div>
   </div>
@@ -302,6 +308,11 @@ document.querySelectorAll("[data-preset]").forEach((b) =>
 $("fn").addEventListener("input", fnTag);
 $("fn").addEventListener("change", schedule);
 $("editor").addEventListener("input", schedule);
+$("toggle-code").addEventListener("click", () => {
+  const w = $("editor-wrap");
+  w.classList.toggle("collapsed");
+  $("toggle-code").textContent = w.classList.contains("collapsed") ? "view source" : "hide source";
+});
 
 refresh();
 </script>
