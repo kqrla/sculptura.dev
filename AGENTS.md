@@ -2,7 +2,9 @@
 
 rules for any human or coding agent building the sculptura model engine and virtual studio.
 
-this file is the contract. the product surface lives at `/productstudio`, the feature list in [features.md](features.md), the architecture notes in [underthehood.md](underthehood.md), and the future plan in [roadmap.md](roadmap.md).
+this file is the contract. the research that must precede it is in [research.md](research.md), the product surface lives at `/productstudio`, the feature list in [features.md](features.md), the architecture notes in [underthehood.md](underthehood.md), and the future plan in [roadmap.md](roadmap.md).
+
+the backend runs on xano. the creator never touches the engine directly: they talk to a design agent, and that agent turns the parameters that drive the engine. see section 5 of research.md.
 
 read all of this before writing code.
 
@@ -218,7 +220,7 @@ read the keeberia cad engine. write `backend/engines/paracraft-jewelry/README.md
 
 **phase 2: research spine**
 
-use tavily and firecrawl to build `backend/engines/paracraft-jewelry/research/`. casting tolerances, alloy shrinkage, stone seat dimensions, openscad library survey. every number cited.
+follow [research.md](research.md) in full. it is the study contract for this phase and it defines the two parallel tracks (jewelry domain, openscad), the citation rule, the xano backend questions, and the exact definition of done. do not start phase 3 until its checklist passes.
 
 **phase 3: primitive vocabulary**
 
