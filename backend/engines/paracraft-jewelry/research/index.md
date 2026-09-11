@@ -61,10 +61,12 @@ status: `open` → `drafted` → `cited` → `accepted`
 
 | note | status |
 |---|---|
-| libraries/study-bosl2.md, recommendation.md | open |
+| libraries/decision.md — vanilla scad for v1 + the prior-art lift policy, adopted | cited |
+| libraries/study-bosl2.md — revisit trigger: curved-sweep geometry painful in vanilla | open |
 | patterns/csg-evaluation.md, rotate-extrude.md, profiles.md | open |
-| performance/budget.md — measured numbers on real jewelry geometry | open |
+| performance/budget.md — measured: band $fn24≈12ms / $fn192≈458ms; engraved ring 18.7s (text CSG); instance-reuse heap oom | accepted |
 | testing/determinism.md — golden files, hash caching | open |
+| ../../preview/index.html — in-browser openscad-wasm → webgl engine (3 presets, verbatim-verified) | drafted |
 
 ## xano
 
