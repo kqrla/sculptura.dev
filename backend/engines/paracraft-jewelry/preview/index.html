@@ -4,53 +4,64 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>sculptura — paracraft-jewelry preview engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<style>
+@font-face { font-family: "Tiempos"; src: url("https://raw.githubusercontent.com/kqrla/assets/main/fonts/tiempos-light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+</style>
 <style>
   :root {
-    --bg: #0d0b09; --panel: #171310; --line: #2a221a; --ink: #ece5da; --dim: #9a8f7d;
-    --gold: #c9a227; --gold-bright: #e3c766; --ok: #7fbf7f; --err: #e08a8a;
-    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    /* sculptura "spring meadows" tokens — from kqrla/sculptura src/index.css (light mode) */
+    --bg: #f5f1e8; --panel: #fdfaf5; --line: #d1c8ba; --ink: #252019; --dim: #766a5b;
+    --teal: #568f9e; --gold: #c9a227; --ok: #598a66; --err: #c75541;
+    --mono: "DM Mono", "Courier New", monospace;
+    --sans: "Bricolage Grotesque", "Inter", sans-serif;
+    --serif: "Tiempos", Georgia, serif;
+    --radius: 1.25rem;
   }
   * { box-sizing: border-box; margin: 0; }
-  body { background: var(--bg); color: var(--ink); font: 13px/1.5 ui-sans-serif, system-ui, sans-serif; height: 100vh; display: flex; flex-direction: column; }
-  header { display: flex; align-items: baseline; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
-  header h1 { font-size: 14px; font-weight: 600; letter-spacing: .04em; color: var(--gold-bright); }
-  header span { color: var(--dim); font-size: 12px; }
+  body { background: var(--bg); color: var(--ink); font: 13px/1.5 var(--sans); height: 100vh; display: flex; flex-direction: column; }
+  header { display: flex; align-items: baseline; gap: 12px; padding: 14px 24px; border-bottom: 1px solid var(--line); }
+  header h1 { font: 300 17px/1.2 var(--serif); letter-spacing: .02em; color: var(--ink); }
+  header h1 em { font-style: italic; }
+  header span { color: var(--dim); font: 11px var(--mono); letter-spacing: .08em; }
   #main { flex: 1; display: flex; min-height: 0; }
-  #left { width: 420px; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
-  #controls { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
-  .row { display: flex; gap: 10px; }
+  #left { width: 420px; border-right: 1px solid var(--line); display: flex; flex-direction: column; background: var(--bg); }
+  #controls { padding: 16px 24px 20px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; gap: 12px; }
   .row > * { flex: 1; }
-  label { display: block; font-size: 11px; color: var(--dim); margin-bottom: 3px; }
-  input[type="number"], select, textarea { width: 100%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; font: 12px var(--mono); }
-  input[type="number"]:focus, textarea:focus { outline: 1px solid var(--gold); }
+  label { display: block; font-size: 11px; color: var(--dim); margin-bottom: 4px; letter-spacing: .04em; }
+  input[type="number"] { width: 100%; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: calc(var(--radius) - 6px); padding: 8px 10px; font: 12px var(--mono); }
+  input[type="number"]:focus, textarea:focus { outline: 1px solid var(--teal); }
   .presets { display: flex; gap: 8px; }
-  button { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 12px; }
-  button:hover { border-color: var(--gold); color: var(--gold-bright); }
-  button.primary { background: var(--gold); color: #1a1508; border-color: var(--gold); font-weight: 600; }
-  button.primary:hover { background: var(--gold-bright); color: #1a1508; }
+  button { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: calc(var(--radius) - 6px); padding: 8px 14px; cursor: pointer; font: 11px var(--mono); letter-spacing: .08em; box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.03); transition: all .15s ease; }
+  button:hover { border-color: var(--dim); box-shadow: 0 8px 24px rgba(0,0,0,.07), 0 2px 6px rgba(0,0,0,.04); }
+  button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  button.primary:hover { background: #3a332a; }
   #fn-wrap { display: flex; align-items: center; gap: 10px; }
-  #fn-wrap input[type="range"] { flex: 1; accent-color: var(--gold); }
-  #fn-val { font: 12px var(--mono); color: var(--gold-bright); min-width: 34px; text-align: right; }
-  #fn-tag { font-size: 11px; padding: 1px 8px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); color: var(--dim); white-space: nowrap; }
-  #fn-tag.preview { color: var(--ok); border-color: #2f4f2f; }
-  #fn-tag.export { color: var(--gold-bright); border-color: #4f3f1f; }
+  #fn-wrap input[type="range"] { flex: 1; accent-color: var(--teal); }
+  #fn-val { font: 12px var(--mono); color: var(--teal); min-width: 34px; text-align: right; }
+  #fn-tag { font: 11px var(--mono); padding: 2px 10px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); color: var(--dim); white-space: nowrap; letter-spacing: .06em; }
+  #fn-tag.preview { color: var(--ok); border-color: #c3d4c6; }
+  #fn-tag.export { color: var(--gold); border-color: #e3d5ac; }
   #editor-wrap { flex: 1; display: flex; flex-direction: column; min-height: 0; }
-  #editor-head { display: flex; justify-content: space-between; padding: 8px 16px 4px; color: var(--dim); font-size: 11px; }
-  #editor { flex: 1; resize: none; border: 0; border-radius: 0; background: var(--bg); padding: 4px 16px 12px; font: 12px/1.55 var(--mono); tab-size: 2; }
   #editor-wrap.collapsed { flex: 0 0 auto; }
   #editor-wrap.collapsed #editor { display: none; }
-  #editor-head button { padding: 3px 10px; font-size: 11px; font-family: var(--mono); }
-  #view { flex: 1; position: relative; min-width: 0; }
+  #editor-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 24px 6px; color: var(--dim); font-size: 11px; letter-spacing: .04em; }
+  #editor-head button { padding: 4px 12px; font-size: 10px; box-shadow: none; }
+  #editor { flex: 1; resize: none; border: 0; border-radius: 0; background: var(--panel); color: var(--ink); padding: 6px 24px 14px; font: 12px/1.6 var(--mono); tab-size: 2; }
+  #view { flex: 1; position: relative; min-width: 0; background: var(--bg); }
   canvas { display: block; }
-  #stats { position: absolute; left: 12px; bottom: 12px; font: 11px var(--mono); color: var(--dim); background: rgba(13,11,9,.8); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; white-space: pre; }
-  #busy { position: absolute; top: 12px; right: 12px; font: 11px var(--mono); color: var(--gold-bright); background: rgba(13,11,9,.85); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; display: none; }
-  #err { position: absolute; left: 12px; top: 12px; right: 12px; font: 11px/1.5 var(--mono); color: var(--err); background: rgba(30,12,12,.92); border: 1px solid #4a2020; border-radius: 6px; padding: 8px 12px; display: none; max-height: 40%; overflow: auto; white-space: pre-wrap; }
-  footer { padding: 6px 16px; border-top: 1px solid var(--line); color: var(--dim); font-size: 11px; display: flex; justify-content: space-between; }
+  #stats { position: absolute; left: 16px; bottom: 16px; font: 11px/1.7 var(--mono); color: var(--dim); background: rgba(253,250,245,.88); border: 1px solid var(--line); border-radius: calc(var(--radius) - 4px); padding: 8px 14px; white-space: pre; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  #busy { position: absolute; top: 16px; right: 16px; font: 11px var(--mono); color: var(--teal); background: rgba(253,250,245,.9); border: 1px solid var(--line); border-radius: 10px; padding: 6px 12px; display: none; letter-spacing: .08em; }
+  #err { position: absolute; left: 16px; top: 16px; right: 16px; font: 11px/1.5 var(--mono); color: var(--err); background: rgba(253,245,240,.95); border: 1px solid #e4c4ba; border-radius: calc(var(--radius) - 4px); padding: 10px 14px; display: none; max-height: 40%; overflow: auto; white-space: pre-wrap; }
+  footer { padding: 8px 24px; border-top: 1px solid var(--line); color: var(--dim); font: 11px var(--sans); display: flex; justify-content: space-between; letter-spacing: .02em; }
 </style>
 </head>
 <body>
 <header>
-  <h1>sculptura · paracraft-jewelry</h1>
+  <h1>sculptura · <em>paracraft-jewelry</em></h1>
   <span>in-browser openscad → wasm → webgl preview engine · v0, main thread · text()/fonts not supported in this wasm build</span>
 </header>
 <div id="main">
@@ -191,8 +202,8 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 view.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0d0b09);
-scene.fog = new THREE.Fog(0x0d0b09, 40, 120);
+scene.background = new THREE.Color(0xf5f1e8);
+scene.fog = new THREE.Fog(0xf5f1e8, 60, 160);
 
 const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 500);
 camera.position.set(28, 20, 34);
@@ -200,12 +211,12 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.target.set(0, 0, 0);
 
-scene.add(new THREE.HemisphereLight(0xfff2e0, 0x241a10, 0.55));
-const key = new THREE.DirectionalLight(0xffe9c9, 1.5); key.position.set(30, 40, 20); scene.add(key);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xd8cfc0, 0.9));
+const key = new THREE.DirectionalLight(0xfff4e0, 1.4); key.position.set(30, 40, 20); scene.add(key);
 const rim = new THREE.DirectionalLight(0xc9a227, 0.6); rim.position.set(-25, 10, -30); scene.add(rim);
 
 const gold = new THREE.MeshStandardMaterial({ color: 0xc9a227, metalness: 0.95, roughness: 0.28 });
-const grid = new THREE.GridHelper(80, 40, 0x2a221a, 0x1a1512);
+const grid = new THREE.GridHelper(80, 40, 0xc9bfae, 0xe3dac9);
 grid.position.y = -((parseFloat($("p-width").value) || 7) / 2 + 2);
 scene.add(grid);
 
