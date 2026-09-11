@@ -49,6 +49,7 @@ import DemoApp from './pages/DemoApp';
 import BuyerDashboard from './pages/BuyerDashboard';
 import DemoBuyer from './pages/DemoBuyer';
 import SharedList from './pages/SharedList';
+import ProductStudio from './pages/ProductStudio';
 
 const RoutedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -104,6 +105,7 @@ const RoutedApp = () => {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/size-guide" element={<SizeGuide />} />
         <Route path="/creator-docs" element={<CreatorDocs />} />
+        <Route path="/productstudio" element={<ProductStudio />} />
         <Route path="/about" element={<About />} />
         <Route path="/compare" element={<Compare />} />
         <Route path="/roadmap" element={<Roadmap />} />
