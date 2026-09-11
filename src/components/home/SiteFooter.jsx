@@ -12,6 +12,7 @@ const links = {
     { label: "open a store", to: "/store/create" },
     { label: "access dashboard", to: "/store/access" },
     { label: "creator docs", to: "/creator-docs" },
+    { label: "virtual studio", to: "/productstudio" },
     { label: "pricing model", to: "/faq#pricing" },
   ],
   company: [
