@@ -53,8 +53,9 @@ status: `open` → `drafted` → `cited` → `accepted`
 | manufacturing/sculpteo.md, shapeways.md | cited |
 | manufacturing/cooksongold.md, rio-grande.md, xometry.md | drafted |
 | manufacturing/apex-jewelry-casting.md, design-build-cast.md — discovered jewelry-specific bureaus | drafted |
-| manufacturing/imaterialise.md, stuller.md — pending verification | open |
-| reference/manufacturer-capabilities.json — 7 entries merged, schema-valid | drafted |
+| manufacturing/imaterialise.md — documented negative, cited | cited |
+| manufacturing/stuller.md — physical-model-only b2b casting, cited | cited |
+| reference/manufacturer-capabilities.json — 9 entries, schema-valid | drafted |
 
 ## track b: openscad
 

@@ -211,6 +211,63 @@
       "review_status": "drafted"
     },
     {
+      "id": "imaterialise",
+      "name": "i.materialise",
+      "website": "https://i.materialise.com",
+      "status": "operational",
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": false,
+        "processes_offered": [
+          {
+            "process": "lost-wax casting (wax prints, platform materials only)",
+            "materials": [
+              "wax"
+            ],
+            "source_ref": "2"
+          },
+          {
+            "process": "industrial metal 3d printing (manual, via sales/engineering)",
+            "materials": [
+              "industrial-grade metals (alloy list not published on platform pages)"
+            ],
+            "source_ref": "1"
+          }
+        ]
+      },
+      "api": {
+        "has_public_api": false,
+        "self_serve": true,
+        "webhook_support": false
+      },
+      "file_requirements": {},
+      "pricing": {
+        "quote_method": "hybrid",
+        "notes": "instant web quote exists for platform materials on OnSite; anything metal/specialist routes to a manual sales quote. no precious-metal pricing found anywhere."
+      },
+      "onboarding": {},
+      "sources": [
+        {
+          "name": "i.materialise jewelry page",
+          "url": "https://i.materialise.com/en/jewelry",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "lost-wax casting listed among technologies; metal 3d printing described as industrial-grade via the engineering team; jewelry metal requests routed to sales; OnSite offers model upload and instant quote"
+        },
+        {
+          "name": "i.materialise OnSite materials page",
+          "url": "https://i.materialise.com/en/onsite/materials",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "materials catalog lists wax for lost-wax casting among 45+ materials; gold, silver, and platinum do not appear on the page"
+        },
+        {
+          "name": "i.materialise api page",
+          "url": "https://i.materialise.com/api/",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "page returns 404 not found; the historic public api no longer exists at this location"
+        }
+      ],
+      "review_status": "cited"
+    },
+    {
       "id": "rio-grande",
       "name": "Rio Grande",
       "website": "https://www.riogrande.com",
@@ -489,6 +546,65 @@
           "url": "https://support.shapeways.com/hc/en-nl/articles/17209325443484-Shapeways-FAQ",
           "date_retrieved": "2026-09-11",
           "excerpt_basis": "After Chapter 7 bankruptcy in July 2024, European subsidiary assets were acquired by Manuevo BV, and full brand/assets were acquired by WVS International Inc in late 2024, restarting operations under the Shapeways brand."
+        }
+      ],
+      "review_status": "cited"
+    },
+    {
+      "id": "stuller",
+      "name": "Stuller",
+      "website": "https://www.stuller.com",
+      "status": "operational",
+      "process_fit": {
+        "supports_precious_metal_lost_wax_casting": true,
+        "processes_offered": [
+          {
+            "process": "lost wax casting (customer-supplied physical wax or resin models)",
+            "materials": [
+              "gold",
+              "platinum",
+              "most metal qualities listed on stuller's grain page"
+            ],
+            "source_ref": "2"
+          }
+        ]
+      },
+      "api": {
+        "has_public_api": false,
+        "self_serve": false,
+        "auth_type": "unknown",
+        "webhook_support": false,
+        "webhook_notes": "no api or integration surface mentioned on retrieved pages; intake is a submission form plus physical shipping"
+      },
+      "file_requirements": {
+        "required_metadata": [],
+        "units_expected": "n/a \u2014 physical wax/resin models only per retrieved pages"
+      },
+      "pricing": {
+        "quote_method": "manual_quote",
+        "notes": "consultation, wax evaluation, and estimates precede casting per the custom wax casting page; no pricing published on retrieved pages"
+      },
+      "onboarding": {
+        "requires_manual_setup": true,
+        "steps": [
+          "apply for a stuller account (aimed at jewelry business professionals)",
+          "submit casting request via submission form",
+          "ship the physical wax or resin model"
+        ],
+        "contact": "https://www.stuller.com/services \u2014 account application and service inquiry forms"
+      },
+      "sources": [
+        {
+          "name": "stuller services page",
+          "url": "https://www.stuller.com/services",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "casting service takes physical wax or resin models via submission form and shipping; service described within jeweler services aimed at jewelry business professionals; account application required; no api or uploaded-file mention"
+        },
+        {
+          "name": "stuller custom wax casting page",
+          "url": "https://www.stuller.com/custom-wax-casting",
+          "date_retrieved": "2026-09-11",
+          "excerpt_basis": "gold and platinum casting grain used to cast customer waxes; most metal qualities on the grain page castable; clip & ship (raw) or machine tumbled (semi-finish) outputs; consultation, wax evaluation, and estimates precede casting"
         }
       ],
       "review_status": "cited"
