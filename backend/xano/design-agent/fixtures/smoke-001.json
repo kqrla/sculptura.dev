@@ -1,0 +1,42 @@
+{
+  "fixture": "smoke-001",
+  "date": "2026-09-11",
+  "model": "glm-4-7-flash",
+  "latency_ms": 14575,
+  "request": {
+    "system_prompt_version": "v0.1",
+    "user_message": "BOUNDS (provisional v0.1): ring_size_mm 10\u201330 inner diameter \u00b7 band_width_mm 2\u201312 \u00b7 band_thickness_mm 1\u20135 \u00b7 profile in {flat, comfort, engraved}\n\ncreator says: \"i want a dainty everyday band in us size 7, thin, delicate, maybe 2mm wide? also make the walls chunky and thick, like 6mm\" (current parameters: none yet)"
+  },
+  "response_raw": {
+    "content": "```json\n{\n  \"type\": \"ring\",\n  \"parameters\": {\n    \"ring_size_mm\": 17.3,\n    \"band_width_mm\": 2,\n    \"band_thickness_mm\": 5,\n    \"profile\": \"flat\"\n  },\n  \"notes\": \"US Size 7 maps to approximately 17.3mm inner diameter. You requested a 6mm thickness, but the maximum allowed is 5mm, so I've set it to 5mm. A 2mm width with 5mm thickness creates a fairly heavy and bold band; if you intended for the visual appearance to be 'thick' or voluminous without extreme weight, let me know.\"\n}\n```",
+    "reasoning": "1.  **Analyze the Request:**\n    *   **Target:** A candidate parameter set for Sculptura.\n    *   **Creator Description:** \"dainty everyday band in us size 7, thin, delicate, maybe 2mm wide? also make the walls chunky and thick, like 6mm\"\n    *   **Current Parameters:** None.\n    *   **Language:** \"dainty,\" \"everyday,\" \"thin,\" \"delicate,\" \"maybe 2mm wide,\" \"walls chunky,\" \"thick,\" \"like 6mm.\"\n\n2.  **Map to Vocabulary:**\n    *   `ring_size_mm`: Creator says \"us size 7\".\n        *   *Conversion:* US Size 7 usually corresponds to approximately 17.3mm inner diameter.\n        *   *Check Bounds:* 10\u201330mm. 17.3 is inside.\n        *   *Action:* Set to 17.3.\n    *   `band_width_mm`: Creator says \"maybe 2mm wide\".\n        *   *Check Bounds:* 2\u201312mm. 2 is inside.\n        *   *Action:* Set to 2.\n    *",
+    "usage": {
+      "prompt_tokens": 394,
+      "total_tokens": 1835,
+      "completion_tokens": 1441,
+      "prompt_tokens_details": null
+    }
+  },
+  "parse_ok": true,
+  "candidate": {
+    "type": "ring",
+    "parameters": {
+      "ring_size_mm": 17.3,
+      "band_width_mm": 2,
+      "band_thickness_mm": 5,
+      "profile": "flat"
+    },
+    "notes": "US Size 7 maps to approximately 17.3mm inner diameter. You requested a 6mm thickness, but the maximum allowed is 5mm, so I've set it to 5mm. A 2mm width with 5mm thickness creates a fairly heavy and bold band; if you intended for the visual appearance to be 'thick' or voluminous without extreme weight, let me know."
+  },
+  "checks": {
+    "strict_json": true,
+    "vocabulary_keys": [
+      "band_thickness_mm",
+      "band_width_mm",
+      "profile",
+      "ring_size_mm"
+    ],
+    "bounds_ok": true,
+    "out_of_bounds_request_flagged_in_notes": true
+  }
+}
