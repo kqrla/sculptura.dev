@@ -7,7 +7,11 @@
   <url><loc>https://sculptura.lovable.app/faq</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sculptura.lovable.app/size-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sculptura.lovable.app/creator-docs</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://sculptura.lovable.app/productstudio</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sculptura.annecrypted.com/studiogram</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sculptura.annecrypted.com/studiogram/hand</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sculptura.annecrypted.com/studiogram/jewelry</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sculptura.annecrypted.com/studiogram/scene</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sculptura.annecrypted.com/studiogram/capture</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sculptura.lovable.app/roadmap</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://sculptura.lovable.app/onboarding</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://sculptura.lovable.app/store/create</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
