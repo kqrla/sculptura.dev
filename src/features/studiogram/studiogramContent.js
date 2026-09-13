@@ -1,6 +1,58 @@
-import { Camera, Gem, Hand, Images } from "lucide-react";
+import { Camera, CircleHelp, Cog, Gem, Hand, Images, Workflow } from "lucide-react";
 
 export const studiogramGuides = [
+  {
+    slug: "why",
+    step: "00",
+    icon: CircleHelp,
+    eyebrow: "understand the purpose",
+    title: "why studiogram exists",
+    summary: "close the photography gap between a finished digital design and the first physical casting.",
+    introduction: "made-to-order jewelry can be ready to validate and list before a physical sample exists. studiogram gives creators a way to present that exact design without first arranging casting, a model, a camera, and a physical shoot.",
+    sections: [
+      {
+        title: "photography normally comes last",
+        body: "traditional product photography begins after a piece has been manufactured. that makes every new listing depend on an upfront sample, even when the design is already complete and manufacturable as a digital object.",
+        points: ["no sample required before listing", "less upfront production", "earlier product presentation"],
+      },
+      {
+        title: "the design is already real",
+        body: "the artifact already has defined geometry, dimensions, materials, and manufacturing constraints. studiogram photographs that existing object rather than asking another system to invent an approximation of it.",
+        points: ["actual compiled geometry", "design and image stay aligned", "no imagined replacement"],
+      },
+      {
+        title: "creators keep control",
+        body: "the hand, jewelry arrangement, camera, light, and backdrop remain adjustable parts of a saved scene. creators direct the result and can return to the same setup whenever the listing changes.",
+        points: ["creator-directed scenes", "repeatable results", "reusable setups"],
+      },
+    ],
+  },
+  {
+    slug: "howitworks",
+    step: "guide",
+    icon: Workflow,
+    eyebrow: "follow the complete flow",
+    title: "how studiogram works",
+    summary: "move from a compiled jewelry design to an ordered set of product images through one reproducible scene.",
+    introduction: "studiogram begins after the artifact has become a compiled mesh. a creator chooses a hand, arranges jewelry, directs the scene, and captures several views without creating a second version of the product.",
+    sections: [
+      {
+        title: "prepare the subject",
+        body: "choose a saved hand or shape a new one, then add one or more compiled artifacts. every piece attaches to a named location and remains an independent object in the scene.",
+        points: ["configure the hand", "add compiled artifacts", "place and stack pieces"],
+      },
+      {
+        title: "direct the scene",
+        body: "set the hand pose, camera framing, lighting, and environment. each control changes one part of the scene while preserving every other choice.",
+        points: ["pose the rig", "frame the camera", "shape light and backdrop"],
+      },
+      {
+        title: "capture the set",
+        body: "save a frame, adjust the scene, and save another. the resulting image set can be reviewed, ordered, and exported as png files for a product carousel.",
+        points: ["capture several views", "review the sequence", "export png images"],
+      },
+    ],
+  },
   {
     slug: "hand",
     step: "01",
@@ -102,6 +154,32 @@ export const studiogramGuides = [
         title: "export for publishing",
         body: "the finished set exports as png images intended for a carousel. attribution, captions, links, and posting remain with the creator on the platform where the images will be shared.",
         points: ["png image set", "carousel-ready ordering", "creator-controlled publishing and attribution"],
+      },
+    ],
+  },
+  {
+    slug: "bts",
+    step: "bts",
+    icon: Cog,
+    eyebrow: "look behind the scenes",
+    title: "behind the scenes",
+    summary: "see how one saved scene keeps the real artifact, hand rig, camera, lighting, and output connected.",
+    introduction: "studiogram is a deterministic 3d scene system, not image generation. every photograph is the rendered result of explicit geometry and saved scene choices.",
+    sections: [
+      {
+        title: "one artifact flows through",
+        body: "the studio consumes the same compiled mesh used by the artifact viewer. attachment information belongs to the canonical design record, so photography never becomes a separate copy of the jewelry.",
+        points: ["one canonical design", "shared compiled mesh", "upstream attachment data"],
+      },
+      {
+        title: "the hand is a rigged system",
+        body: "one base hand uses shape controls for morphology and material controls for surface appearance. named attachment spaces allow jewelry to follow fingers, wrists, and other supported locations when the pose changes.",
+        points: ["one parameterized hand", "separate surface controls", "rig-aware attachments"],
+      },
+      {
+        title: "a scene is reproducible",
+        body: "pose, camera, lighting, environment, and object transforms are saved as scene state. the same values can reconstruct the same view for later edits, exports, and visual checks.",
+        points: ["saved scene values", "repeatable rendering", "consistent product views"],
       },
     ],
   },

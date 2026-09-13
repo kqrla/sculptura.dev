@@ -51,6 +51,7 @@ import DemoBuyer from './pages/DemoBuyer';
 import SharedList from './pages/SharedList';
 import Studiogram from './pages/Studiogram';
 import StudiogramGuide from './features/studiogram/StudiogramGuide';
+import ProductStudio from './pages/ProductStudio';
 
 const RoutedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -108,7 +109,8 @@ const RoutedApp = () => {
         <Route path="/creator-docs" element={<CreatorDocs />} />
         <Route path="/studiogram" element={<Studiogram />} />
         <Route path="/studiogram/:pageName" element={<StudiogramGuide />} />
-        <Route path="/productstudio" element={<Navigate to="/studiogram" replace />} />
+        <Route path="/productstudio" element={<ProductStudio />} />
+        <Route path="/projectstudio" element={<ProductStudio />} />
         <Route path="/about" element={<About />} />
         <Route path="/compare" element={<Compare />} />
         <Route path="/roadmap" element={<Roadmap />} />
