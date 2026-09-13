@@ -43,12 +43,12 @@ export default function Studiogram() {
             <div className="mb-9 grid gap-3 md:grid-cols-[12rem_1fr]">
               <p className="font-mono text-xs text-muted-foreground">the journey</p>
               <div>
-                <h2 id="journey-title" className="font-serif text-3xl font-light lowercase text-foreground md:text-4xl">one scene, built in four parts</h2>
-                <p className="mt-3 max-w-2xl text-sm font-light leading-relaxed text-muted-foreground">follow each guide to see how a creator would move from a reusable hand to a finished set of product images.</p>
+              <h2 id="journey-title" className="font-serif text-3xl font-light lowercase text-foreground md:text-4xl">the complete studiogram guide</h2>
+              <p className="mt-3 max-w-2xl text-sm font-light leading-relaxed text-muted-foreground">start with the purpose and complete flow, then explore each part of the scene and what happens behind it.</p>
               </div>
             </div>
 
-            <div className="grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-3">
               {studiogramGuides.map((guide) => {
                 const GuideIcon = guide.icon;
                 return (
